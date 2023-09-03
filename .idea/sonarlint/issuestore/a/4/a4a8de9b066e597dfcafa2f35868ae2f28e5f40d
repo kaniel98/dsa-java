@@ -1,0 +1,13 @@
+
+s
+java:S1104
+"QMake value a static final constant or non-public and provide accessors if needed.(‚¯¥ùÿÿÿÿ8¾ïÅ®¥1
+r
+java:S1104"PMake next a static final constant or non-public and provide accessors if needed.(±±èÃøÿÿÿÿ8¾ïÅ®¥1
+{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¾ÃŠ™úÿÿÿÿ8¿ïÅ®¥1
+\
+java:S1854½"9Remove this useless assignment to local variable "after".(‚©åŸúÿÿÿÿ8ÒïÅ®¥1
+H	java:S106Ì"+Replace this use of System.out by a logger.(´æ²8ÓïÅ®¥1
+H	java:S106Ğ"+Replace this use of System.out by a logger.(åÒ¥‘8ÔïÅ®¥1
+H	java:S106Ô"+Replace this use of System.out by a logger.(æŒ˜”8ÔïÅ®¥1
+H	java:S106Ù"+Replace this use of System.out by a logger.(úÙ¶Æ8ÔïÅ®¥1
