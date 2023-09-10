@@ -1,13 +1,12 @@
-import LinkedList.LinkedList;
+import DoubleLinkedLists.DoubleLinkedList;
 
 public class Main {
     public static void main(String[] args) {
-        LinkedList newLinkedList = new LinkedList(40);
-        newLinkedList.append(50);
-        newLinkedList.append(60);
-        newLinkedList.append(70);
-        newLinkedList.reverse();
-
-        newLinkedList.printList();
+        DoubleLinkedList myDoubleLinkedList = new DoubleLinkedList(40);
+        myDoubleLinkedList.prepend(50);
+        myDoubleLinkedList.getHead();
+        myDoubleLinkedList.getTail();
+        myDoubleLinkedList.getLength();
+        myDoubleLinkedList.printList();
     }
 }
