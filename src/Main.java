@@ -7,7 +7,8 @@ public class Main {
         myDoubleLinkedList.prepend(60);
         myDoubleLinkedList.prepend(70);
 
-        myDoubleLinkedList.set(1, 20);
+        myDoubleLinkedList.swapFirstLast();
         myDoubleLinkedList.printList();
     }
+    
 }
