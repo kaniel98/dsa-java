@@ -186,8 +186,6 @@ public class DoubleLinkedList {
         after.prev = before;
 
         // Short way of doing this can be:
-//        temp.next.prev = temp.prev;
-//        temp.prev.next = temp.next;
         this.length--;
         return temp;
     }
@@ -203,5 +201,52 @@ public class DoubleLinkedList {
         return true;
     }
 
+    public void reverse() {
+        // Edge case: if length == 0 or 1
+        if (this.length == 0 || this.length == 1) return;
 
+        // Start reversing from the tail
+        Node current = this.head;
+        // Temp holder
+        Node temp = null;
+        while (current != null) {
+            // Temp will be pointing to previous
+            temp = current.prev;
+            // Switch the current's previous with its next
+            current.prev = current.next;
+            // Switch the current's next with its previous
+            current.next = temp;
+            // Move current to be its "Previous" which should be its next once reversed
+            current = current.prev;
+        }
+
+        // Switch the header by setting temp to be temporarily head
+        temp = this.head;
+        // Switch head to become tail
+        head = tail;
+        // Switch tail to become temp which should be pointing to the previous head
+        tail = temp;
+    }
+
+    public boolean isPalindrome() {
+
+        // Edge case - 0 or 1
+        if (this.length == 0 || this.length == 1) return true;
+
+        int len = this.length % 2 == 0 ? this.length / 2 : (this.length / 2) + 1;
+        Node start = this.head;
+        Node end = this.tail;
+
+        // Iterate from the first half and second half
+        for (int i = 0; i < len; i++) {
+            // If it matches, pass
+            // If it doesnt match, return false
+            if (start.value != end.value) {
+                return false;
+            }
+            start = start.next;
+            end = end.prev;
+        }
+        return true;
+    }
 }
