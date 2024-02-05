@@ -7,11 +7,11 @@ public class LinkedList {
 
     // Inner node class for LinkedList, (Also known as Nested class)
     public class Node {
-        public int value;
+        public int val;
         public Node next;
 
         public Node(int value) {
-            this.value = value;
+            this.val = value;
         }
     }
 
@@ -172,7 +172,7 @@ public class LinkedList {
     public Boolean set(int index, int value) {
         Node targetNode = get(index);
         if (targetNode != null) {
-            targetNode.value = value;
+            targetNode.val = value;
             return true;
         }
         return false;
@@ -201,11 +201,11 @@ public class LinkedList {
     }
 
     public void getHead() {
-        System.out.println("Head: " + head.value);
+        System.out.println("Head: " + head.val);
     }
 
     public void getTail() {
-        System.out.println("Tail: " + tail.value);
+        System.out.println("Tail: " + tail.val);
     }
 
     public void getLength() {
@@ -214,7 +214,7 @@ public class LinkedList {
 
     public void printList() {
         while (this.head != null) {
-            System.out.println(this.head.value);
+            System.out.println(this.head.val);
             this.head = this.head.next;
         }
     }
