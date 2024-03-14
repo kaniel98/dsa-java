@@ -1,22 +1,10 @@
-package DoubleLinkedLists;
+package doubleLinkedLists;
 
 public class DoubleLinkedList {
-
-    class Node {
-        int value;
-        // Main difference: Additional field to store the pointer to the previous node
-        Node prev;
-        Node next;
-
-        public Node(int value) {
-            this.value = value;
-        }
-    }
 
     private Node head;
     private Node tail;
     private int length;
-
     // Constructor for Double Linked lists
     public DoubleLinkedList(int value) {
         Node newNode = new Node(value);
@@ -248,5 +236,16 @@ public class DoubleLinkedList {
             end = end.prev;
         }
         return true;
+    }
+
+    class Node {
+        int value;
+        // Main difference: Additional field to store the pointer to the previous node
+        Node prev;
+        Node next;
+
+        public Node(int value) {
+            this.value = value;
+        }
     }
 }

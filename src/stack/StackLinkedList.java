@@ -1,18 +1,8 @@
-package Stack;
+package stack;
 
 public class StackLinkedList {
     private Node top;
     private int height;
-
-    // Constructor for Node in a stack
-    class Node {
-        int value;
-        Node next;
-
-        Node(int value) {
-            this.value = value;
-        }
-    }
 
     // Constructor for stack class
     public StackLinkedList(int value) {
@@ -57,5 +47,15 @@ public class StackLinkedList {
         temp.next = null;
         this.height--;
         return temp;
+    }
+
+    // Constructor for Node in a stack
+    class Node {
+        int value;
+        Node next;
+
+        Node(int value) {
+            this.value = value;
+        }
     }
 }

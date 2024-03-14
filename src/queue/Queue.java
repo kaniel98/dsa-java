@@ -1,19 +1,9 @@
-package Queue;
+package queue;
 
 public class Queue {
     private Node first;
     private Node last;
     private int length;
-
-    // Constructor for Node in a Queue
-    class Node {
-        int value;
-        Node next;
-
-        Node(int value) {
-            this.value = value;
-        }
-    }
 
     public Queue(int value) {
         Node newNode = new Node(value);
@@ -75,6 +65,16 @@ public class Queue {
         }
         this.length--;
         return temp;
+    }
+
+    // Constructor for Node in a Queue
+    class Node {
+        int value;
+        Node next;
+
+        Node(int value) {
+            this.value = value;
+        }
     }
 
 }

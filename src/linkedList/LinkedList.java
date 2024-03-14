@@ -1,19 +1,9 @@
-package LinkedList;
+package linkedList;
 
 public class LinkedList {
     private Node head;
     private Node tail;
     private int length;
-
-    // Inner node class for LinkedList, (Also known as Nested class)
-    public class Node {
-        public int val;
-        public Node next;
-
-        public Node(int value) {
-            this.val = value;
-        }
-    }
 
     public LinkedList(int value) {
         Node startingNode = new Node(value);
@@ -216,6 +206,16 @@ public class LinkedList {
         while (this.head != null) {
             System.out.println(this.head.val);
             this.head = this.head.next;
+        }
+    }
+
+    // Inner node class for LinkedList, (Also known as Nested class)
+    public class Node {
+        public int val;
+        public Node next;
+
+        public Node(int value) {
+            this.val = value;
         }
     }
 
