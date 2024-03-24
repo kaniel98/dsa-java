@@ -1,44 +1,52 @@
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(coinChange(List.of(1, 2, 5), 11));
+        System.out.println(longestPalindrome("babad"));
     }
 
-    public static List<Integer> coinChange(List<Integer> coins, int amount) {
-        return coinChangeDfs(coins, amount, 0, new ArrayList<>(), new HashMap<>());
+    public static String longestPalindrome(String s) {
+        String currentLongest = "";
+        return longestPalindromeDfs(currentLongest, 0, s, new HashMap<>());
+
     }
 
-    public static List<Integer> coinChangeDfs(List<Integer> coins, Integer amount, Integer sum, List<Integer> current, Map<Integer, List<Integer>> memoMap) {
-        if (amount.equals(sum)) {
-            return new ArrayList<>(current); // Leaf node
+    // Function to check if it is palindrome
+    private static boolean isPalindrome(String s) {
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            if (s.charAt(l) != s.charAt(r))
+                return false;
+            l++;
+            r--;
         }
-        if (sum > amount) {
-            return null; // Out of bound, return null to invalidate
-        }
-        if (memoMap.getOrDefault(sum, null) != null) {
-            return memoMap.get(sum);
-        }
+        return true;
+    }
 
-        // Else proceed to go down each node
-        int minSize = Integer.MAX_VALUE; // Initialize minSize
-        List<Integer> ans = null;
-        for (Integer coin : coins) {
-            current.add(coin);
-            List<Integer> result = coinChangeDfs(coins, amount, sum + coin, current, memoMap);
-            current.remove(current.size() - 1);
-            if (result == null) {
+    private static String longestPalindromeDfs(String currentLongest, int startIndex, String s, Map<Integer, String> currentMap) {
+        if (startIndex == s.length()) {
+            return currentLongest;
+        }
+        if (currentMap.getOrDefault(startIndex, null) != null) {
+            return currentMap.get(startIndex);
+        }
+        for (int end = startIndex; end < s.length(); end++) {
+            if (!isPalindrome(s.substring(startIndex, end + 1))) {
                 continue;
             }
-            if (result.size() <= minSize) {
-                minSize = result.size();
-                ans = result;
+            // Else check if it is the current longest
+            if (currentLongest.length() < s.substring(startIndex, end + 1).length()) {
+                currentLongest = s.substring(startIndex, end + 1);
+            }
+            // Proceed to go down further
+            String result = longestPalindromeDfs(currentLongest, end + 1, s, currentMap);
+            if (result.length() > currentLongest.length()) {
+                currentLongest = result;
             }
         }
-        memoMap.put(sum, ans);
-        return ans;
+        // for the current start index set the longest
+        currentMap.put(startIndex, currentLongest);
+        return currentLongest;
     }
 }

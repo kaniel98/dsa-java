@@ -7,34 +7,10 @@ public class DepthFirstSearchStates {
     public static void main(String[] args) {
     }
 
-    public static List<String> ternaryTreePaths(Node<Integer> root) {
-        // WRITE YOUR BRILLIANT CODE HERE
-        return List.of();
-    }
 
-    // Get all possible paths for a ternary tree
-    // Time complexity - o(n)
-    // Space complexity - o(h) number of function calls + o(n**2) number of arrays
-    public static void dfsAllPossiblePaths(Node<Integer> root, ArrayList<String> path, ArrayList<String> res) {
-        // Case 1: When the node has no more children
-        if (root.children.isEmpty()) {
-            path.add(Integer.toString(root.val)); // Add the current node
-            res.add(String.join("->", path)); // Add the current path to result
-            return; // Break the current loop
-        }
-
-        // Case 2: Proceed to call DFS on each node
-        for (Node<Integer> child : root.children) {
-            // Create a new copy for each path of the tree
-            ArrayList<String> newPath = new ArrayList<>(path);
-            // Proceed to add the next current node into the path
-            newPath.add(Integer.toString(root.val));
-            dfsAllPossiblePaths(child, newPath, res);
-        }
-    }
-
+    // * Get all possible paths for a ternary tree
     // Inefficient to continuously create new array - Use a stack instead
-    public static void dfsAllPossiblePathWithStack(Node<Integer> root, ArrayList<String> path, ArrayList<String> res) {
+    public static void dfsAllPossiblePathWithStack(Node<Integer> root, List<String> path, List<String> res) {
         // Case 1: When the root has no more children
         if (root.children.isEmpty()) {
             path.add(Integer.toString(root.val)); // Add the current node
@@ -52,18 +28,17 @@ public class DepthFirstSearchStates {
         }
     }
 
-    // * ########################################################################
-
     public static List<String> ternaryTreePath(Node<Integer> root) {
-        ArrayList<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<>();
         if (root.val == null) {
             return result;
         }
-        ArrayList<String> currentPath = new ArrayList<>();
-        dfsAllPossiblePaths(root, currentPath, result);
+        List<String> currentPath = new ArrayList<>();
+        dfsAllPossiblePathWithStack(root, currentPath, result);
         return result;
     }
 
+    // * Ways to get a letter combination from two letters and within the length of n
     public static List<String> letterCombination(int n) {
         List<String> result = new ArrayList<>();
         letterCombinationDfs(result, new ArrayList<>(), 0, n);
@@ -84,7 +59,7 @@ public class DepthFirstSearchStates {
         }
     }
 
-    // * ########################################################################
+    // * Ways to get a letter combination from a num pad phone
     // Time complexity - O(4^n) where n is the number of digits in the input (4 because worse case its 4 char)
     // Space complexity - O(n) where n is the number of digits in the input
     private static void generateAllPossibleCombinationsFromAPhone(List<String> result, String phoneDigits, int currentIndex, StringBuilder path) {
@@ -106,7 +81,18 @@ public class DepthFirstSearchStates {
         return result;
     }
 
-    // * ########################################################################
+    private static final Map<Character, char[]> KEYBOARD = Map.of(
+            '2', "abc".toCharArray(),
+            '3', "def".toCharArray(),
+            '4', "ghi".toCharArray(),
+            '5', "jkl".toCharArray(),
+            '6', "mno".toCharArray(),
+            '7', "pqrs".toCharArray(),
+            '8', "tuv".toCharArray(),
+            '9', "wxyz".toCharArray()
+    );
+
+    // * Generate all the different partition which can be evaluated to be a palindrome
     // Time complexity: O(2^N) Either include character in partition or start new - Each call will potentially double the number of recursive calls. Each call need to be O(n) as well because we want to see if palindrome anot
     // Space complexity: O(n) height of the tree
     public static void generateAllPartitionsDfs(List<List<String>> result, List<String> currentPartition, int startIndex, String s) {
@@ -146,18 +132,8 @@ public class DepthFirstSearchStates {
         return ans;
     }
 
-    private static final Map<Character, char[]> KEYBOARD = Map.of(
-            '2', "abc".toCharArray(),
-            '3', "def".toCharArray(),
-            '4', "ghi".toCharArray(),
-            '5', "jkl".toCharArray(),
-            '6', "mno".toCharArray(),
-            '7', "pqrs".toCharArray(),
-            '8', "tuv".toCharArray(),
-            '9', "wxyz".toCharArray()
-    );
 
-    // * ########################################################################
+    // * Generate valid parenthesis strings
     // 1. Check if the current string iteration has valid parenthesis
     private static boolean isValidParenthesis(String string) {
         // Initialize a stack
@@ -165,7 +141,7 @@ public class DepthFirstSearchStates {
         for (Character character : string.toCharArray()) {
             if (character.equals('(')) {
                 stack.push(')');
-            } else if (stack.size() == 0) {
+            } else if (stack.isEmpty()) {
                 return false;
             } else {
                 stack.pop();
@@ -179,7 +155,7 @@ public class DepthFirstSearchStates {
     public static void generateParenthesesDfs(List<String> result, List<String> currentPath, int n, int openCount, int closeCount) {
         if (currentPath.size() == n * 2) {
             String formedParenthesis = String.join("", currentPath);
-            if (isValidParenthesis(formedParenthesis)) {
+            if (isValidParenthesis(formedParenthesis)) { // Technically not needed because of the below condition
                 result.add(formedParenthesis);
             }
             return;
@@ -197,7 +173,7 @@ public class DepthFirstSearchStates {
         }
     }
 
-    // * ########################################################################
+    // * Get all permutations of the letters in a string
     public static List<String> permutations(String letters) {
         List<String> result = new ArrayList<>();
         generateAllPermutationDfs(result, new ArrayList<>(), 0, letters, new HashMap<>());
@@ -226,7 +202,7 @@ public class DepthFirstSearchStates {
         }
     }
 
-    // * ########################################################################
+    // * Find the number of of ways to use words in a given array to form the string
     public static boolean wordBreak(String s, List<String> words) {
         return false;
     }
@@ -269,7 +245,7 @@ public class DepthFirstSearchStates {
         return ans;
     }
 
-    // * ########################################################################
+    // * Decode ways - Given a string of digits, return the number of ways it can be decoded
     public static int decodeWays(String digits) {
         return decodeWaysDfs(0, digits, new int[digits.length()]);
     }
@@ -297,7 +273,7 @@ public class DepthFirstSearchStates {
         return ways;
     }
 
-    // * ########################################################################
+    // * Coin change problem - Can the coins be used to make up the amount
     public static int coinChange(List<Integer> coins, int amount) {
         // WRITE YOUR BRILLIANT CODE HERE
         int[] memo = new int[amount + 1];
@@ -306,6 +282,8 @@ public class DepthFirstSearchStates {
         return result == Integer.MAX_VALUE ? -1 : result;
     }
 
+    // Time complexity -  Size of the memo will be the amount,
+    // Space complexity - o(n) max is the size of amount
     private static int coinChangeDfs(List<Integer> coins, int amount, int sum, int[] memo) {
         if (amount == sum) {
             return 0; // Means a leaf has been found
@@ -351,5 +329,66 @@ public class DepthFirstSearchStates {
         }
     }
 
+    // * Combination Sum - Given a set of numbers and a target, return all the possible combinations
+    public static List<List<Integer>> combinationSum(List<Integer> candidates, int target) {
+        ArrayList<Integer> sortedCandidates = new ArrayList<Integer>(candidates);
+        Collections.sort(sortedCandidates);
+        List<List<Integer>> result = new ArrayList<>();
+        combinationSumDfs(result, new ArrayList<>(), sortedCandidates, target, 0);
+        // Convert hashset to list
+        return new ArrayList<>(result);
+    }
+
+    // Time complexity: o( n ** target / minimum of characters) where n is branches
+    // Space complexity: o (target / minimum of candidates)
+    private static void combinationSumDfs(List<List<Integer>> result, List<Integer> combination, List<Integer> candidates, Integer currentSum, Integer start) {
+        // Base state
+        if (currentSum == 0) {
+            result.add(new ArrayList<>(combination));
+            return;
+        }
+        if (currentSum < 0) {
+            return;
+        }
+        // * Why use a start pointer
+        // 1. **Preventing Duplicates**: It helps to avoid creating duplicate combinations. When the DFS explores the next level of candidates, it only considers those at its index (`start`) or later in the `candidates` list. This ensures that it does not revisit previously considered candidates that would lead to the same combination being added to the `res` list again, which saves the algorithm from redundant work and leads to distinct combinations.
+
+        // 2. **Allowing Repeated Use of Candidates**: The `start` variable also allows the inclusion of the same number multiple times in the combination. Since the algorithm does not increment `start` until after the recursive call to `dfs()`, it means the next recursive call can again include the current candidate. This is important when the `candidates` list may contain numbers that can be used multiple times to reach the `target` sum.
+        for (int i = start; i < candidates.size(); i++) {
+            currentSum -= candidates.get(i);
+            if (currentSum < 0) { // If the current
+                break;
+            }
+            combination.add(candidates.get(i));
+            combinationSumDfs(result, combination, candidates, currentSum, i);
+            currentSum += candidates.get(i);
+            combination.remove(combination.size() - 1);
+        }
+    }
+
+    // * Finding subsets
+    public static List<List<Integer>> subsets(List<Integer> nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        subsetsDfs(result, nums, new ArrayList<>(), 0);
+        return result;
+    }
+
+    public static void subsetsDfs(List<List<Integer>> result, List<Integer> nums, List<Integer> current, int startIndex) {
+        if (current.size() > nums.size()) {
+            return; // Out of bounds, dont consider further
+        }
+        // Add the current permutation to the result
+        result.add(new ArrayList<>(current));
+
+        // Iterate through the rest, exclude the past index
+        for (int i = startIndex; i < nums.size(); i++) {
+            if (current.size() + 1 > nums.size()) {
+                break;
+            }
+            current.add(nums.get(i));
+            subsetsDfs(result, nums, current, i + 1);
+            current.remove(current.size() - 1);
+        }
+    }
 
 }
