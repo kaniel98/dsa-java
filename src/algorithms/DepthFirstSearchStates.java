@@ -7,6 +7,19 @@ public class DepthFirstSearchStates {
     public static void main(String[] args) {
     }
 
+    public static class Node<T> {
+        public T val;
+        public List<Node<T>> children;
+
+        public Node(T val) {
+            this(val, new ArrayList<>());
+        }
+
+        public Node(T val, List<Node<T>> children) {
+            this.val = val;
+            this.children = children;
+        }
+    }
 
     // * Get all possible paths for a ternary tree
     // Inefficient to continuously create new array - Use a stack instead
@@ -315,19 +328,6 @@ public class DepthFirstSearchStates {
         return ans;
     }
 
-    public static class Node<T> {
-        public T val;
-        public List<Node<T>> children;
-
-        public Node(T val) {
-            this(val, new ArrayList<>());
-        }
-
-        public Node(T val, List<Node<T>> children) {
-            this.val = val;
-            this.children = children;
-        }
-    }
 
     // * Combination Sum - Given a set of numbers and a target, return all the possible combinations
     public static List<List<Integer>> combinationSum(List<Integer> candidates, int target) {
