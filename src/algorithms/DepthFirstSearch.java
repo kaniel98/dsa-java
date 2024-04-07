@@ -7,7 +7,6 @@ import java.util.StringJoiner;
 
 public class DepthFirstSearch {
     public static void main(String[] args) {
-
     }
 
     public static Node<Integer> dfs(Node<Integer> root, Integer target) {
@@ -46,6 +45,7 @@ public class DepthFirstSearch {
         return (root != null) ? treeMaxDepthDfs(root) - 1 : 0;
     }
 
+    // * Get the max from root to leaf node
     public static int visibleTreeNodeDfs(Node<Integer> root, int maxSoFar) {
         // * 1. Determine the return value
         // If it is null, return 0
@@ -67,6 +67,7 @@ public class DepthFirstSearch {
         return visibleTreeNodeDfs(root, Integer.MIN_VALUE);
     }
 
+    // * Check if the BFS tree is balanced
     // Time complexity - o(n)
     // Space complexity - o(h) or o(n)
     public static int isBalancedDfs(Node<Integer> tree) {
@@ -96,6 +97,7 @@ public class DepthFirstSearch {
         return isBalancedDfs(tree) != -1;
     }
 
+    // * Serialize a tree - Convert from BST to String representation
     public static String serializeTree(Node<Integer> root) {
         StringJoiner res = new StringJoiner(" ");
         serializeDFS(root, res);
@@ -115,10 +117,7 @@ public class DepthFirstSearch {
         serializeDFS(root.right, result);
     }
 
-    public static Node<Integer> deserialize(String result) {
-        return deserializeTree(Arrays.stream(result.split(" ")).iterator());
-    }
-
+    // * Convert a String representation into a tree
     public static Node<Integer> deserializeTree(Iterator<String> nodes) {
         String val = nodes.next();
         if (val.equals("x")) {
@@ -130,6 +129,11 @@ public class DepthFirstSearch {
         return curr;
     }
 
+    public static Node<Integer> deserialize(String result) {
+        return deserializeTree(Arrays.stream(result.split(" ")).iterator());
+    }
+
+    // * Invert a binary tree - Left and right nodes switch
     public static Node<Integer> invertBinaryTree(Node<Integer> tree) {
         if (tree == null) {
             return null;
@@ -137,6 +141,7 @@ public class DepthFirstSearch {
         return new Node<>(tree.val, invertBinaryTree(tree.right), invertBinaryTree(tree.left));
     }
 
+    // * Insert a node into the BST
     // Time complexity - o(log n)
     // Space complexity - o(h)
     public static Node<Integer> insertBst(Node<Integer> tree, int value) {
@@ -156,13 +161,13 @@ public class DepthFirstSearch {
         return tree;
     }
 
-    // Find the lowest common ancestor of a binary search tree
+    // * Find the lowest common ancestor of a binary search tree
     public static int lcaOnBst(Node<Integer> bst, int p, int q) {
         // Solve on the basis that for any given node with value a
         // The value on the left side is always less than a
         // The value on the right side is always more than a
 
-        // * Cases should be broken down as such:
+        // Cases should be broken down as such:
         // 1. If p & q are on the left side, continue search left
         // 2. If p & q are on the right side, continue search right
         // 3. If p & q are split - Either equal or more/less, return the current node as LCA
@@ -179,9 +184,9 @@ public class DepthFirstSearch {
         }
     }
 
-    // Find the lowest common ancestor of a binary search tree
+    // * Find the lowest common ancestor of a binary tree
     // Adopt post order traversal - Left & Right first before current
-    // * You can assume each node value in the tree is unique and that both target nodes are guaranteed to exist in the tree.
+    // You can assume each node value in the tree is unique and that both target nodes are guaranteed to exist in the tree.
     public static Node lca(Node root, Node node1, Node node2) {
         // * Determine the return state
         // Actions for the current node:

@@ -207,6 +207,7 @@ public class LinkedList {
             System.out.println(this.head.val);
             this.head = this.head.next;
         }
+        System.out.println();
     }
 
     // Inner node class for LinkedList, (Also known as Nested class)

@@ -5,12 +5,17 @@ public class DoubleLinkedList {
     private Node head;
     private Node tail;
     private int length;
+
     // Constructor for Double Linked lists
     public DoubleLinkedList(int value) {
         Node newNode = new Node(value);
         head = newNode;
         tail = newNode;
         length = 1;
+    }
+
+    public static void main(String[] args) {
+
     }
 
     public void getHead() {

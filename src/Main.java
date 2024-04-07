@@ -1,52 +1,38 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(longestPalindrome("babad"));
+        Main main = new Main();
+        System.out.println(Arrays.toString(main.productExceptSelf(new int[]{1, 2, 3, 4})));
     }
 
-    public static String longestPalindrome(String s) {
-        String currentLongest = "";
-        return longestPalindromeDfs(currentLongest, 0, s, new HashMap<>());
+    public int[] productExceptSelf(int[] nums) {
+        // Get the length of the array
+        int len = nums.length;
 
-    }
-
-    // Function to check if it is palindrome
-    private static boolean isPalindrome(String s) {
-        int l = 0, r = s.length() - 1;
-        while (l < r) {
-            if (s.charAt(l) != s.charAt(r))
-                return false;
-            l++;
-            r--;
-        }
-        return true;
-    }
-
-    private static String longestPalindromeDfs(String currentLongest, int startIndex, String s, Map<Integer, String> currentMap) {
-        if (startIndex == s.length()) {
-            return currentLongest;
-        }
-        if (currentMap.getOrDefault(startIndex, null) != null) {
-            return currentMap.get(startIndex);
-        }
-        for (int end = startIndex; end < s.length(); end++) {
-            if (!isPalindrome(s.substring(startIndex, end + 1))) {
-                continue;
+        // From here, calculate the product of each number starting from the left and store it into an array
+        int[] result = new int[len];
+        // The start and the end should just be 1, not included
+        int left = 1;
+        for (int i = 0; i < len; i++) {
+            // Makes sure that it starts from the second index
+            if (i > 0) {
+                left = left * nums[i - 1];
             }
-            // Else check if it is the current longest
-            if (currentLongest.length() < s.substring(startIndex, end + 1).length()) {
-                currentLongest = s.substring(startIndex, end + 1);
-            }
-            // Proceed to go down further
-            String result = longestPalindromeDfs(currentLongest, end + 1, s, currentMap);
-            if (result.length() > currentLongest.length()) {
-                currentLongest = result;
-            }
+            result[i] = left;
         }
-        // for the current start index set the longest
-        currentMap.put(startIndex, currentLongest);
-        return currentLongest;
+
+        // Starting from the right, multiple each number in the left with this the element from the end of the array
+        int right = 1;
+        for (int i = len - 1; i >= 0; i--) {
+            // Makes sure it starts from the second last index
+            if (i < len - 1) {
+                right = right * nums[i + 1];
+            }
+            result[i] *= right;
+        }
+
+        return result;
     }
+
 }
