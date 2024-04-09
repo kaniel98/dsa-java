@@ -146,7 +146,7 @@ public class DepthFirstSearchStates {
     }
 
 
-    // * Generate valid parenthesis strings
+    // * Check if valid parenthesis strings
     // 1. Check if the current string iteration has valid parenthesis
     private static boolean isValidParenthesis(String string) {
         // Initialize a stack
