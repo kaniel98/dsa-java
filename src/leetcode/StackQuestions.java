@@ -2,9 +2,9 @@ package leetcode;
 
 import java.util.*;
 
-public class Stack {
+public class StackQuestions {
     public static void main(String[] args) {
-        Stack test = new Stack();
+        StackQuestions test = new StackQuestions();
         System.out.println(test.evalRPN(new String[]{"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"
         }));
     }
@@ -123,6 +123,22 @@ public class Stack {
             generateParenthesisDfs(result, currentPath, n, openingCount, closingCount + 1);
             currentPath.remove(currentPath.size() - 1);
         }
+    }
+
+    // * 739. Daily Temperature
+    // * Time complexity - o (N)
+    // * Space complexity - o(N)
+    public int[] dailyTemperatures(int[] temperatures) {
+        int[] result = new int[temperatures.length];
+        Stack<Integer> stack = new Stack<>();
+        for (int currDay = 0; currDay < temperatures.length; currDay++) {
+            while (!stack.isEmpty() && temperatures[currDay] > temperatures[stack.peek()]) {
+                int prevDay = stack.pop();
+                result[prevDay] = currDay - prevDay;
+            }
+            stack.add(currDay);
+        }
+        return result;
     }
 }
 
