@@ -124,7 +124,7 @@ public class GraphPractices {
         grid[root.r][root.c] = '0'; // Set it to be 0 to indicate that this node has been visited
         while (!queue.isEmpty()) {
             Coordinate node = queue.pop();
-            List<Coordinate> neighbours = numberOfIslandsNeighbour(grid, numRows, numCols, node);
+            List<Coordinate> neighbours = numberOfIslandsNeighbours(grid, numRows, numCols, node);
             for (Coordinate neighbour : neighbours) {
                 if (grid[neighbour.r][neighbour.c] == '0') continue; // Means the node is either visited / not
                 // an island, continue
@@ -134,8 +134,8 @@ public class GraphPractices {
         }
     }
 
-    private static List<Coordinate> numberOfIslandsNeighbour(char[][] grid, int numRows,
-                                                             int numCols, Coordinate node) {
+    private static List<Coordinate> numberOfIslandsNeighbours(char[][] grid, int numRows,
+                                                              int numCols, Coordinate node) {
         List<Coordinate> neighbors = new ArrayList<>();
         int[] deltaRow = {-1, 0, 1, 0}; // Directly either top or bottom
         int[] deltaCol = {0, 1, 0, -1}; // Directly either left or right
@@ -150,4 +150,50 @@ public class GraphPractices {
         return neighbors;
     }
 
+    // * 1197. Knight Minimum moves
+    // * Time complexity - o(|x| * |y|)
+    // * Space complexity - o(|x| * |y|)
+    public static int getKnightShortestPath(int x, int y) {
+        // Get neighbours - Need to change
+        // Apply BFS Graph template - Get neighbour & BFS
+        return getKnightShortestPathBFS(new Coordinate(0, 0), x, y);
+    }
+
+    private static int getKnightShortestPathBFS(Coordinate start, int targetX, int targetY) {
+        ArrayDeque<Coordinate> queue = new ArrayDeque<>();
+        queue.add(start);
+        int steps = 0;
+        // Maintain a hashset to keep track if a coordinate has been visited
+        HashSet<Coordinate> visited = new HashSet<>();
+        visited.add(start);
+        while (!queue.isEmpty()) {
+            int n = queue.size(); // For that current level only
+            for (int i = 0; i < n; i++) {
+                Coordinate node = queue.pop();
+                if (node.r == targetX && node.c == targetY) {
+                    return steps;
+                }
+                List<Coordinate> neighbours = getKnightShortestPathNeighbours(node);
+                for (Coordinate neighbour : neighbours) {
+                    if (visited.contains(neighbour)) continue; // Dont need to visit again
+                    queue.add(neighbour);
+                    visited.add(neighbour);
+                }
+            }
+            steps++;
+        }
+        return steps;
+    }
+
+    private static List<Coordinate> getKnightShortestPathNeighbours(Coordinate coordinate) {
+        List<Coordinate> neighbours = new ArrayList<>();
+        int[] deltaRow = new int[]{-1, 1, 2, 2, 1, -1, -2, -2};
+        int[] deltaCol = new int[]{-2, -2, -1, 1, 2, 2, 1, -1};
+        for (int i = 0; i < deltaRow.length; i++) {
+            int r = coordinate.r + deltaRow[i];
+            int c = coordinate.c + deltaCol[i];
+            neighbours.add(new Coordinate(r, c));
+        }
+        return neighbours;
+    }
 }
