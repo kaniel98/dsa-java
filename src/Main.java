@@ -1,38 +1,72 @@
-import java.util.Arrays;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
         Main main = new Main();
-        System.out.println(Arrays.toString(main.productExceptSelf(new int[]{1, 2, 3, 4})));
+        List<String> titles = main.getArticleTitles("epaga");
+        for (String title : titles) {
+            System.out.println(title);
+        }
     }
 
-    public int[] productExceptSelf(int[] nums) {
-        // Get the length of the array
-        int len = nums.length;
+    public static List<String> getArticleTitles(String author) {
+        List<String> store = new ArrayList<>();
+        String url = String.format("https://jsonmock.hackerrank.com/api/articles?author=%s&page=", author);
 
-        // From here, calculate the product of each number starting from the left and store it into an array
-        int[] result = new int[len];
-        // The start and the end should just be 1, not included
-        int left = 1;
-        for (int i = 0; i < len; i++) {
-            // Makes sure that it starts from the second index
-            if (i > 0) {
-                left = left * nums[i - 1];
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Fire request to url and get output
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(url + "1")) // For the first page
+                .build();
+        articlePageResponse response = null;
+
+        do {
+            try {
+                // Get the response
+                String responseString = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+
+                // Add the titles to the store
+                for (articleResponse article : response.data) {
+                    store.add(article.title);
+                }
+
+                // Increment the page number
+                request = HttpRequest.newBuilder()
+                        .GET()
+                        .uri(URI.create(url + (response.page + 1)))
+                        .build();
+            } catch (Exception e) {
+                System.out.println("Error in fetching data");
             }
-            result[i] = left;
-        }
+        } while (Objects.requireNonNull(response).page < response.total_pages);
 
-        // Starting from the right, multiple each number in the left with this the element from the end of the array
-        int right = 1;
-        for (int i = len - 1; i >= 0; i--) {
-            // Makes sure it starts from the second last index
-            if (i < len - 1) {
-                right = right * nums[i + 1];
-            }
-            result[i] *= right;
-        }
 
-        return result;
+        return store;
+    }
+
+    class articlePageResponse {
+        int page;
+        int per_page;
+        int total;
+        int total_pages;
+        List<articleResponse> data;
+    }
+
+    class articleResponse {
+        String title;
+        String url;
+        int num_comments;
+        int story_id;
+        int story_title;
+        int story_url;
     }
 
 }

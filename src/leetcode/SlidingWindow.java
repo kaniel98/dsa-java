@@ -45,6 +45,7 @@ public class SlidingWindow {
             right++;
         }
         return profit;
+
     }
 
     // * 424 Longest repeating character replacement
