@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.ArrayList;
+
 public class TreeQuestions {
     public static void main(String[] args) {
 
@@ -114,7 +116,7 @@ public class TreeQuestions {
         return null;
     }
 
-    // * 110. Balanced Binary tree
+    // * 110. Balanced Binary tree - Check if left tree and right tree max diff in height is 1
     // * Time Complexity - o (n)
     // * Space complexity - o (n)
     public boolean isBalanced(TreeNode root) {
@@ -126,10 +128,66 @@ public class TreeQuestions {
         Object[] left = isBalancedDfs(root.left);
         Object[] right = isBalancedDfs(root.right);
 
-        Boolean isBalanced =
-                (Boolean) left[0] && (Boolean) right[0] && (Math.abs((Integer) right[1] - (Integer) left[1]) <= 1);
+        boolean isBalanced =
+                (boolean) left[0] && (boolean) right[0] && (Math.abs((Integer) right[1] - (Integer) left[1]) <= 1);
 
         // Proceed to return it
         return new Object[]{isBalanced, 1 + Math.max((Integer) right[1], (Integer) left[1])};
     }
+
+    // * 100. Same tree - Check if they are the same tree
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        }
+        return (p.val == q.val) && (isSameTree(p.right, q.right)) && isSameTree(p.left, q.right);
+    }
+
+    // * 98. Validate Binary Tree
+    // * Time complexity - o(N)
+    // * Space complexity - o(N)
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) return true;
+        return isValidBSTDFS(root, null, null);
+    }
+
+    private boolean isValidBSTDFS(TreeNode root, Integer min, Integer max) {
+        // * Binary tree - Left must be smaller than current & Right must be larger than current
+        // Return case
+        if (root == null) {
+            return true;
+        }
+
+        // The root must always be within the value of the min and max of that binary tree  - E.g., 5 Root, means the
+        // right tree's left root must be smaller
+        if (min != null && root.val <= min || max != null && root.val >= max) {
+            return false;
+        }
+
+        // * Going down left, means the current will become the largest
+        // * Going down right means the current will become the smallest
+        return isValidBSTDFS(root.left, min, root.val) && isValidBSTDFS(root.right, root.val, max);
+    }
+
+    // * 230. Kth smallest element in a BST
+    // * Time complexity - o(n) (Need to visit all of the nodes)
+    // * Space complexity - o(n) (Need to store all of the values)
+    public int kthSmallest(TreeNode root, int k) {
+        // Get the inorder traversal of the tree and return the nth node from the end
+        ArrayList<Integer> path = new ArrayList<>();
+        inorderTraversal(root, path);
+        return path.get(k);
+    }
+
+    public void inorderTraversal(TreeNode root, ArrayList<Integer> path) {
+        if (root == null) {
+            return;
+        }
+        inorderTraversal(root.left, path);
+        path.add(root.val);
+        inorderTraversal(root.right, path);
+    }
+
 }
