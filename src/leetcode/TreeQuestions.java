@@ -1,6 +1,7 @@
 package leetcode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TreeQuestions {
     public static void main(String[] args) {
@@ -190,4 +191,62 @@ public class TreeQuestions {
         inorderTraversal(root.right, path);
     }
 
+    // * 105. Construct Binary Tree from Pre-order and In-order traversal
+    // * Time complexity - o (n)
+    // * Space complexity - o (n log n)
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        // Preorder - Root, Left, Right
+        // Inorder - Left, Root, Right
+
+        // * Preorder - [3,9,20,15,7]
+        // * Inorder - [9,3,15,20,7]
+
+        // * Values in this binary search tree is always unique
+        // * 1. First value in pre-order will always be the root
+        // * 2. This means that values to the left of root in the inorder traversal = Left sub tree & right of root =
+        // *    Right sub tree
+        // * 3. This means that we can always reconstruct the binary tree by tracing left
+
+        // Return case
+        if (preorder.length == 0 || inorder.length == 0) {
+            return null;
+        }
+
+        // Set the root to be the first value of pre-order
+        TreeNode root = new TreeNode(preorder[0]);
+
+        // Find the index of the root in the in-order (It will be the left sub tree)
+        int mid = 0;
+        for (int i = 0; i < inorder.length; i++) {
+            if (preorder[0] == inorder[i]) {
+                mid = i;
+                break;
+            }
+        }
+
+        // Set the left side of the root
+        root.left = buildTree(Arrays.copyOfRange(preorder, 1, mid + 1), Arrays.copyOfRange(inorder, 0, mid));
+        // Set the right side of the root
+        root.right = buildTree(Arrays.copyOfRange(preorder, mid + 1, preorder.length), Arrays.copyOfRange(inorder,
+                mid + 1, inorder.length));
+        return root;
+    }
+
+    // * 1448. Count good nodes in a binary tree
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public int goodNodes(TreeNode root) {
+        return goodNodesDfs(root, root.val);
+    }
+
+    public int goodNodesDfs(TreeNode current, int currentMax) {
+        if (current == null) {
+            return 0;
+        }
+        int res = current.val >= currentMax ? 1 : 0;
+        currentMax = Math.max(current.val, currentMax);
+        res += goodNodesDfs(current.left, currentMax);
+        res += goodNodesDfs(current.right, currentMax);
+        return res;
+    }
 }

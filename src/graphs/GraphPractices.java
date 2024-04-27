@@ -53,7 +53,7 @@ public class GraphPractices {
         boolean[][] visited = new boolean[numRows][numCols];
         int rootColor = image[root.r][root.c]; // Get that color to be change
         image[root.r][root.c] = replacementColor; // Replace it with the given replacement color
-        visited[root.r][root.c] = true;
+        visited[root.r][root.c] = true; // Set it to be visited
         while (!queue.isEmpty()) {
             Coordinate node = queue.pop(); // Get current node
             List<Coordinate> neighbours = floodFillGetNeighbours(image, node, rootColor, numRows, numCols);
@@ -122,6 +122,7 @@ public class GraphPractices {
         ArrayDeque<Coordinate> queue = new ArrayDeque<>();
         queue.add(root);
         grid[root.r][root.c] = '0'; // Set it to be 0 to indicate that this node has been visited
+        // No need to maintain another map - Reduces memory required
         while (!queue.isEmpty()) {
             Coordinate node = queue.pop();
             List<Coordinate> neighbours = numberOfIslandsNeighbours(grid, numRows, numCols, node);
