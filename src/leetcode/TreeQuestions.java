@@ -1,7 +1,9 @@
 package leetcode;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class TreeQuestions {
     public static void main(String[] args) {
@@ -248,5 +250,74 @@ public class TreeQuestions {
         res += goodNodesDfs(current.left, currentMax);
         res += goodNodesDfs(current.right, currentMax);
         return res;
+    }
+
+    // * 572. Subtree of another tree
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        // Return case
+        if (subRoot == null || isSameTreeHelper(root, subRoot)) return true;
+        // If the root is null - Means false
+        if (root == null) return false;
+        // Else proceed to check the left and right side
+        return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+    }
+
+    private boolean isSameTreeHelper(TreeNode root, TreeNode subroot) {
+        if (root == null && subroot == null) {
+            return true;
+        }
+        // If the two values don't match = No longer the same tree
+        if (root == null || subroot == null || root.val != subroot.val) {
+            return false;
+        }
+        return isSameTreeHelper(root.left, subroot.left) && isSameTreeHelper(root.right, subroot.right);
+    }
+
+    // * 102. Binary tree level order traversal
+    // * Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        levelOrderDfs(root, result, 0);
+        return result;
+    }
+
+    private void levelOrderDfs(TreeNode curr, List<List<Integer>> result, int currentLevel) {
+        if (curr == null) {
+            return;
+        }
+        // Based on the current level, add the current val into the "result"
+        if (result.size() < currentLevel + 1) {
+            result.add(new ArrayList<>());
+        }
+        result.get(currentLevel).add(curr.val);
+        // Proceed to iterate for the following levels (+1)
+        levelOrderDfs(curr.left, result, currentLevel + 1);
+        levelOrderDfs(curr.right, result, currentLevel + 1);
+    }
+
+    // * 199. Binary tree right side view
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) return result;
+        // Basically we always want the right most node
+        rightSideViewBFS(root, result);
+        return result;
+    }
+
+    private void rightSideViewBFS(TreeNode curr, List<Integer> result) {
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.add(curr);
+        while (!queue.isEmpty()) {
+            int n = queue.size(); // Current Tree nodes of the current val
+            result.add(queue.peek().val); // Adding the right most value into the queue
+            for (int i = 0; i < n; i++) {
+                TreeNode node = queue.pop();
+                if (node.right != null) queue.add(node.right); // Ensures that the right most will always be at the
+                // start
+                if (node.left != null) queue.add(node.left);
+            }
+        }
     }
 }
