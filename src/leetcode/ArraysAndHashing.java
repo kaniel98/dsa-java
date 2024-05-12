@@ -4,7 +4,6 @@ import java.util.*;
 
 public class ArraysAndHashing {
     public static void main(String[] args) {
-
     }
 
     // * 217 - Contains duplicate
@@ -41,19 +40,23 @@ public class ArraysAndHashing {
         Map<String, List<String>> map = new HashMap<>();
         for (String string : stringList) {
             int[] temp = new int[26];
+            // Convert each string into a char array - Sorted accordingly with char count
             for (char chr : string.toCharArray()) {
                 temp[chr - 'a']++;
             }
+            // Create a string to concatenate these characters together
             StringBuilder key = new StringBuilder();
             for (int i = 0; i < 26; i++) {
                 key.append("#");
                 key.append(temp[i]);
             }
+            // If the map does not have this new string as a key, create a new array list for it
             if (!map.containsKey(key.toString())) {
                 map.put(key.toString(), new ArrayList<>());
             }
             map.get(key.toString()).add(string);
         }
+        // Return the result
         return map.values().stream().toList();
     }
 
@@ -154,7 +157,7 @@ public class ArraysAndHashing {
     // * Space complexity - o(n)
     // * Time complexity - o(2n)
     public int longestConsecutive(int[] nums) {
-        // Put nums in hashset - Check if the next num
+        // Put each num in hashset
         HashSet<Integer> store = new HashSet<>();
         for (int num : nums) {
             store.add(num);
@@ -163,6 +166,7 @@ public class ArraysAndHashing {
 
         // Iterate through the nums
         for (int num : nums) {
+            // Check if there is a num before the current one (Means it will not be the longest)
             if (store.contains(num - 1)) {
                 continue; // Means this will not be the longest sequence
             }
@@ -177,6 +181,8 @@ public class ArraysAndHashing {
     }
 
     // * 238 Product of Array except self
+    // * Time complexity - o (2n)
+    // * Space complexity - o(1) (No extra memory needed)
     public int[] productExceptSelf(int[] nums) {
         int left = 1;
         int right = 1;

@@ -74,8 +74,10 @@ public class BinarySearchQuestions {
         int result = left;
         while (left <= right) {
             int mid = left + (right - left) / 2;
+            // Check if the current number of bananas is feasible
             if (isFeasible(piles, h, mid)) {
                 result = mid;
+                // If it is feasible, we can reduce the amount again
                 right = mid - 1;
             } else {
                 left = mid + 1;

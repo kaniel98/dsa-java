@@ -75,6 +75,8 @@ public class SlidingWindow {
     }
 
     // * 567. Permutation in String
+    // * Time complexity - o (N)
+    // * Space complexity - o (1)
     public boolean checkInclusion(String s1, String s2) {
         // Get the Length of the String and Establish a hashmap of it
         // Use left and right pointer to navigate through string 2 - Window size will be the difference
@@ -87,7 +89,6 @@ public class SlidingWindow {
             stringOneCharacters[chr - 'a']++;
         }
         int left = 0;
-        // Put the first window into the hashmap first
         for (int right = 0; right < s2.length(); right++) {
             stringTwoCharacters[s2.charAt(right) - 'a']++;
             if (right >= windowSize) {

@@ -101,6 +101,9 @@ public class StackQuestions {
     }
 
     // * 22. Generate Parenthesis
+    // * Time complexity: o (4**n * n) - This is because we have a total of 4**n combinations of parenthesis and 2n
+    // length
+    // * Space complexity: o(4**n * n) - Same as above.
     public List<String> generateParenthesis(int n) {
         List<String> result = new ArrayList<>();
         generateParenthesisDfs(result, new ArrayList<>(), n, 0, 0);
@@ -116,12 +119,12 @@ public class StackQuestions {
         if (openingCount < n) {
             currentPath.add("(");
             generateParenthesisDfs(result, currentPath, n, openingCount + 1, closingCount);
-            currentPath.remove(currentPath.size() - 1);
+            currentPath.removeLast();
         }
         if (closingCount < openingCount) {
             currentPath.add(")");
             generateParenthesisDfs(result, currentPath, n, openingCount, closingCount + 1);
-            currentPath.remove(currentPath.size() - 1);
+            currentPath.removeLast();
         }
     }
 
