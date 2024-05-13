@@ -15,18 +15,18 @@ public class GraphPractices {
             return -1;
         }
         ArrayDeque<Integer> queue = new ArrayDeque<>();
-        queue.add(a);
+        queue.offer(a);
         Set<Integer> visited = new HashSet<>();
         visited.add(a);
         int level = 0;
         while (!queue.isEmpty()) {
             int n = queue.size();
             for (int i = 0; i < n; i++) { // Only iterate for that current "level"
-                int node = queue.pop();
+                int node = queue.poll();
                 if (node == b) return level; // If match, return
                 for (int neighbour : graph.get(node)) {
                     if (visited.contains(neighbour)) continue;
-                    queue.add(neighbour);
+                    queue.offer(neighbour);
                     visited.add(neighbour);
                 }
             }
@@ -49,20 +49,20 @@ public class GraphPractices {
     private static void floodFillBfs(int[][] image, Coordinate root, int replacementColor, int numRows,
                                      int numCols) {
         ArrayDeque<Coordinate> queue = new ArrayDeque<>();
-        queue.add(root);
+        queue.offer(root);
         boolean[][] visited = new boolean[numRows][numCols];
         int rootColor = image[root.r][root.c]; // Get that color to be change
         image[root.r][root.c] = replacementColor; // Replace it with the given replacement color
         visited[root.r][root.c] = true; // Set it to be visited
         while (!queue.isEmpty()) {
-            Coordinate node = queue.pop(); // Get current node
+            Coordinate node = queue.poll(); // Get current node
             List<Coordinate> neighbours = floodFillGetNeighbours(image, node, rootColor, numRows, numCols);
             for (Coordinate neighbour : neighbours) {
                 if (visited[neighbour.r][neighbour.c]) {
                     continue;
                 }
                 image[neighbour.r][neighbour.c] = replacementColor;
-                queue.add(neighbour);
+                queue.offer(neighbour);
                 visited[neighbour.r][neighbour.c] = true;
             }
         }
@@ -120,16 +120,16 @@ public class GraphPractices {
 
     private static void countNumberOfIslandsBFS(char[][] grid, Coordinate root, int numRows, int numCols) {
         ArrayDeque<Coordinate> queue = new ArrayDeque<>();
-        queue.add(root);
+        queue.offer(root);
         grid[root.r][root.c] = '0'; // Set it to be 0 to indicate that this node has been visited
         // No need to maintain another map - Reduces memory required
         while (!queue.isEmpty()) {
-            Coordinate node = queue.pop();
+            Coordinate node = queue.poll();
             List<Coordinate> neighbours = numberOfIslandsNeighbours(grid, numRows, numCols, node);
             for (Coordinate neighbour : neighbours) {
                 if (grid[neighbour.r][neighbour.c] == '0') continue; // Means the node is either visited / not
                 // an island, continue
-                queue.add(neighbour);
+                queue.offer(neighbour);
                 grid[neighbour.r][neighbour.c] = '0'; // Set it as visited
             }
         }
@@ -162,7 +162,7 @@ public class GraphPractices {
 
     private static int getKnightShortestPathBFS(Coordinate start, int targetX, int targetY) {
         ArrayDeque<Coordinate> queue = new ArrayDeque<>();
-        queue.add(start);
+        queue.offer(start);
         int steps = 0;
         // Maintain a hashset to keep track if a coordinate has been visited
         HashSet<Coordinate> visited = new HashSet<>();
@@ -170,14 +170,14 @@ public class GraphPractices {
         while (!queue.isEmpty()) {
             int n = queue.size(); // For that current level only
             for (int i = 0; i < n; i++) {
-                Coordinate node = queue.pop();
+                Coordinate node = queue.poll();
                 if (node.r == targetX && node.c == targetY) {
                     return steps;
                 }
                 List<Coordinate> neighbours = getKnightShortestPathNeighbours(node);
                 for (Coordinate neighbour : neighbours) {
                     if (visited.contains(neighbour)) continue; // Dont need to visit again
-                    queue.add(neighbour);
+                    queue.offer(neighbour);
                     visited.add(neighbour);
                 }
             }
@@ -197,4 +197,52 @@ public class GraphPractices {
         }
         return neighbours;
     }
+
+    // * Time complexity - o(nm)
+    // * Space complexity - o(nm)
+    public static List<List<Integer>> mapGateDistances(List<List<Integer>> dungeonMap) {
+        // * Not ideal to do bfs for each node (Lots of repeated iterations)
+        // Ideal to start from gates instead
+        // Simultaneously doing BFS from each gate (Do not update the coordinate if it is not max value)
+
+        // 1. Get all gates in the dungeon map and add it to the queue
+        ArrayDeque<Coordinate> queue = new ArrayDeque<>();
+        int n = dungeonMap.size(), m = dungeonMap.getFirst().size();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (dungeonMap.get(i).get(j) == 0) { // It is a gate
+                    queue.offer(new Coordinate(i, j)); // Offer is used to add a new node into queue
+                }
+            }
+        }
+
+        // 2. Go through the queue and update the map
+        while (!queue.isEmpty()) {
+            Coordinate currentCoordinate = queue.poll(); // Get the first node and removes from queue
+            List<Coordinate> neighbours = getNeighboursMapGateDistance(currentCoordinate, n, m);
+            for (Coordinate neighbour : neighbours) {
+                if (dungeonMap.get(neighbour.r).get(neighbour.c) == Integer.MAX_VALUE) { // Means not visited
+                    dungeonMap.get(neighbour.r).set(neighbour.c, 1 + dungeonMap.get(currentCoordinate.r).get(currentCoordinate.c));
+                    // Set it as +1 of the current coordinate's value
+                    queue.add(neighbour);
+                }
+            }
+        }
+        // WRITE YOUR BRILLIANT CODE HERE
+        return dungeonMap;
+    }
+
+    private static List<Coordinate> getNeighboursMapGateDistance(Coordinate currCoordinate, int n, int m) {
+        List<Coordinate> neighbours = new ArrayList<>();
+        List<Coordinate> directions = List.of(new Coordinate(0, 1), new Coordinate(1, 0), new Coordinate(0, -1), new Coordinate(-1, 0));
+        for (Coordinate direction : directions) {
+            Coordinate newCoordinate = new Coordinate(currCoordinate.r + direction.r, currCoordinate.c + direction.c);
+            // Check if the new coordinate is out of bounds
+            if (newCoordinate.r >= 0 && newCoordinate.r < n && newCoordinate.c >= 0 && newCoordinate.c < m) {
+                neighbours.add(newCoordinate);
+            }
+        }
+        return neighbours;
+    }
+
 }
