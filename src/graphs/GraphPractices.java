@@ -198,6 +198,7 @@ public class GraphPractices {
         return neighbours;
     }
 
+    // * 286. Walls and Gates
     // * Time complexity - o(nm)
     // * Space complexity - o(nm)
     public static List<List<Integer>> mapGateDistances(List<List<Integer>> dungeonMap) {
@@ -215,7 +216,6 @@ public class GraphPractices {
                 }
             }
         }
-
         // 2. Go through the queue and update the map
         while (!queue.isEmpty()) {
             Coordinate currentCoordinate = queue.poll(); // Get the first node and removes from queue
