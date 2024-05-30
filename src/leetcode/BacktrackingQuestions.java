@@ -88,4 +88,27 @@ public class BacktrackingQuestions {
             visited.remove(nums[i]);
         }
     }
+
+    // * 90. Subsets II
+    // Given an integer array nums that may contain duplicates, return all possible
+    // subsets (the power set).
+    // The solution set must not contain duplicate subsets. Return the solution in any order.
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        subsetsWithDupHelper(result, new ArrayList<>(), nums, 0);
+        return result;
+    }
+
+    private void subsetsWithDupHelper(List<List<Integer>> result, List<Integer> currentPath, int[] nums, int currPointer) {
+        result.add(new ArrayList<>(currentPath));
+        for (int i = currPointer; i < nums.length; i++) {
+            if (i > currPointer && nums[i] == nums[i - 1]) continue; // Skip duplicate numbers
+            currentPath.add(nums[i]);
+            subsetsWithDupHelper(result, currentPath, nums, i + 1);
+            currentPath.removeLast();
+        }
+    }
 }
