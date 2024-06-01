@@ -112,6 +112,9 @@ public class BacktrackingQuestions {
         }
     }
 
+    // * 40. Combination Sum II
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         Arrays.sort(candidates);
         List<List<Integer>> result = new ArrayList<>();
@@ -135,5 +138,49 @@ public class BacktrackingQuestions {
                     currentSum - candidates[i], i + 1);
             currentPath.removeLast();
         }
+    }
+
+    // * 79. Word search
+    // * Time complexity - o(n * m * 4**n)
+    public boolean exist(char[][] board, String word) {
+        int row = board.length;
+        int col = board[0].length;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (wordExistDfs(board, word, row, col, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean wordExistDfs(char[][] board, String word, int numRow, int numCol, int currRow, int currCol,
+                                int currCharacter) {
+        // * Conditions to check
+
+        // 1. If the current character matches the word length, return true
+        if (currCharacter >= word.length()) {
+            return true;
+        }
+        // 2. Is it out of bounds - Row and Columns
+        if (currRow < 0 || currCol < 0 || currRow >= numRow || currCol >= numCol) {
+            return false;
+        }
+        // 3. Has it been visited before
+        // 4. Is it the same as the current character
+        if (board[currRow][currCol] != word.charAt(currCharacter)) {
+            return false;
+        }
+
+        // * Else proceed to recursively call for the neighbours
+        board[currRow][currCol] += 100;
+        boolean exists =
+                wordExistDfs(board, word, numRow, numCol, currRow + 1, currCol, currCharacter + 1) ||
+                        wordExistDfs(board, word, numRow, numCol, currRow, currCol + 1, currCharacter + 1) ||
+                        wordExistDfs(board, word, numRow, numCol, currRow - 1, currCol, currCharacter + 1) ||
+                        wordExistDfs(board, word, numRow, numCol, currRow, currCol - 1, currCharacter + 1);
+        board[currRow][currCol] -= 100;
+        return exists;
     }
 }
