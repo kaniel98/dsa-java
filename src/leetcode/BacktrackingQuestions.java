@@ -174,7 +174,7 @@ public class BacktrackingQuestions {
         }
 
         // * Else proceed to recursively call for the neighbours
-        board[currRow][currCol] += 100;
+        board[currRow][currCol] += 100; // Used to mark the current node as visited, will not visit again
         boolean exists =
                 wordExistDfs(board, word, numRow, numCol, currRow + 1, currCol, currCharacter + 1) ||
                         wordExistDfs(board, word, numRow, numCol, currRow, currCol + 1, currCharacter + 1) ||
@@ -182,5 +182,44 @@ public class BacktrackingQuestions {
                         wordExistDfs(board, word, numRow, numCol, currRow, currCol - 1, currCharacter + 1);
         board[currRow][currCol] -= 100;
         return exists;
+    }
+
+    // * 131. Palindrome Partitioning
+    // * Time complexity: O(2^N) Either include character in partition or start new - Each call will
+    // potentially double the number of recursive calls. Each call need to be O(n) as well because we want
+    // to see if palindrome or not
+    // * Space complexity: O(n) height of the tree
+    public List<List<String>> partition(String s) {
+        List<List<String>> result = new ArrayList<>();
+        partitionHelper(result, new ArrayList<>(), 0, s);
+        return result;
+    }
+
+    public void partitionHelper(List<List<String>> result, List<String> currentPartition, int startIndex, String s) {
+        if (startIndex == s.length()) { // End condition is when it reaches the end of the string
+            result.add(new ArrayList<>(currentPartition));
+            return;
+        }
+
+        // iterate down
+        for (int end = startIndex; end < s.length(); end++) {
+            if (!isPalindrome(s.substring(startIndex, end + 1))) continue;
+            currentPartition.add(s.substring(startIndex, end + 1));
+            partitionHelper(result, currentPartition, end + 1, s);
+            currentPartition.removeLast();
+        }
+    }
+
+    private boolean isPalindrome(String s) {
+        int left = 0;
+        int right = s.length() - 1;
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
 }
