@@ -111,4 +111,29 @@ public class BacktrackingQuestions {
             currentPath.removeLast();
         }
     }
+
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> result = new ArrayList<>();
+        combinationSumTwoHelper(candidates, result, new ArrayList<>(), target, 0);
+        return result;
+    }
+
+    private void combinationSumTwoHelper(int[] candidates, List<List<Integer>> result, List<Integer> currentPath,
+                                         int currentSum, int pointer) {
+        if (currentSum == 0) {
+            result.add(new ArrayList<>(currentPath));
+            return;
+        }
+        if (currentSum < 0) {
+            return;
+        }
+        for (int i = pointer; i < candidates.length; i++) {
+            if (i > pointer && candidates[i] == candidates[i - 1]) continue;
+            currentPath.add(candidates[i]);
+            combinationSumTwoHelper(candidates, result, currentPath,
+                    currentSum - candidates[i], i + 1);
+            currentPath.removeLast();
+        }
+    }
 }
