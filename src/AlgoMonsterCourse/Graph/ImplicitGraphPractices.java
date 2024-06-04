@@ -80,4 +80,57 @@ public class ImplicitGraphPractices {
         }
         return neighbours;
     }
+
+    // * 127. Word Ladder
+    public int wordLadder(String begin, String end, List<String> wordList) {
+        // 1. Convert the wordList into a hashset so that we can search through it easily
+        Set<String> unvisitedWord = new HashSet<>(wordList);
+
+        if (Objects.equals(begin, end)) {
+            return 0;
+        }
+        int currentLevel = 0;
+        ArrayDeque<String> queue = new ArrayDeque<>();
+        queue.offer(begin);
+        unvisitedWord.remove(begin);
+        // 3. For each neighbour, do a normal BFS - Meaning keep track of visited etc.
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            currentLevel++;
+            for (int i = 0; i < n; i++) {
+                String word = queue.poll();
+                for (String nextWord : wordLadderGetNeighbours(word, unvisitedWord)) {
+                    if (nextWord.equals(end)) return currentLevel;
+                    queue.add(nextWord);
+                }
+            }
+        }
+        return -1;
+    }
+
+    // 2. Based on this, create a helper function which can help to get the "Neighbouring" words
+    public List<String> wordLadderGetNeighbours(String currentWord, Set<String> unvisitedWords) {
+        List<String> neighbours = new ArrayList<>();
+        for (int i = 0; i < currentWord.length(); i++) {
+            for (char c : ALPHABETS) {
+                String word = currentWord.substring(0, i) +
+                        c +
+                        currentWord.substring(i + 1);
+                if (unvisitedWords.contains(word)) {
+                    neighbours.add(word);
+                    unvisitedWords.remove(word);
+                }
+            }
+        }
+        return neighbours;
+    }
+
+    public static final char[] ALPHABETS = new char[26];
+
+    static {
+        // ascii representation of english alphabets a - z are numbers 97 - 122
+        for (int i = 0; i < 26; i++) {
+            ALPHABETS[i] = (char) (i + 'a');
+        }
+    }
 }
