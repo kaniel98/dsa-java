@@ -196,7 +196,7 @@ public class BacktrackingQuestions {
     }
 
     public void partitionHelper(List<List<String>> result, List<String> currentPartition, int startIndex, String s) {
-        if (startIndex == s.length()) { // End condition is when it reaches the end of the string
+        if (startIndex == s.length()) { // Ending condition is when it reaches the end of the string
             result.add(new ArrayList<>(currentPartition));
             return;
         }
@@ -222,4 +222,40 @@ public class BacktrackingQuestions {
         }
         return true;
     }
+
+    // * 17. Letter Combinations of a Phone Number
+    // * Time complexity - The number of combinations (n * 4^n)
+    // * Space complexity - o(n) Length of the String
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<>();
+        if (digits.isEmpty()) {
+            return result;
+        }
+        letterCombinationsHelper(result, new StringBuilder(), digits, 0);
+        return result;
+    }
+
+    public void letterCombinationsHelper(List<String> result, StringBuilder path, String digits,
+                                         int currPosition) {
+        if (currPosition >= digits.length()) {
+            result.add(path.toString());
+            return;
+        }
+        for (char nextCharacter : numberLetterMap.get(digits.charAt(currPosition))) {
+            path.append(nextCharacter);
+            letterCombinationsHelper(result, path, digits, currPosition + 1);
+            path.deleteCharAt(path.length() - 1);
+        }
+    }
+
+    private final Map<Character, char[]> numberLetterMap = Map.of(
+            '2', "abc".toCharArray(),
+            '3', "def".toCharArray(),
+            '4', "ghi".toCharArray(),
+            '5', "jkl".toCharArray(),
+            '6', "mno".toCharArray(),
+            '7', "pqrs".toCharArray(),
+            '8', "tuv".toCharArray(),
+            '9', "wxyz".toCharArray()
+    );
 }
