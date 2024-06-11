@@ -125,7 +125,7 @@ public class ImplicitGraphPractices {
         return neighbours;
     }
 
-    public static final char[] ALPHABETS = new char[26];
+    private static final char[] ALPHABETS = new char[26];
 
     static {
         // ascii representation of english alphabets a - z are numbers 97 - 122
