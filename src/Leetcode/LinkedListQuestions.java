@@ -1,5 +1,6 @@
 package Leetcode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -252,5 +253,50 @@ public class LinkedListQuestions {
                 this.value = value;
             }
         }
+    }
+
+    // * 2487. Remove Nodes from Linked List
+    // * Notes: Related to the concept of Monotonic Stack
+    // * Time Complexity: o(n)
+    // * Space complexity: o(n)
+    public ListNode removeNodes(ListNode head) {
+        // 1. Approach this as a stack question
+        // 2. Put the node into the stack,
+        // 3. If the next node is bigger, pop the item in the stack
+        // 4. Repeat until the next item is bigger or if the stack is empty
+        ArrayList<Integer> stack = new ArrayList<>();
+        while (head != null) {
+            while (!stack.isEmpty() && (stack.getLast() < head.val)) {
+                stack.removeLast();
+            }
+            stack.add(head.val);
+            head = head.next;
+        }
+        // 5. Reconstruct the linked list
+        ListNode temp = new ListNode();
+        ListNode dummy = temp;
+        for (int i : stack) {
+            dummy.next = new ListNode(i);
+            dummy = dummy.next;
+        }
+        return temp.next;
+    }
+
+    // * 2487 Remove nodes from Linked List
+    // * Utilises pointer approach - Reverse linked list one, remove the smaller nodes and reverse back again
+    // * Time complexity - o(n)
+    // * Space complexity - o(1)
+    public ListNode removeNodesVersionTwo(ListNode head) {
+        head = reverseList(head);
+        ListNode temp = head;
+        while (temp.next != null) {
+            if (temp.next.val < temp.val) {
+                temp.next = temp.next.next;
+            } else {
+                temp = temp.next;
+
+            }
+        }
+        return reverseList(head);
     }
 }
