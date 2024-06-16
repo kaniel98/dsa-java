@@ -64,4 +64,21 @@ public class ArraysAndHashing {
         }
         return wall.size() - maxGaps;
     }
+
+    // * 122. Best time to buy and sell stock II
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int maxProfit(int[] prices) {
+        // The difference here is that we can only buy and hold one stock at a time
+        // The pattern here is adding all the increment together
+        int profit = 0;
+        int oldStockPrice = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > oldStockPrice) {
+                profit += prices[i] - oldStockPrice;
+            }
+            oldStockPrice = prices[i];
+        }
+        return profit;
+    }
 }
