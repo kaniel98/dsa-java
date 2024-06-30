@@ -1,8 +1,6 @@
 package Leetcode;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class GraphQuestions {
     public static void main(String[] args) {
@@ -156,7 +154,6 @@ public class GraphQuestions {
         return neighbours;
     }
 
-
     private static class Coordinate {
         int r;
         int c;
@@ -166,4 +163,54 @@ public class GraphQuestions {
             this.c = c;
         }
     }
+
+    // * 133. Clone Graph
+    // * Time complexity - o(n) Edge + Nodes
+    // * Space complexity - o(n) Number of nodes
+    // * Recommended approach: DFS, iterate through the whole node until all nodes has been "reached",
+    // * approach works because this is a fully connected, undirected graph
+    public Node cloneGraph(Node node) {
+        // 1.   Maintain a hashmap to keep track of the created nodes
+        //      This in turn helps us to prevent creating duplicate nodes
+        Map<Integer, Node> oldNodeToNewNodeMap = new HashMap<>();
+        return cloneGraphDfs(oldNodeToNewNodeMap, node);
+    }
+
+    public Node cloneGraphDfs(Map<Integer, Node> oldNodeToNewNodeMap, Node oldNode) {
+        if (oldNodeToNewNodeMap.containsKey(oldNode.val)) {
+            return oldNodeToNewNodeMap.get(oldNode.val); // If node already exist, simply return it
+        }
+        // 2.   For every new node created, add it to the hashmap
+        Node copy = new Node(oldNode.val);
+        oldNodeToNewNodeMap.put(oldNode.val, copy); // Else create a new copy
+
+        // 3.   Afterwards, simply execute DFS to go through neighbours and add it to the copy's neighbours
+        for (Node neighbour : oldNode.neighbors) {
+            // The process is repeated for each neighbour
+            copy.neighbors.add(cloneGraphDfs(oldNodeToNewNodeMap, neighbour));
+        }
+        return copy;
+    }
+
+
+    private static class Node {
+        public int val;
+        public List<Node> neighbors;
+
+        public Node() {
+            val = 0;
+            neighbors = new ArrayList<Node>();
+        }
+
+        public Node(int _val) {
+            val = _val;
+            neighbors = new ArrayList<Node>();
+        }
+
+        public Node(int _val, ArrayList<Node> _neighbors) {
+            val = _val;
+            neighbors = _neighbors;
+        }
+    }
+
 }
