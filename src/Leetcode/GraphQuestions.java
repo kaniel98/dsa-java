@@ -3,8 +3,7 @@ package Leetcode;
 import java.util.*;
 
 public class GraphQuestions {
-    public static void main(String[] args) {
-
+    void main(String[] args) {
     }
 
     // * 200. Number of islands - BFS approach
@@ -192,7 +191,6 @@ public class GraphQuestions {
         return copy;
     }
 
-
     private static class Node {
         public int val;
         public List<Node> neighbors;
@@ -212,5 +210,67 @@ public class GraphQuestions {
             neighbors = _neighbors;
         }
     }
+
+    // * 994. Rotting oranges
+    // * Time complexity
+    // * Space complexity
+    public int orangesRotting(int[][] grid) {
+        // Similar to getting the closest distance to each gate, but this time only find the oranges
+        // 1. Get the positions of all rotten oranges
+        ArrayDeque<Coordinate> queue = new ArrayDeque<>();
+        int maxRow = grid.length;
+        int maxCol = grid[0].length;
+        int fresh = 0; // Keeps track the number of fresh oranges
+        for (int r = 0; r < maxRow; r++) {
+            for (int c = 0; c < maxCol; c++) {
+                if (grid[r][c] == 2) {
+                    queue.offer(new Coordinate(r, c));
+                }
+
+                if (grid[r][c] == 1) {
+                    fresh++;
+                }
+            }
+        }
+        int count = 0;
+        // 2. Execute BFS on each rotten oranges concurrently
+        // 3. Add corresponding oranges into the queue
+        // 4. Repeat until queue is empty
+        while (!queue.isEmpty() && fresh != 0) {
+            count += 1;
+            int rottenOranges = queue.size();
+            for (int i = 0; i < rottenOranges; i++) {
+                Coordinate currOrange = queue.poll();
+                List<Coordinate> currOrangeNeighbours = getOrangeNeighbour(currOrange, maxRow, maxCol);
+                for (Coordinate neighbour : currOrangeNeighbours) {
+                    if (grid[neighbour.r][neighbour.c] == 1) {
+                        grid[neighbour.r][neighbour.c] = 2;
+                        queue.add(neighbour);
+                        fresh -= 1;
+                    }
+                }
+            }
+        }
+
+        // 5. Return result based on the number of fresh oranges left
+        return fresh == 0 ? count : -1;
+    }
+
+    private List<Coordinate> getOrangeNeighbour(Coordinate currCoordinate, int maxRow, int maxCol) {
+        List<Coordinate> neighbours = new ArrayList<>();
+        int[] deltaRow = new int[]{0, 1, 0, -1};
+        int[] deltaCol = new int[]{1, 0, -1, 0};
+
+        for (int i = 0; i < deltaRow.length; i++) {
+            int newRow = currCoordinate.r + deltaRow[i];
+            int newCol = currCoordinate.c + deltaCol[i];
+            if (newRow >= 0 && newRow < maxRow && newCol >= 0 && newCol < maxCol) {
+                neighbours.add(new Coordinate(newRow, newCol));
+            }
+        }
+
+        return neighbours;
+    }
+
 
 }
