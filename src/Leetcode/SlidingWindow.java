@@ -101,4 +101,26 @@ public class SlidingWindow {
         }
         return false;
     }
+
+    // * 1838. Frequency of the most frequent element
+    // * Time complexity - o (n log n)
+    // * Space complexity - o (n)
+    public int maxFrequency(int[] nums, int k) {
+        // 1. Sort the array to group similar numbers together
+        Arrays.sort(nums);
+        int left = 0;
+        long total = 0; // Refers to the sum of the elements
+        long res = 0;
+        for (int right = 0; right < nums.length; right++) {
+            total += nums[right]; // Keep track of current sum
+            // Condition keeps track of the total possible sum in the window required for all elements to be of same
+            // size compared to the total values available (total + k)
+            while ((nums[right] * (right - left + 1L) - total > k)) {
+                total -= nums[left];
+                left++;
+            }
+            res = Math.max(res, right - left + 1L);
+        }
+        return (int) res;
+    }
 }
