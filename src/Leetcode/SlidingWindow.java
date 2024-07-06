@@ -123,4 +123,37 @@ public class SlidingWindow {
         }
         return (int) res;
     }
+
+    // * 904. Fruits into baskets
+    // * Time complexity -
+    // * Space complexity -
+    public int totalFruit(int[] fruits) {
+        // 1. Maintain a left and right pointer
+        // 2. Keep track of the total number of trees within this range until right pointer reaches a third unique tree
+        // 3. At this point, keep track of max and then move left pointer till it is at the end
+        int left = 0;
+        int total = 0;
+        int res = 0;
+        HashMap<Integer, Integer> fruitMap = new HashMap<>();
+
+        for (int fruit : fruits) {
+            // Add until it the number of fruits hit,3
+            fruitMap.put(fruit, fruitMap.getOrDefault(fruit, 0) + 1);
+            total += 1;
+
+            while (fruitMap.size() > 2) {
+                // At this point of time, the 3rd distinct tree is found, move the left until
+                // the 1st distinct tree is done
+                int firstDistinct = fruits[left];
+                fruitMap.put(firstDistinct, fruitMap.get(firstDistinct) - 1);
+                left++;
+                total--;
+                if (fruitMap.get(firstDistinct) <= 0) {
+                    fruitMap.remove(firstDistinct);
+                }
+            }
+            res = Math.max(total, res);
+        }
+        return res;
+    }
 }
