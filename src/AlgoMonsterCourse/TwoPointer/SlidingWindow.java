@@ -1,12 +1,10 @@
 package AlgoMonsterCourse.TwoPointer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-public class SlidingWIndow {
+public class SlidingWindow {
     public static void main(String[] args) {
-
+        System.out.println(SlidingWindow.longestSubstringWithoutRepeatingCharacters("abcdbea"));
     }
 
     // * Subarray sum fixed
@@ -88,4 +86,66 @@ public class SlidingWIndow {
         }
         return maxSize;
     }
+
+    // * Longest substring without repeating characters
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public static int longestSubstringWithoutRepeatingCharacters(String s) {
+        // 1. Initialize hashmap to keep track of the characters position
+        // 2. Initialize left and right pointer
+        // 3. For every characcter, add it to the hashmpa (Using right as pointer)
+        // 4. If the character has more than one occurence in the hashmap, immediately pop it and move the left
+        // pointer to it + 1
+        // Get the max value, return it at the end
+        Map<Character, Integer> characterIntegerMap = new HashMap<>();
+        int left = 0;
+        int maxLength = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            Character currentChar = s.charAt(right);
+
+            if (characterIntegerMap.containsKey(currentChar) && characterIntegerMap.get(currentChar) + 1 > left) {
+                left = characterIntegerMap.get(currentChar) + 1;
+            }
+            characterIntegerMap.put(currentChar, right);
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+
+        return Math.max(maxLength, s.length() - left);
+    }
+
+    // * Shortest Sub array sum
+    // * Time complexity - o(n)
+    // * Space complexity - o(1)
+    public static int subarraySumShortest(List<Integer> nums, int target) {
+        int left = 0;
+        int minLength = Integer.MAX_VALUE;
+        int currSum = 0;
+        for (int right = 0; right < nums.size(); right++) {
+            currSum += nums.get(right);
+            while (currSum >= target) {
+                minLength = Math.min(minLength, right - left + 1);
+                currSum -= nums.get(left);
+                left++;
+            }
+        }
+        return minLength;
+    }
+
+    // * Least consecutive cards to match
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public static int leastConsecutiveCardsToMatch(List<Integer> cards) {
+        Map<Integer, Integer> cardIndexMap = new HashMap<>();
+        int minLength = Integer.MAX_VALUE;
+        for (int right = 0; right < cards.size(); right++) {
+            Integer currentCard = cards.get(right);
+            if (cardIndexMap.containsKey(currentCard)) {
+                minLength = Math.min(minLength, right - cardIndexMap.get(currentCard) + 1);
+            }
+            cardIndexMap.put(currentCard, right);
+        }
+        return minLength == Integer.MAX_VALUE ? -1 : minLength;
+    }
+
 }
