@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TwoPointers {
     public static void main(String[] args) {
-        System.out.println(TwoPointers.isPalindrome("A man, a plan, a canal: Panama"));
+        System.out.println(TwoPointers.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
     }
 
     // * 125 Valid Palindrome
@@ -36,6 +36,8 @@ public class TwoPointers {
     }
 
     // * 167 Two Sum II - Input Array is sorted
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
     public int[] twoSum(int[] numbers, int target) {
         int[] result = new int[2];
         if (numbers == null || numbers.length < 2) {
@@ -63,36 +65,41 @@ public class TwoPointers {
     // * 15. 3sum
     // * Time complexity - O(N ** 2 + n log n) --> O(N**2)
     // * Space complexity - O(1) (If we exclude sorting - We do not include sorting space)
-    public List<List<Integer>> threeSum(int[] nums) {
-        // Sort the arrays
-        Arrays.sort(nums); // n log n
+    public static List<List<Integer>> threeSum(int[] nums) {
+        // 1. Sort the array (Smallest to largest)
+        Arrays.sort(nums);
         List<List<Integer>> result = new ArrayList<>();
 
-        if (nums.length < 3) {
-            return result;
-        }
-
-        for (int i = 0; i < nums.length; i++) {
-            if (i > 0 && nums[i] == nums[i - 1]) {
+        // 2. For each element in the array, fix it and execute the two sum problem on the remaining array
+        for (int anchor = 0; anchor < nums.length; anchor++) {
+            // 3. If the current element is the same as the prev element, skip it.
+            if (anchor > 0 && nums[anchor] == nums[anchor - 1]) {
                 continue;
             }
-            int current = nums[i];
-            int left = i + 1; // No need to look behind - possible combinations for earlier numbers would have been identified
+
+            // * Execute two sum
+            int left = anchor + 1; // Move to next eleemnt
             int right = nums.length - 1;
+            int target = -nums[anchor];
 
             while (left < right) {
-                int currentSum = nums[left] + nums[right] + current;
-                if (currentSum > 0) {
+                int currentSum = nums[left] + nums[right];
+                if (currentSum > target) { // Too big
                     right--;
-                } else if (currentSum < 0) {
+                } else if (currentSum < target) {// Too small
                     left++;
                 } else {
-                    result.add(List.of(current, nums[left], nums[right]));
-                    // increase left pointer
-                    left++; // Prevent left from being reused
-                    while (nums[left] == nums[left - 1] && left < right) {
-                        left++; // Ensures left will still avoid duplicate
+                    // 4. For every match, add it to a result list
+                    result.add(List.of(nums[anchor], nums[left], nums[right]));
+                    // Increase left and right until they are both diff integers
+                    while (left < right && nums[left] == nums[left + 1]) {
+                        left++;
                     }
+                    while (left < right && nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+                    left++;
+                    right--;
                 }
             }
         }
