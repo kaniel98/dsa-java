@@ -144,6 +144,30 @@ public class StackQuestions {
         return result;
     }
 
+    // * 2390. Removing stars from a string
+    // * Time complexity - o(n) (Length of string)
+    // * Space complexity - o(n) (Length of string)
+    public String removeStars(String s) {
+        List<Character> stack = new ArrayList<>(s.length());
 
+        for (Character chr : s.toCharArray()) {
+            // Add to the stack if it isnt "*"
+            if (chr != '*') {
+                stack.add(chr);
+            }
+
+            // Else, pop the stack and remove the last character
+            else if (!stack.isEmpty()) {
+                stack.removeLast();
+            }
+        }
+
+        // Compile it back into a string and return it
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Character remainingChr : stack) {
+            stringBuilder.append(remainingChr);
+        }
+        return stringBuilder.toString();
+    }
 }
 
