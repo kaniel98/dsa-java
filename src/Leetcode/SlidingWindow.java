@@ -128,32 +128,32 @@ public class SlidingWindow {
     // * Time complexity -
     // * Space complexity -
     public int totalFruit(int[] fruits) {
-        // 1. Maintain a left and right pointer
-        // 2. Keep track of the total number of trees within this range until right pointer reaches a third unique tree
-        // 3. At this point, keep track of max and then move left pointer till it is at the end
+        // 1. Maintain left and right pointer & total variable
+        // 2. Maintain hashmap to keep track of the type and number of fruits
+        // 3. Move right pointer and add into the "total" variable until a 3rd distinct has been found
+        // 4. At this point, remove until only two distinct is left
+        // 5. Get the max at all time and return it
+
         int left = 0;
-        int total = 0;
-        int res = 0;
-        HashMap<Integer, Integer> fruitMap = new HashMap<>();
+        int maxFruits = 0;
+        int current = 0;
+        HashMap<Integer, Integer> fruitCount = new HashMap<>();
+        for (int right = 0; right < fruits.length; right++) {
+            current++;
+            fruitCount.put(fruits[right], fruitCount.getOrDefault(fruits[right], 0) + 1);
 
-        for (int fruit : fruits) {
-            // Add until it the number of fruits hit,3
-            fruitMap.put(fruit, fruitMap.getOrDefault(fruit, 0) + 1);
-            total += 1;
-
-            while (fruitMap.size() > 2) {
-                // At this point of time, the 3rd distinct tree is found, move the left until
-                // the 1st distinct tree is done
-                int firstDistinct = fruits[left];
-                fruitMap.put(firstDistinct, fruitMap.get(firstDistinct) - 1);
+            while (fruitCount.size() > 2) {
+                int firstDistinctFruit = fruits[left];
+                fruitCount.put(firstDistinctFruit, fruitCount.get(firstDistinctFruit) - 1);
+                current--;
                 left++;
-                total--;
-                if (fruitMap.get(firstDistinct) <= 0) {
-                    fruitMap.remove(firstDistinct);
+
+                if (fruitCount.get(firstDistinctFruit) <= 0) {
+                    fruitCount.remove(firstDistinctFruit);
                 }
             }
-            res = Math.max(total, res);
+            maxFruits = Math.max(maxFruits, current);
         }
-        return res;
+        return maxFruits;
     }
 }
