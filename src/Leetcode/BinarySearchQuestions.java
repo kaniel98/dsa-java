@@ -185,5 +185,50 @@ public class BinarySearchQuestions {
         }
     }
 
+    // * 34. Find first and last position of element in sorted array
+    // * Time complexity - o(log n)
+    // * Space complexity - o(1)
+    public int[] searchRange(int[] nums, int target) {
+        // Do binary search to find the target;
+        // Use another simple function to + and - until the edges are found
+        int left = 0;
+        int right = nums.length - 1;
+        int targetPoint = -1;
+        while (left <= right) {
+            int middle = left + (right - left) / 2;
+            if (nums[middle] == target) {
+                targetPoint = middle;
+                break;
+            } else if (nums[middle] < target) {
+                left = middle + 1;
+            } else {
+                right = middle - 1;
+            }
+        }
+        return searchEdges(nums, target, targetPoint);
+    }
+
+    public int[] searchEdges(int[] nums, int target, int mid) {
+        if (mid == -1) {
+            return new int[]{-1, -1};
+        }
+
+        int left = mid;
+        int right = mid;
+        int[] result = {left, right};
+
+        while (left >= 0 && nums[left] == target) {
+            result[0] = left;
+            left--;
+        }
+
+        while (right <= nums.length - 1 && nums[right] == target) {
+            result[1] = right;
+            right++;
+        }
+
+        return result;
+    }
+
 
 }
