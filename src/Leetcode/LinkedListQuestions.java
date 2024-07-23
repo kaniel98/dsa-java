@@ -299,4 +299,48 @@ public class LinkedListQuestions {
         }
         return reverseList(head);
     }
+
+    // * 2130. Maximum Twin Sum of a Linked List
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public int pairSum(ListNode head) {
+        int maxValue = Integer.MIN_VALUE;
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // 1. Navigate to the middle of the list
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // 2. Reverse that half of the list
+        // By the time it has finished, slow will be at the middle (even)
+        ListNode rightEnd = reverseLinkedList(slow);
+        ListNode leftEnd = head;
+
+        // 3. Iterate through both list to find the max sum and return it
+        while (rightEnd != null) {
+            maxValue = Math.max(leftEnd.val + rightEnd.val, maxValue);
+            leftEnd = leftEnd.next;
+            rightEnd = rightEnd.next;
+        }
+        return maxValue;
+    }
+
+    private ListNode reverseLinkedList(ListNode head) {
+        if (head == null) return head;
+
+        ListNode temp = head;
+        ListNode after = null;
+        ListNode before = null;
+
+        while (temp != null) {
+            after = temp.next;
+            temp.next = before;
+            before = temp;
+            temp = after;
+        }
+        return before;
+    }
 }
