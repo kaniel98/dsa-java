@@ -298,6 +298,8 @@ public class TreeQuestions {
     }
 
     // * 199. Binary tree right side view
+    // * Time complexity - o(n)
+    // * Space complexity - o(n) (Length of the path)
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         if (root == null) return result;
@@ -319,5 +321,35 @@ public class TreeQuestions {
                 if (node.left != null) queue.add(node.left);
             }
         }
+    }
+
+    // * 701. Insert into a binary search tree
+    // * Time complexity - o(n)
+    // * Space complexity - o(1)
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        TreeNode temp = root;
+        if (temp == null) return new TreeNode(val);
+
+        while (temp != null) {
+            if (val < temp.val) {
+                if (temp.left == null) {
+                    temp.left = new TreeNode(val);
+                    break;
+                }
+                temp = temp.left;
+            } else {
+                if (temp.right == null) {
+                    temp.right = new TreeNode(val);
+                    break;
+                }
+                temp = temp.right;
+            }
+        }
+        return root;
+    }
+
+    // * 450. Delete node in BST
+    public TreeNode deleteNode(TreeNode root, int key) {
+        return null;
     }
 }
