@@ -258,4 +258,51 @@ public class BacktrackingQuestions {
             '8', "tuv".toCharArray(),
             '9', "wxyz".toCharArray()
     );
+
+    // * 698. Partition to K equal Sum Subsets
+    // * Key - Finding all possible combinations = backtracking question
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        // * Each partition must have a sum of sum(nums) / k
+        int sum = Arrays.stream(nums).sum();
+        if (sum % k != 0) return false;
+        int target = sum / k;
+
+        Arrays.sort(nums);
+        // * General thought process
+        // Instead of trying to create all of the bucket at once, we will create it one by one
+        // For each bucket and a given value, choose to either include the number / dont include the number (DFS)-height would be N
+        // At the end of each "Subset", Repeat the process for the next k subsets but just avoid the indexe
+        // that were used in the prev subset
+
+        // 1. Maintain an array to keep track if the index was used
+        boolean[] used = new boolean[nums.length];
+        return canPartitionSubsetsDFS(0, k, 0, target, used, nums);
+    }
+
+    private boolean canPartitionSubsetsDFS(int currIndex, int partitionsLeft, int currSum,
+                                           int targetValue, boolean[] used,
+                                           int[] nums) {
+        // Return case;
+        if (partitionsLeft == 0) return true;
+
+        // Means reduce the number of partition by 0, reset the index to 0
+        if (currSum == targetValue) {
+            return canPartitionSubsetsDFS(0, partitionsLeft - 1, 0, targetValue, used, nums);
+        }
+
+        // Iterate through nums
+        for (int i = currIndex; i < nums.length; i++) {
+            // If the value is used / value + current sum > target sum, continue
+            if (used[i] || currSum + nums[i] > targetValue) {
+                continue;
+            }
+
+            // Else, set it to be used
+            used[i] = true;
+            // +1 to prevent it from adding back the same value
+            if (canPartitionSubsetsDFS(i + 1, partitionsLeft, currSum + nums[i], targetValue, used, nums)) return true;
+            used[i] = false;
+        }
+        return false;
+    }
 }
