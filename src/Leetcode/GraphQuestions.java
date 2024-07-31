@@ -221,18 +221,9 @@ public class GraphQuestions {
         int maxRow = grid.length;
         int maxCol = grid[0].length;
         int fresh = 0; // Keeps track the number of fresh oranges
-        for (int r = 0; r < maxRow; r++) {
-            for (int c = 0; c < maxCol; c++) {
-                if (grid[r][c] == 2) {
-                    queue.offer(new Coordinate(r, c));
-                }
-
-                if (grid[r][c] == 1) {
-                    fresh++;
-                }
-            }
-        }
+        fresh = getFreshAndRottingOranges(grid, maxRow, maxCol, queue, fresh);
         int count = 0;
+
         // 2. Execute BFS on each rotten oranges concurrently
         // 3. Add corresponding oranges into the queue
         // 4. Repeat until queue is empty
@@ -254,6 +245,20 @@ public class GraphQuestions {
 
         // 5. Return result based on the number of fresh oranges left
         return fresh == 0 ? count : -1;
+    }
+
+    private static int getFreshAndRottingOranges(int[][] grid, int maxRow, int maxCol, ArrayDeque<Coordinate> queue, int fresh) {
+        for (int r = 0; r < maxRow; r++) {
+            for (int c = 0; c < maxCol; c++) {
+                if (grid[r][c] == 2) {
+                    queue.offer(new Coordinate(r, c));
+                }
+                if (grid[r][c] == 1) {
+                    fresh++;
+                }
+            }
+        }
+        return fresh;
     }
 
     private List<Coordinate> getOrangeNeighbour(Coordinate currCoordinate, int maxRow, int maxCol) {
