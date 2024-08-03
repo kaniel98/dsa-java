@@ -205,4 +205,31 @@ public class ArraysAndHashing {
         return result;
     }
 
+    // * 560. Sub-array Sum equals K
+    // * Time complexity -  o(n) (Iterate through the array once)
+    // * Space complexity - o(n) at most o(n) map size
+    public int subarraySum(int[] nums, int k) {
+        // Hashmap - Keep track of prefix sum and the number of times it appears
+        // Explanation - E.g., Target sum is K
+        // 1. Keep track of the total sum and the prefix sum
+        // 2. Take total sum - target, check if prefix sum is present in hashmap
+        // 3. The number of time pefix sum appears = the number of arrays that can match the target
+        // with the current end point
+
+        Map<Integer, Integer> prefixMap = new HashMap<>();
+        int res = 0; // Keeps track of the number of combinations
+        int currentSum = 0; // Keeps track of the current sum
+        prefixMap.put(0, 1); // Marks the start of the iteration
+        for (int num : nums) {
+            currentSum += num;
+            // If it contains, add it to res
+            if (prefixMap.containsKey(currentSum - k)) {
+                res += prefixMap.get(currentSum - k);
+            }
+            // Add back to prefix sum again
+            prefixMap.put(currentSum, prefixMap.getOrDefault(currentSum, 0) + 1);
+        }
+        return res;
+    }
+
 }
