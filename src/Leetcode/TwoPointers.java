@@ -126,4 +126,11 @@ public class TwoPointers {
         return maxVolume;
     }
 
+    // * 1498. Number of Subsequences That Satisfy the Given Sum Condition
+    // * Time complexity
+    // * Space complexity
+    public int numSubseq(int[] nums, int target) {
+        // Key point: Regardless of if the array was sorted or not, the number of sub-seqeunce will remain the same
+        return 0;
+    }
 }

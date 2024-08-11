@@ -6,7 +6,7 @@ public class BinarySearchQuestions {
     public static void main(String[] args) {
         int[] input = new int[]{4, 5, 6, 7, 0, 1, 2};
         BinarySearchQuestions test = new BinarySearchQuestions();
-        System.out.println(test.searchInRotatedSortedArray(input, 0));
+        test.successfulPairs(new int[]{5, 1, 3}, new int[]{1, 2, 3, 4, 5}, 7);
     }
 
     // * 704. Binary Search (Basic)
@@ -230,5 +230,32 @@ public class BinarySearchQuestions {
         return result;
     }
 
+    // * 2300. Successful pairs of spells and potions
+    public int[] successfulPairs(int[] spells, int[] potions, long success) {
+        // 1. Sort the potions
+        Arrays.sort(potions);
+        int[] result = new int[spells.length];
 
+        int firstSuccessfulPair = potions.length;
+
+        for (int i = 0; i < spells.length; i++) {
+            int left = 0;
+            int right = potions.length - 1;
+
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                if ((long) spells[i] * potions[mid] >= success) {
+                    firstSuccessfulPair = mid;
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+
+            result[i] = potions.length - firstSuccessfulPair;
+            firstSuccessfulPair = potions.length;
+        }
+
+        return result;
+    }
 }

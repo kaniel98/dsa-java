@@ -180,17 +180,21 @@ public class TreeQuestions {
     public int kthSmallest(TreeNode root, int k) {
         // Get the inorder traversal of the tree and return the nth node from the end
         ArrayList<Integer> path = new ArrayList<>();
-        inorderTraversal(root, path);
-        return path.get(k);
+        inorderTraversal(root, path, k);
+        return path.get(k - 1);
     }
 
-    public void inorderTraversal(TreeNode root, ArrayList<Integer> path) {
+    public void inorderTraversal(TreeNode root, ArrayList<Integer> path, int k) {
         if (root == null) {
             return;
         }
-        inorderTraversal(root.left, path);
+        if (path.size() == k) {
+            return;
+        }
+
+        inorderTraversal(root.left, path, k);
         path.add(root.val);
-        inorderTraversal(root.right, path);
+        inorderTraversal(root.right, path, k);
     }
 
     // * 105. Construct Binary Tree from Pre-order and In-order traversal
