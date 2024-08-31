@@ -1,4 +1,4 @@
-package Leetcode;
+package leetcode;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

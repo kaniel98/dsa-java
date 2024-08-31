@@ -1,4 +1,4 @@
-package AlgoMonsterCourse.Backtracking;
+package AlgoMonsterCourse.backtracking;
 
 import java.util.*;
 

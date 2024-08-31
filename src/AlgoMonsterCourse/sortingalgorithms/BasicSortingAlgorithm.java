@@ -1,4 +1,4 @@
-package AlgoMonsterCourse.SortingAlgorithms;
+package AlgoMonsterCourse.sortingalgorithms;
 
 import java.util.ArrayList;
 import java.util.List;
