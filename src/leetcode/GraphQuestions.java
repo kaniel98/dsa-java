@@ -86,6 +86,8 @@ public class GraphQuestions {
         numIslandsDfs(grid, i, j + 1);
         numIslandsDfs(grid, i - 1, j);
         numIslandsDfs(grid, i, j - 1);
+
+        new HashMap<>().values();
     }
 
     // * 695. Max Area of Island
@@ -182,6 +184,7 @@ public class GraphQuestions {
         // 2.   For every new node created, add it to the hashmap
         Node copy = new Node(oldNode.val);
         oldNodeToNewNodeMap.put(oldNode.val, copy); // Else create a new copy
+        oldNodeToNewNodeMap.keySet().size();
 
         // 3.   Afterwards, simply execute DFS to go through neighbours and add it to the copy's neighbours
         for (Node neighbour : oldNode.neighbors) {

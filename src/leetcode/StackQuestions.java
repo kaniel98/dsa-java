@@ -20,7 +20,6 @@ public class StackQuestions {
         store.put('[', ']');
         store.put('(', ')');
         ArrayDeque<Character> stack = new ArrayDeque<>();
-
         for (int i = 0; i < s.length(); i++) {
             Character currentChar = s.charAt(i);
             if (store.containsKey(currentChar)) {

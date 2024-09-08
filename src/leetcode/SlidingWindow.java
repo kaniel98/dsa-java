@@ -63,6 +63,7 @@ public class SlidingWindow {
         for (int right = 0; right < s.length(); right++) {
             // Add the current character to hashmap first
             store.put(s.charAt(right), store.getOrDefault(s.charAt(right), 0) + 1);
+            Arrays.sort(new Integer[]{});
             // Do the check
             max = Math.max(max, Collections.max(store.values()));
             while ((right - left + 1 - max) > k) { // Means not valid, need to shift pointer
