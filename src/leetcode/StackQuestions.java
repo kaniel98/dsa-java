@@ -100,7 +100,7 @@ public class StackQuestions {
     }
 
     // * 22. Generate Parenthesis
-    // * Time complexity: o (4**n * n) - This is because we have a total of 4**n combinations of parenthesis and 2n
+    // * Time complexity: o (2**n * n) - This is because we have a total of 4**n combinations of parenthesis and 2n
     // length
     // * Space complexity: o(4**n * n) - Same as above.
     public List<String> generateParenthesis(int n) {

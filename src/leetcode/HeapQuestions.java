@@ -129,4 +129,24 @@ public class HeapQuestions {
         return heap.poll();
     }
 
+    // * 1845. Seat reservation manager
+    class SeatManager {
+        PriorityQueue<Integer> queue;
+
+        public SeatManager(int n) {
+            queue = new PriorityQueue<>(n);
+            for (int seat = 1; seat <= n; seat++) {
+                queue.add(seat);
+            }
+        }
+
+        public int reserve() {
+            return queue.poll();
+        }
+
+        public void unreserve(int seatNumber) {
+            queue.offer(seatNumber);
+        }
+    }
+
 }
