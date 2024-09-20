@@ -1,8 +1,6 @@
 package leetcode;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class HeapQuestions {
     public static void main(String[] args) {
@@ -130,6 +128,8 @@ public class HeapQuestions {
     }
 
     // * 1845. Seat reservation manager
+    // * Time complexity: o (n log n) (Insert is log n, repeat n times)
+    // * Space complexity: o(n)
     class SeatManager {
         PriorityQueue<Integer> queue;
 
@@ -146,6 +146,46 @@ public class HeapQuestions {
 
         public void unreserve(int seatNumber) {
             queue.offer(seatNumber);
+        }
+    }
+
+    // * 692. Top K Frequent Words
+    // * Time complexity: o(n log n) insert log n, repeated n times
+    // * Space complexity: o(n)
+    public List<String> topKFrequent(String[] words, int k) {
+        // Sort based on the occurence;
+        PriorityQueue<WordValue> heap = new PriorityQueue<>((a, b) -> {
+            if (b.wordCount != a.wordCount) {
+                return b.wordCount - a.wordCount;
+            }
+            return a.word.compareTo(b.word);
+        });
+
+        HashMap<String, Integer> store = new HashMap<>();
+        for (String word : words) {
+            store.put(word, store.getOrDefault(word, 0) + 1);
+        }
+        for (Map.Entry<String, Integer> entry : store.entrySet()) {
+            heap.offer(new WordValue(entry.getKey(), entry.getValue()));
+        }
+
+        ArrayList<String> result = new ArrayList<>();
+        while (k > 0 && !heap.isEmpty()) {
+            WordValue word = heap.poll();
+            result.add(word.word);
+            k--;
+        }
+
+        return result;
+    }
+
+    public static class WordValue {
+        String word;
+        int wordCount;
+
+        public WordValue(String word, int wordCount) {
+            this.word = word;
+            this.wordCount = wordCount;
         }
     }
 

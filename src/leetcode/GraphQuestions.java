@@ -279,4 +279,63 @@ public class GraphQuestions {
         return neighbours;
     }
 
+    // * 130. Surrounded Regions
+    // * Time complexity - o(n)
+    // * Space complexity - o(n) - Calls
+    public void solve(char[][] board) {
+        // Question is similar to number of islands but with a twist - It must be fully surrounded by water
+        // Instead of counting the number of islands, we can reverse engineer it
+        // Get rid of the islands on the border, afterwhich you can just set the rest to be surrounded
+
+        // Top and bottom row;
+        int maxRow = board.length;
+        int maxCol = board[0].length;
+
+        // Top and bottom row
+        for (int i = 0; i < maxCol; i++) {
+            if (board[0][i] == 'O') {
+                solverHelper(board, 0, i);
+            }
+            if (board[maxRow - 1][i] == 'O') {
+                solverHelper(board, maxRow - 1, i);
+            }
+        }
+
+        // Left and Right col
+        for (int i = 0; i < maxRow; i++) {
+            if (board[i][0] == 'O') {
+                solverHelper(board, i, 0);
+            }
+            if (board[i][maxCol - 1] == 'O') {
+                solverHelper(board, i, maxCol - 1);
+            }
+        }
+
+        // Once both iterations is done, set all Ts back to O and the rest to be X
+        for (int row = 0; row < maxRow; row++) {
+            for (int col = 0; col < maxCol; col++) {
+                if (board[row][col] == 'T') {
+                    board[row][col] = 'O';
+                } else {
+                    board[row][col] = 'X';
+                }
+            }
+        }
+    }
+
+    public void solverHelper(char[][] board, int currRow, int currCol) {
+        if (currRow >= board.length || currRow < 0 || currCol >= board[0].length || currCol < 0) {
+            return;
+        }
+
+        if (board[currRow][currCol] == 'O') { // Means it is part of an island on the border
+            board[currRow][currCol] = 'T'; // Set it to be T
+            solverHelper(board, currRow - 1, currCol);
+            solverHelper(board, currRow, currCol - 1);
+            solverHelper(board, currRow + 1, currCol);
+            solverHelper(board, currRow, currCol + 1);
+        }
+    }
+
+
 }
