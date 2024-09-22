@@ -1,8 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class TwoPointers {
     public static void main(String[] args) {
@@ -133,4 +131,64 @@ public class TwoPointers {
         // Key point: Regardless of if the array was sorted or not, the number of sub-seqeunce will remain the same
         return 0;
     }
+
+    // * 76. Minimum Window Substring
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public String minWindow(String original, String target) {
+        if (original.length() < target.length()) {
+            return "";
+        }
+
+        // 1. Keep track of each character in the "Check" and the occurences in a hashmap
+        Map<Character, Integer> store = constructCheckMap(target);
+        int check = store.keySet().size();
+        int left = 0;
+        int minLength = Integer.MAX_VALUE;
+        int boundary = 0;
+        // 2. Keep track of a "Check", if Check == hashmap.keys == a sub string has been found
+        // 3. From there move the right pointer forward in the original string, minus the number of occurences in check
+        for (int right = 0; right < original.length(); right++) {
+
+            Character currChar = original.charAt(right);
+            if (store.containsKey(currChar)) {
+
+                store.put(currChar, store.get(currChar) - 1);
+                // Means check for this characcter is achieved
+                if (store.get(currChar) == 0) {
+                    check--;
+                }
+            }
+
+            // Means a window has been found
+            while (check == 0) {
+                if (minLength > right - left + 1) {
+                    boundary = left;
+                    minLength = right - left + 1;
+                }
+
+                // Move left until check no longer 0
+                Character leftChar = original.charAt(left);
+                if (store.containsKey(leftChar)) {
+                    if (store.get(leftChar) == 0) {
+                        check++;
+                    }
+                    store.put(leftChar, store.get(leftChar) + 1);
+                }
+                left++;
+            }
+        }
+        // 4. When value for the key reaches 0, means at that key is "checked", check ++
+        // 5. Once check is matched, get the minLength, move the window up
+        return (minLength == Integer.MAX_VALUE && check > 0) ? "" : original.substring(boundary, boundary + minLength);
+    }
+
+    public Map<Character, Integer> constructCheckMap(String check) {
+        Map<Character, Integer> map = new HashMap<>();
+        for (Character chr : check.toCharArray()) {
+            map.put(chr, map.getOrDefault(chr, 0) + 1);
+        }
+        return map;
+    }
+
 }
