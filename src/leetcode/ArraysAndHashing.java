@@ -262,15 +262,24 @@ public class ArraysAndHashing {
         return result;
     }
 
-    // * 53.Maximum Subarray
-    public int maxSubArray(int[] nums) {
-        int currSum = nums[0];
-        int maxSum = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            currSum = Math.max(nums[i], currSum + nums[i]);
-            maxSum = Math.max(currSum, maxSum);
-        }
-        return maxSum;
-    }
+    // * 554. Brick Wall
+    // * Time complexity: o(k n)
+    // * Space complexity: o(n) - Always the number of possible gaps
+    public int leastBricks(List<List<Integer>> wall) {
+        // 1. Identify the gaps and count them instead for each "1" tile
+        HashMap<Integer, Integer> gaps = new HashMap<>();
+        int maxGaps = 0;
 
+        for (List<Integer> row : wall) {
+            int count = 0;
+            // Note that the wall gap (Which is at the end) will not count;
+            for (int i = 0; i < row.size() - 1; i++) {
+                count += row.get(i);
+                gaps.put(count, gaps.getOrDefault(count, 0) + 1);
+                maxGaps = Math.max(gaps.get(count), maxGaps);
+            }
+        }
+
+        return wall.size() - maxGaps;
+    }
 }

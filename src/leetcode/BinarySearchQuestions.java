@@ -259,4 +259,49 @@ public class BinarySearchQuestions {
         return result;
     }
 
+    // * 1898. Maximum Number of Removable Characters
+    // * Time complexity: o (k log n)
+    // * Space complexity: o (k)
+    public int maximumRemovals(String s, String p, int[] removable) {
+        // Binary search approach to find the last removeable character that still has a subsequence
+        // 1. Helper method to check for subsequence
+        // 2. Do binaray search on removeable
+        int left = 0;
+        int right = removable.length - 1;
+        int maxChar = 0;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            Set<Integer> removedCharacters = new HashSet<>();
+            for (Integer i : Arrays.copyOfRange(removable, 0, mid + 1)) {
+                removedCharacters.add(i);
+            }
+            ;
+
+            if (isSubsequence(s, p, removedCharacters)) {
+                left = mid + 1;
+                maxChar = Math.max(mid + 1, maxChar);
+            } else {
+                right = mid - 1;
+            }
+
+        }
+        return maxChar;
+    }
+
+    public boolean isSubsequence(String source, String target, Set<Integer> removedCharacters) {
+        int sourcePointer = 0;
+        int targetPointer = 0;
+
+        while (sourcePointer < source.length() && targetPointer < target.length()) {
+            if (removedCharacters.contains(sourcePointer) || source.charAt(sourcePointer) != target.charAt(targetPointer)) {
+                sourcePointer++;
+                continue;
+            }
+            sourcePointer++;
+            targetPointer++;
+        }
+
+        return targetPointer == target.length();
+    }
+
 }
