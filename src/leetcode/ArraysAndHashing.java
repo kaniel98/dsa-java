@@ -282,4 +282,24 @@ public class ArraysAndHashing {
 
         return wall.size() - maxGaps;
     }
+
+    // * 1551. Minimum number of operations
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int minOperations(int n) {
+        // 1. Main goal is to get all the numbers to reach the middle number
+        int min = 1;
+        // 2. Max will always be 2 * (n -1) + 1
+        int max = 2 * (n - 1) + 1;
+        // This is the target we want to reach
+        int target = (min + max) / 2;
+
+        int count = 0;
+        for (int i = 0; i < n / 2; i++) {
+            // 3. Only increment the first half, because the second half will decrement by the same amount as well
+            count += target - (2 * i + 1);
+        }
+
+        return count;
+    }
 }
