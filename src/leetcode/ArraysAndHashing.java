@@ -205,7 +205,7 @@ public class ArraysAndHashing {
         return result;
     }
 
-    // * 560. Sub-array Sum equals K
+    // * 560. Subarray Sum equals K
     // * Time complexity -  o(n) (Iterate through the array once)
     // * Space complexity - o(n) at most o(n) map size
     public int subarraySum(int[] nums, int k) {
@@ -213,7 +213,7 @@ public class ArraysAndHashing {
         // Explanation - E.g., Target sum is K
         // 1. Keep track of the total sum and the prefix sum
         // 2. Take total sum - target, check if prefix sum is present in hashmap
-        // 3. The number of time pefix sum appears = the number of arrays that can match the target
+        // 3. The number of time prefix sum appears = the number of arrays that can match the target
         // with the current end point
 
         Map<Integer, Integer> prefixMap = new HashMap<>();
@@ -301,5 +301,35 @@ public class ArraysAndHashing {
         }
 
         return count;
+    }
+
+    // * 525. Continuous Subarray Sum
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public boolean checkSubarraySum(int[] nums, int k) {
+        Map<Integer, Integer> prefixIndexMap = new HashMap<>();
+        int currentSum = 0;
+        // This helps to check whether 0 is an actual value or if it the default point
+        prefixIndexMap.put(0, -1);
+
+        for (int i = 0; i < nums.length; i++) {
+            currentSum += nums[i];
+            int remainder = currentSum % k;
+            // If it hits a remainder, it will just take the original remainder because it cancels each other out
+            if (prefixIndexMap.containsKey(remainder)) {
+                // Take the current pointer - the prefix index
+                // This means the sub array is more than 2;
+                if (i - prefixIndexMap.get(remainder) >= 2) {
+                    return true;
+                }
+            }
+
+            // Put the remainder and its index into the array - if it does exist
+            if (!prefixIndexMap.containsKey(remainder)) {
+                prefixIndexMap.put(remainder, i);
+            }
+        }
+
+        return false;
     }
 }
