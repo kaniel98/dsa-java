@@ -303,4 +303,40 @@ public class BinarySearchQuestions {
 
         return targetPointer == target.length();
     }
+
+    // * 81. Search in Rotated Sorted Array II
+    // * Time complexity - o(n) (If all duplicate numbers) else o(log n)
+    // * Space complexity - o(1)
+    public boolean searchII(int[] nums, int target) {
+        // Search in Rotated Sorted Array I solution does not work here because
+        // With multiple duplicate numbers, it prevents us from identifying if the pointer is in first or second half
+
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                return true;
+            }
+
+
+            if (nums[left] < nums[mid]) { // Means that this is the first half of the sorted array - Same as original
+                if (target > nums[mid] || target < nums[left]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            } else if (nums[left] > nums[mid]) { // Means second half of the sorted array - Same as original
+                if (target < nums[mid] || target > nums[right]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            } else { // Else if duplicate number is detected, we would move it forward until non duplicate is detected
+                left++;
+            }
+        }
+        return false;
+    }
 }
