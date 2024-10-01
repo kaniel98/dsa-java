@@ -332,4 +332,77 @@ public class ArraysAndHashing {
 
         return false;
     }
+
+    // * 179. Largest Number
+    // * Time complexity: o(n log n) - Arrays.sort has a time complexity of n log n
+    // * Space complexity: o(n)
+    public String largestNumber(int[] nums) {
+        // 1. Convert the nums into String
+        String[] stringNums = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            stringNums[i] = Integer.toString(nums[i]);
+        }
+
+        // 2. Arrays.sort to be based on - either A + B or B - A
+        // e.g., 1 + 2 = 12 vs 2 + 1 = 21
+        Arrays.sort(stringNums, (a, b) -> (b + a).compareTo(a + b));
+
+        // * Heap sort can also be used
+//        PriorityQueue<String> maxHeap = new PriorityQueue<>(
+//                new Comparator<String>() {
+//                    @Override
+//                    public int compare(String first, String second) {
+//                        return (second + first).compareTo(first + second);
+//                    }
+//                }
+//        );
+
+        // Note to handle the edge case where the biggest number is '0'
+        if (stringNums[0].equals("0")) {
+            return "0";
+        }
+
+        // 3. Pop it and add it to the result
+        StringBuilder sb = new StringBuilder();
+        for (String str : stringNums) {
+            sb.append(str);
+        }
+
+        // 4. Return the result
+        return sb.toString();
+    }
+
+    // * 567. Permutation in String
+    // * Time complexity - o(n)
+    // * Space complexity - o(1)
+    public boolean checkInclusion(String s1, String s2) {
+        if (s1.length() > s2.length()) {
+            return false;
+        }
+
+        // Put into a character array of 26
+        int[] frequency = new int[26];
+        // This only works because both string are lower case;
+        for (Character chr : s1.toCharArray()) {
+            frequency[chr - 'a']++;
+        }
+
+        int[] permutation = new int[26];
+
+        // Iterate across s2, to see if there is a permutation of s1
+        for (int idx = 0; idx < s2.length(); idx++) {
+            // Utilise a window for it
+            permutation[s2.charAt(idx) - 'a']++;
+            // Only remove once it is more than the window size
+            if (idx >= s1.length()) {
+                permutation[s2.charAt(idx - s1.length()) - 'a']--;
+            }
+
+            if (Arrays.equals(frequency, permutation)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
