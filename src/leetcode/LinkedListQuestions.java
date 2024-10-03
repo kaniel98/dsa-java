@@ -23,6 +23,20 @@ public class LinkedListQuestions {
         }
     }
 
+    /*
+     * Questions done:
+     * 206. Reverse Linked List
+     * 21. Merged Linked List
+     * 143. Reorder List
+     * 19. Remove Nth Node From End of List
+     * 2. Add two numbers
+     * 141. Linked List Cycle
+     * 146. LRU Cache
+     * 2487. Remove Nodes from Linked List
+     * 2130. Maximum Twin Sum of a Linked List
+     * 1721. Swapping Nodes in a Linked List
+     */
+
     // * 206. Reverse Linked List
     // * Time Complexity - O(n)
     // * Space Complexity O(1)
@@ -343,4 +357,42 @@ public class LinkedListQuestions {
         }
         return before;
     }
+
+    // * 1721. Swapping Nodes in a Linked List
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public ListNode swapNodes(ListNode head, int k) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode first = dummy;
+        ListNode second = dummy;
+        Integer n = k - 1;
+
+        // Move the second node to be k distance away from the first node
+        while (n > 0) {
+            second = second.next;
+            n--;
+        }
+
+        Integer count = 0;
+        // The current second node is the node before Kth
+        ListNode nodeBeforeFirstK = second;
+        // At this point in time, move both nodes until second reaches the end.
+        while (second.next != null) {
+            count++;
+            second = second.next;
+            first = first.next;
+        }
+
+        // Once second hits the next, first's next is the target node
+        // Swap first and nodeBeforeFirstK
+
+        // Switching the before
+        int temp = nodeBeforeFirstK.next.val;
+        nodeBeforeFirstK.next.val = first.val;
+        first.val = temp;
+
+        return dummy.next;
+    }
+
 }

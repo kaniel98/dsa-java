@@ -275,7 +275,6 @@ public class BinarySearchQuestions {
             for (Integer i : Arrays.copyOfRange(removable, 0, mid + 1)) {
                 removedCharacters.add(i);
             }
-            ;
 
             if (isSubsequence(s, p, removedCharacters)) {
                 left = mid + 1;
