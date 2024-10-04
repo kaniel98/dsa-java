@@ -352,8 +352,4 @@ public class TreeQuestions {
         return root;
     }
 
-    // * 450. Delete node in BST
-    public TreeNode deleteNode(TreeNode root, int key) {
-        return null;
-    }
 }

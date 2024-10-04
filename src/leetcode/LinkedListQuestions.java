@@ -394,5 +394,4 @@ public class LinkedListQuestions {
 
         return dummy.next;
     }
-
 }
