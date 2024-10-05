@@ -189,5 +189,25 @@ public class HeapQuestions {
         }
     }
 
-    
+    // * 148. Sort List
+    // * Time complexity - o (n log n) (To sort and insert)
+    // * Space complexity - o (n)
+    public ListNode sortList(ListNode head) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        ListNode temp = new ListNode(0);
+        ListNode dummy = temp;
+
+        while (head != null) {
+            heap.offer(head.val);
+            head = head.next;
+        }
+
+        while (!heap.isEmpty()) {
+            ListNode curr = new ListNode(heap.poll());
+            dummy.next = curr;
+            dummy = dummy.next;
+        }
+
+        return temp.next;
+    }
 }
