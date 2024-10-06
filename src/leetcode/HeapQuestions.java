@@ -201,7 +201,6 @@ public class HeapQuestions {
             heap.offer(head.val);
             head = head.next;
         }
-
         while (!heap.isEmpty()) {
             ListNode curr = new ListNode(heap.poll());
             dummy.next = curr;
