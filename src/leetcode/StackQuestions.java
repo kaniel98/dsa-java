@@ -168,5 +168,32 @@ public class StackQuestions {
         }
         return stringBuilder.toString();
     }
+
+    // * 921. Minimum Add to Make Parentheses Valid
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int minAddToMakeValid(String s) {
+        // Original solution is to use a stack to keep track of open
+        // But in the event that it overshots, it will not be able to keep track
+        // Use two variables to keep track of open and close
+        int openSurplus = 0;
+        int closeSurplus = 0;
+
+        for (char chr : s.toCharArray()) {
+            if (chr == '(') {
+                openSurplus += 1;
+            }
+
+            if (chr == ')') {
+                if (openSurplus > 0) {
+                    openSurplus--;
+                    continue;
+                }
+                closeSurplus++;
+            }
+        }
+        return openSurplus + closeSurplus;
+    }
+
 }
 

@@ -338,4 +338,119 @@ public class BinarySearchQuestions {
         }
         return false;
     }
+
+    // * 1552. Magnetic Force Between Two Balls
+    // * Time complexity: o(log n)
+    // * Space complexity: o(1)
+    public int maxDistance(int[] position, int m) {
+        // Sort the array first
+        // From there, keep doing binary search between two points that have the greatest difference
+        Arrays.sort(position);
+
+        int left = 1;
+        // The maximum distance between the different nodes
+        // Goal is to find the least possible distance between the nodes based on the given positions
+        // = Move right pointer
+        // * If it was asking for max possible distance, we will be returning left instead
+        int right = (position[position.length - 1] - position[0]) / (m - 1);
+
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (isFeasibleMaxDistance(position, mid, m)) {
+                left = mid + 1; // Push it forward
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return right;
+    }
+
+    public boolean isFeasibleMaxDistance(int[] position, int mid, int m) {
+        int count = 1;
+        int lastPosition = position[0];
+
+        // Only need to iterate until count == m
+        for (int i = 1; i < position.length && count < m; i++) {
+            // If the distance between the last position and current position is more thn mid = Can put the ball
+            if (position[i] - lastPosition >= mid) {
+                count++;
+                lastPosition = position[i];
+            }
+        }
+        return count == m;
+    }
+
+
+    // * 2594. Minimum Time to Repair Cars
+    // * Time complexity: o(log n)
+    // * Space complexity: o(1)
+    public long repairCars(int[] ranks, int cars) {
+        Arrays.sort(ranks);
+
+        // The longest possible amount of time is the lowest rank fixing every possible car
+        long right = ranks[ranks.length - 1] * (long) cars * (long) cars;
+        System.out.println(right);
+        long left = 1;
+        long answer = right;
+
+        while (left <= right) {
+            long mid = left + (right - left) / 2;
+            if (isFeasibleRepairCars(mid, ranks, cars)) {
+                answer = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return answer;
+    }
+
+    public boolean isFeasibleRepairCars(long mid, int[] ranks, int cars) {
+        // For a given time limit - Mid
+        // Total up the maximum number of cars that each rank can fix
+        // If that count is more than or equal to cars, return true
+        int count = 0;
+        for (int rank : ranks) {
+            // Quick way of calculating based on the given formula
+            count += (long) Math.sqrt(1.0 * mid / rank);
+            if (count >= cars) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // * 1870. Minimum Speed to Arrive on Time
+    // * Time complexity: o(log n)
+    // * Space complexity: o(1)
+    public int minSpeedOnTime(int[] dist, double hour) {
+        int left = 1;
+        int right = 10000000; // Boundary is given to be 10 ** 7
+        int boundary = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            System.out.println(mid);
+            if (isSpeedFeasible(mid, dist, hour)) {
+                boundary = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return boundary;
+    }
+
+    public boolean isSpeedFeasible(int speed, int[] dist, double hour) {
+        double time = 0;
+        for (int i = 0; i < dist.length - 1; i++) {
+            time += Math.ceil((double) dist[i] / speed);
+        }
+        time += (double) dist[dist.length - 1] / speed;
+        return time <= hour;
+    }
 }

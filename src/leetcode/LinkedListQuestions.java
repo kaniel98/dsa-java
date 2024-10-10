@@ -23,6 +23,7 @@ public class LinkedListQuestions {
         }
     }
 
+
     /*
      * Questions done:
      * 206. Reverse Linked List
@@ -44,7 +45,6 @@ public class LinkedListQuestions {
         ListNode temp = head;
         ListNode after = null;
         ListNode before = null;
-
         while (temp != null) {
             after = temp.next;
             temp.next = before;
@@ -79,6 +79,7 @@ public class LinkedListQuestions {
         return mergedList.next;
     }
 
+
     // * 143. Reorder List
     // * Time complexity - o(n)
     // * Space complexity - o(1)
@@ -86,6 +87,7 @@ public class LinkedListQuestions {
         // 1. Use Fast and Slow pointers to find the middle of the linked list
         ListNode slowPointer = head;
         ListNode fastPointer = head.next;
+
         // Need to check for fast pointer
         while (fastPointer != null && fastPointer.next != null) {
             slowPointer = slowPointer.next;
