@@ -209,4 +209,56 @@ public class HeapQuestions {
 
         return temp.next;
     }
+
+    // * 1942. The Number of the Smallest Unoccupied Chair
+    // * Time complexity: o (n log n) - Insertion of times
+    // * Space complexity: o(n)
+    public int smallestChair(int[][] times, int targetFriend) {
+        /*
+            1. Two heaps can be used to keep track of arrival time and available chairs (Min heaps)
+            2. Sort the array based on the arrival time
+            3. For every arrival - Check who left, put those chairs back into available chair seats, assign the next
+            available seat to the current person
+            4. At this point of time check if the start time is the same as the current arrival (It is the target)
+            Note: This works because each arrival time is distinct
+         */
+        PriorityQueue<int[]> usedChairs = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        PriorityQueue<Integer> availChairs = new PriorityQueue<>();
+
+        // Target friend's arrival time
+        int targetFriendArrivalTime = times[targetFriend][0]; // Arrival time is distinct
+        int nextCharAvailable = 0;
+
+        // Sort the array based on the time which they arrive
+        Arrays.sort(times, (a, b) -> a[0] - b[0]);
+
+        // Iterate through each time, to check what is the taken chairs and avail char at the given start and end
+        for (int[] time : times) {
+            int start = time[0];
+            int end = time[1];
+
+            // If used chairs is not empty && the leave time of the used chairs is <= the start time, add it to avail chair
+            while (!usedChairs.isEmpty() && usedChairs.peek()[0] <= start) {
+                availChairs.offer(usedChairs.poll()[1]);
+            }
+
+            // Assign the next available chair to this current friend
+            int sat = 0;
+            if (!availChairs.isEmpty()) {
+                sat = availChairs.poll();
+            } else {
+                sat = nextCharAvailable;
+                nextCharAvailable++;
+            }
+
+            // Add it to the current list
+            usedChairs.offer(new int[]{end, sat});
+
+            // If the target time matches, return it
+            if (start == targetFriendArrivalTime) {
+                return sat;
+            }
+        }
+        return -1;
+    }
 }

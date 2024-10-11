@@ -2,6 +2,7 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class LinkedListQuestions {
@@ -395,5 +396,38 @@ public class LinkedListQuestions {
         first.val = temp;
 
         return dummy.next;
+    }
+
+    // * 3217. Delete Nodes From Linked List Present in Array
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public ListNode modifiedList(int[] nums, ListNode head) {
+
+        // Dummy node to return later
+        ListNode dummy = new ListNode(0);
+        ListNode temp = dummy;
+        dummy.next = head;
+
+
+        // HashSet to facilitate easy look up of nums
+        HashSet<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        while (head != null) {
+            while (head != null && set.contains(head.val)) {
+                head = head.next;
+            }
+
+            if (head == null) {
+                break;
+            }
+            dummy.next = head;
+            dummy = dummy.next;
+            head = head.next;
+        }
+        dummy.next = null;
+        return temp.next;
     }
 }
