@@ -430,4 +430,32 @@ public class LinkedListQuestions {
         dummy.next = null;
         return temp.next;
     }
+
+    // * 817. Linked List Components
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int numComponents(ListNode head, int[] nums) {
+        int count = 0;
+        // Put the nums into a hashset
+        // Maintain a flag to check if it is a "Streak"
+        HashSet<Integer> numSet = new HashSet<>();
+        for (Integer num : nums) {
+            numSet.add(num);
+        }
+        boolean isStreak = false;
+
+        while (head != null) {
+            if (numSet.contains(head.val) && !isStreak) {
+                isStreak = true;
+                count++;
+            } else if (!numSet.contains(head.val)) {
+                // Only set to false if 1. the number does not contains val
+                isStreak = false;
+            }
+
+            head = head.next;
+        }
+
+        return count;
+    }
 }
