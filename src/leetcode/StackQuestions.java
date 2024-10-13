@@ -195,5 +195,36 @@ public class StackQuestions {
         return openSurplus + closeSurplus;
     }
 
+    // * 946. Validate Stack Sequences
+    // * Time complexity: o(2n)
+    // * Space complexity: o(n)
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        // End goal is that the stack should be empty at the end and that both pushed and popped have been iterated to the end
+
+        int poppedPointer = 0;
+        ArrayList<Integer> stack = new ArrayList<>();
+
+        for (int pushedPointer = 0; pushedPointer < pushed.length; pushedPointer++) {
+            // Case 1. Stack's last element matches popped
+            // After adding the prev element, pop all elements that matches the sequence in popped
+            while (!stack.isEmpty() && stack.get(stack.size() - 1) == popped[poppedPointer]) {
+                stack.removeLast();
+                poppedPointer++;
+            }
+
+            stack.add(pushed[pushedPointer]);
+        }
+
+        // At the end, do another pop again
+        if (poppedPointer != pushed.length) {
+            while (!stack.isEmpty() && stack.get(stack.size() - 1) == popped[poppedPointer]) {
+                stack.removeLast();
+                poppedPointer++;
+            }
+        }
+
+        // Need to make sure that all is popped
+        return (stack.isEmpty() && poppedPointer == popped.length);
+    }
 }
 

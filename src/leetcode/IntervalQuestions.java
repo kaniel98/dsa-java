@@ -119,4 +119,32 @@ public class IntervalQuestions {
         int[][] result = new int[store.size()][];
         return store.toArray(result);
     }
+
+    // * Meeting rooms I
+    // * Time complexity: o(n log n) - Sorting
+    // * Space complexity: o(1) - No extra space needed
+    public boolean canAttendMeetings(List<Interval> intervals) {
+        // 1. Sort the intervals
+        // 2. Iterate through
+        // - As long as the second index is less then the first index, means it is ok
+        intervals.sort((a, b) -> a.start - b.start);
+        for (int i = 0; i < intervals.size() - 1; i++) {
+            Interval currInterval = intervals.get(i);
+            Interval nextInterval = intervals.get(i + 1);
+            if (currInterval.end > nextInterval.start) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private class Interval {
+        int start;
+        int end;
+
+        public Interval(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
 }
