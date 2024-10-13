@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class IntervalQuestions {
     public static void main(String[] args) {
@@ -146,5 +143,55 @@ public class IntervalQuestions {
             this.start = start;
             this.end = end;
         }
+    }
+
+    // * Meeting room II
+    // * Time complexity - o (n log n)
+    // * Space complexity - o (n)
+    public int minMeetingRooms(List<Interval> intervals) {
+        // Draw this out, we will see we basically need to find the number of concurrent meetings
+        // Form two arrays for start and end time
+        // From there, check the number of overlapping
+
+        // 1. Put the intervals into the start and end times
+        List<Integer> startTimes = new ArrayList<>();
+        List<Integer> endTimes = new ArrayList<>();
+
+        // 2. Sort the intervals
+        for (Interval interval : intervals) {
+            startTimes.add(interval.start);
+            endTimes.add(interval.end);
+        }
+        Collections.sort(startTimes);
+        Collections.sort(endTimes);
+
+        // 3. Maintain a counter for the number of concurrent time at any point in time
+        int count = 0;
+        int max = count;
+
+
+        // e.g.,
+        // [0, 0, 10, 10, 20, 20, 30, 30, 40, 40, 50, 60, 70, 80, 90]
+        // [10, 20, 30, 40, 50, 60, 60, 70, 70, 80, 80, 90, 90, 100, 100]
+
+        int endPointer = 0;
+        int startPointer = 0;
+        while (startPointer < startTimes.size()) {
+            // If the current start is lesser than the first end, it means the meeting still ongoing
+            if (startTimes.get(startPointer) < endTimes.get(endPointer)) {
+                count++;
+                startPointer++;
+            }
+
+            // If the current start is later than the end, move the end up
+            // Decrement the count by 1 (Meeting ended)
+            else {
+                count--;
+                endPointer++;
+            }
+            max = Math.max(count, max);
+        }
+
+        return max;
     }
 }

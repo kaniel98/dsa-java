@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Main {
@@ -6,7 +7,6 @@ public class Main {
 
     public static void main(String[] args) {
         List<Integer> temp = new ArrayList<>();
-
-        temp.sort((a, b) -> b - a);
+        Collections.sort(temp);
     }
 }
