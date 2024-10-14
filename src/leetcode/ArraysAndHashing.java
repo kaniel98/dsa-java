@@ -405,4 +405,55 @@ public class ArraysAndHashing {
 
         return false;
     }
+
+    // * 2531. Make Number of Distinct Characters Equal
+    // * Time complexity: o(1) - It will always be 26 ** 3
+    // * Space complexity: o(1) - It will always be 2 * 26
+    public boolean isItPossible(String word1, String word2) {
+        // Put both into sets
+        int[] wordOneArray = new int[26];
+        int[] wordTwoArray = new int[26];
+
+        for (char chr : word1.toCharArray()) {
+            wordOneArray[chr - 'a']++;
+        }
+        for (char chr : word2.toCharArray()) {
+            wordTwoArray[chr - 'a']++;
+        }
+
+        for (int i = 0; i < 26; i++) {
+            for (int j = 0; j < 26; j++) {
+                if (wordOneArray[i] == 0 || wordTwoArray[j] == 0) {
+                    continue;
+                }
+
+                // Decrement both
+                wordOneArray[i]--;
+                wordTwoArray[j]--;
+                // Increment the swap
+                wordOneArray[j]++;
+                wordTwoArray[i]++;
+
+                // Iterate to check if both the same
+                int countOne = 0;
+                int countTwo = 0;
+                for (int idx = 0; idx < 26; idx++) {
+                    if (wordOneArray[idx] > 0) countOne++;
+                    if (wordTwoArray[idx] > 0) countTwo++;
+                }
+                if (countOne == countTwo) {
+                    return true;
+                }
+
+                // Decrement both
+                wordOneArray[j]--;
+                wordTwoArray[i]--;
+                // Increment the swap
+                wordOneArray[i]++;
+                wordTwoArray[j]++;
+            }
+        }
+
+        return false;
+    }
 }

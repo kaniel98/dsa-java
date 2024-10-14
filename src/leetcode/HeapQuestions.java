@@ -261,4 +261,29 @@ public class HeapQuestions {
         }
         return -1;
     }
+
+    // * 2530. Maximal Score After Applying K Operations
+    // * Time complexity: o (n log n)
+    // * Space complexity: o(n)
+    public long maxKElements(int[] nums, int k) {
+        long result = 0;
+
+        // 1. Maintain a max heap
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+        for (int num : nums) {
+            pq.offer(num);
+        }
+
+        // 2. While k isn't empty, pop the first element, add it to sum
+        while (k > 0 && !pq.isEmpty()) {
+            // 3. Apply operation to the element and put it back into the heap
+            int curr = pq.poll();
+            result += (long) curr;
+            pq.offer((int) Math.ceil((double) curr / 3));
+            k--;
+        }
+
+        // 4. Decrease k by 1 and repeat process until k = 0
+        return result;
+    }
 }
