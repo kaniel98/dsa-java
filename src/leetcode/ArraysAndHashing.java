@@ -456,4 +456,32 @@ public class ArraysAndHashing {
 
         return false;
     }
+
+    // * 3026. Maximum Good Subarray Sum
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public long maximumSubarraySum(int[] nums, int k) {
+        // * Maintain a hashmap of the value & the minimum prefix sum to it
+        // * For a given distinct value, keep the minimum sum (Will provide the highest sum)
+        Map<Integer, Long> map = new HashMap<>();
+        long prefixSum = 0;
+        long maxSum = Long.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            // Add the current prefix to the map - We will store the minimum prefix sum (Get the largest result)
+            if (map.getOrDefault(nums[i], Long.MAX_VALUE) > prefixSum) {
+                map.put(nums[i], prefixSum);
+            }
+
+            prefixSum += nums[i];
+            // Proceed to check if the values are available
+            if (map.containsKey(nums[i] + k)) {
+                maxSum = Math.max(maxSum, prefixSum - map.get(nums[i] + k));
+            }
+            if (map.containsKey(nums[i] - k)) {
+                maxSum = Math.max(maxSum, prefixSum - map.get(nums[i] - k));
+            }
+        }
+
+        return maxSum == Long.MIN_VALUE ? 0 : maxSum;
+    }
 }
