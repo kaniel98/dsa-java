@@ -191,4 +191,27 @@ public class TwoPointers {
         return map;
     }
 
+    // * 2938. Separate Black and White Balls - Min number of swaps
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public long minimumSteps(String s) {
+        /*
+         *   This follows the partition step of quick sort algorithm, where we maintain two pointers and execute swaps
+         *   Maintain a left and right pointer, and focus on a specific number - In the case it would be 0
+         *   Swaps would only consist of the pointers moving, not the actual swaps (Expensive)
+         */
+        int left = 0;
+        long count = 0;
+        for (int right = 0; right < s.length(); right++) {
+            // If right hits a '0', 'swap' it with the curr left pointer
+            if (s.charAt(right) == '0') {
+                count += (right - left);
+                left++;
+            }
+        }
+        return count;
+
+        // * The above solution works as a one pass because it only contains two partition. If it was multiple
+        // numbers to be sorted, it can go up to o (n ** 2) / o (n log n) - Basically same as quick sort`
+    }
 }
