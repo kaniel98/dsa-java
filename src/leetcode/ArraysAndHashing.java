@@ -484,4 +484,52 @@ public class ArraysAndHashing {
 
         return maxSum == Long.MIN_VALUE ? 0 : maxSum;
     }
+
+    // * 670. Maximum Swap
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public int maximumSwap(int num) {
+        // If it is a monotonic decreasing stack, no swap will be done
+        String str = Integer.toString(num);
+
+        char[] chrArray = str.toCharArray();
+        Node[] maxCharAtEachPoint = new Node[chrArray.length];
+
+        char highestNumber = chrArray[chrArray.length - 1];
+        int highestNumberPosition = chrArray.length - 1;
+
+        // Iterate from the back
+        for (int i = chrArray.length - 1; i >= 0; i--) {
+            // Find the largest number and its corresponding position
+            if (chrArray[i] > highestNumber) {
+                highestNumber = chrArray[i];
+                highestNumberPosition = i;
+            }
+            maxCharAtEachPoint[i] = new Node(highestNumber, highestNumberPosition);
+        }
+
+        // Iterate from the front to find the first number that is smaller than or equal
+        for (int i = 0; i < chrArray.length; i++) {
+            if (chrArray[i] < maxCharAtEachPoint[i].chr) {
+                // Swap the positions and break the current for loop
+                Node target = maxCharAtEachPoint[i];
+                chrArray[target.position] = chrArray[i];
+                chrArray[i] = target.chr;
+                break;
+            }
+        }
+
+        // Return back the string
+        return Integer.parseInt(String.valueOf(chrArray));
+    }
+
+    class Node {
+        Character chr;
+        Integer position;
+
+        Node(Character chr, Integer position) {
+            this.position = position;
+            this.chr = chr;
+        }
+    }
 }
