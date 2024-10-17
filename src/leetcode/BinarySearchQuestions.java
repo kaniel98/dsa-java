@@ -453,4 +453,33 @@ public class BinarySearchQuestions {
         time += (double) dist[dist.length - 1] / speed;
         return time <= hour;
     }
+
+    // * 658. K Closest Elements
+    // * Time complexity: o(log n)
+    // * Space complexity: o(1)
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        // Approach is to use a sliding window & binary search approach
+        // Key point is to keep the start and end of the array to be as close to each other as possible
+        int left = 0;
+        int right = arr.length - k; // Prevents out of bound exception
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            // Math.abs is not used because we need keep track of the direction to keep x within sliding window
+            // If window too far left (the diff is bigger thn right side), move to right
+            // Goal is to minimize the difference between the start and end as much as possible
+            if (x - arr[mid] > arr[mid + k] - x) {
+                left = mid + 1;
+                // Else move to the left;
+            } else {
+                right = mid;
+            }
+        }
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = left; i < left + k; i++) {
+            result.add(arr[i]);
+        }
+        return result;
+    }
 }
