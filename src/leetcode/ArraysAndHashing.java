@@ -532,4 +532,29 @@ public class ArraysAndHashing {
             this.chr = chr;
         }
     }
+
+    // * 1502. Can Make Arithmetic Progression From Sequence
+    // * Time complexity: o(n log n) - Sorting
+    // * Space complexity: o(n) - Sorting
+    public boolean canMakeArithmeticProgression(int[] arr) {
+        if (arr.length <= 2) {
+            return true;
+        }
+
+        // 1. Sort the array
+        Arrays.sort(arr);
+
+        // 2. Keep track the difference between each two numbers
+        int difference = arr[0] - arr[1];
+
+
+        // 3. If the difference changes, return false
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i - 1] - arr[i] != difference) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

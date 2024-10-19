@@ -305,4 +305,37 @@ public class BacktrackingQuestions {
         }
         return false;
     }
+
+    // * 1415. The k-th Lexicographical String of All Happy Strings of Length n
+    // * Time complexity: o( 2^n) - 3 choices for each character
+    // * Space complexity: o(2^n) - Size of the generated strings
+    char[] happyString = new char[]{'a', 'b', 'c'};
+
+    public String getHappyString(int n, int k) {
+        List<String> generatedStrings = new ArrayList<>();
+        generateAllPossibleCombinations(n, generatedStrings, k, new StringBuilder());
+
+        if (generatedStrings.size() < k) {
+            return "";
+        }
+        return generatedStrings.get(k - 1);
+    }
+
+    public void generateAllPossibleCombinations(int n, List<String> generatedStrings, int k, StringBuilder sb) {
+        if (sb.length() == n) {
+            generatedStrings.add(sb.toString());
+            return;
+        }
+        if (generatedStrings.size() == k) {
+            return;
+        }
+
+        for (char chr : happyString) {
+            if (sb.isEmpty() || sb.charAt(sb.length() - 1) != chr) {
+                sb.append(chr);
+                generateAllPossibleCombinations(n, generatedStrings, k, sb);
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+    }
 }
