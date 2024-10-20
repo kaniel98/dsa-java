@@ -286,4 +286,35 @@ public class HeapQuestions {
         // 4. Decrease k by 1 and repeat process until k = 0
         return result;
     }
+
+    // * 1471. The k Strongest Values in an Array
+    // * Time complexity: o(n log n) - Insertion is log n, repeated n times
+    // * Space complexity: o(n) - Storing the values
+    public int[] getStrongest(int[] arr, int k) {
+        // Sort the array and get the median
+        // Put the numbers into a priority queue
+        // Pop until the kth element
+        Arrays.sort(arr);
+        // Get the median number
+        int median = arr[(arr.length - 1) / 2];
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
+            if (b[1] == a[1]) {
+                return b[0] - a[0];
+            }
+            return b[1] - a[1];
+        });
+
+        for (int num : arr) {
+            pq.offer(new int[]{num, Math.abs(num - median)});
+        }
+
+        int[] result = new int[k];
+
+        for (int i = 0; i < k; i++) {
+            result[i] = pq.poll()[0];
+        }
+
+        return result;
+    }
 }

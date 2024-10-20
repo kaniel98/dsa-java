@@ -352,4 +352,38 @@ public class TreeQuestions {
         return root;
     }
 
+    // * 1325. Delete leaves with a given value
+    // * Time complexity: O(n)
+    // * Space complexity: O(n)
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+        removeLeafNodeHelper(root, target);
+        if (root.val == target && root.left == null && root.right == null) {
+            return null;
+        }
+        return root;
+    }
+
+    private boolean removeLeafNodeHelper(TreeNode root, int target) {
+        // Base case
+        if (root == null) {
+            return false; // Leaf node is reached
+        }
+
+        boolean leftRemoved = removeLeafNodeHelper(root.left, target);
+        boolean rightRemoved = removeLeafNodeHelper(root.right, target);
+
+        if (leftRemoved) {
+            root.left = null;
+        }
+
+        if (rightRemoved) {
+            root.right = null;
+        }
+
+        if (root.val == target && root.left == null && root.right == null) {
+            return true;
+        }
+
+        return false;
+    }
 }
