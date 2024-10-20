@@ -1,30 +1,13 @@
 package leetcode;
 
+import leetcode.sub.ListNode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 public class LinkedListQuestions {
-    // Definition of singly-linked list
-    class ListNode {
-        Integer val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-    }
-
-
     /*
      * Questions done:
      * 206. Reverse Linked List
@@ -37,6 +20,8 @@ public class LinkedListQuestions {
      * 2487. Remove Nodes from Linked List
      * 2130. Maximum Twin Sum of a Linked List
      * 1721. Swapping Nodes in a Linked List
+     * 3217. Delete Nodes From Linked List Present in Array
+     * 817. Linked List Components
      */
 
     // * 206. Reverse Linked List

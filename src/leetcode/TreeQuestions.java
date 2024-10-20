@@ -1,5 +1,8 @@
 package leetcode;
 
+import leetcode.sub.ListNode;
+import leetcode.sub.TreeNode;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,26 +11,6 @@ import java.util.List;
 public class TreeQuestions {
     public static void main(String[] args) {
 
-    }
-
-    // Used to represent one node in a tree
-    class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
     }
 
     // * 226 Invert Binary Tree
@@ -385,5 +368,53 @@ public class TreeQuestions {
         }
 
         return false;
+    }
+
+    // * 1367. Linked List in Binary Tree
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    ListNode temp;
+    Boolean pathFound = false;
+
+    public boolean isSubPath(ListNode head, TreeNode root) {
+        temp = head;
+        ListNode dummy = temp;
+        isSubPathHelper(dummy, root);
+        return pathFound;
+    }
+
+    public void isSubPathHelper(ListNode dummy, TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        if (root.val == dummy.val) {
+            checkPath(dummy, root);
+        }
+
+        // Iterate down both paths
+        isSubPathHelper(dummy, root.left);
+        isSubPathHelper(dummy, root.right);
+    }
+
+    public void checkPath(ListNode dummy, TreeNode root) {
+        if (dummy == null) {
+            pathFound = true;
+            return;
+        }
+
+        if (root == null) {
+            return;
+        }
+
+        if (dummy.val != root.val) {
+            // If it does not match, cut the execution and return it
+            return;
+        }
+
+        dummy = dummy.next;
+        // Iterate down both paths
+        checkPath(dummy, root.left);
+        checkPath(dummy, root.right);
     }
 }
