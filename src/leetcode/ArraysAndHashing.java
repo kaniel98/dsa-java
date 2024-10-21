@@ -547,7 +547,6 @@ public class ArraysAndHashing {
         // 2. Keep track the difference between each two numbers
         int difference = arr[0] - arr[1];
 
-
         // 3. If the difference changes, return false
         for (int i = 1; i < arr.length; i++) {
             if (arr[i - 1] - arr[i] != difference) {
@@ -556,5 +555,39 @@ public class ArraysAndHashing {
         }
 
         return true;
+    }
+
+    // * 1546. Maximum Number of Non-Overlapping Subarrays With Sum Equals Target
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public int maxNonOverlapping(int[] nums, int target) {
+        Map<Integer, Integer> prefixMap = new HashMap<>();
+        prefixMap.put(0, -1);
+        int currentSum = 0;
+        int numOfArrays = 0;
+        int left = 0;
+        // Right is set to -1 to include the first element
+        int right = -1;
+
+        for (int i = 0; i < nums.length; i++) {
+            currentSum += nums[i];
+
+            // At this point in time, what is the max number of non overlapping
+            if (prefixMap.containsKey(currentSum - target)) {
+                // Left Keeps track of where the prefix is located,
+                // Right Keeps track of where the subarray is currently moved to
+                // It will only add if left is more than right, afterwards, we will move right to the current point
+                left = prefixMap.get(currentSum - target);
+                if (right <= left) {
+                    numOfArrays++;
+                    right = i;
+                }
+            }
+
+            // Only want to keep track of the most recent prefix
+            prefixMap.put(currentSum, i);
+        }
+
+        return numOfArrays;
     }
 }

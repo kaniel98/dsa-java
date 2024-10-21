@@ -92,8 +92,25 @@ public class DPQuestions {
                 }
             }
         }
-        
+
 
         return dp[amount] != amount + 1 ? dp[amount] : -1;
+    }
+
+    // * 746. Min Cost Climbing Stairs
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public int minCostClimbingStairs(int[] cost) {
+        // Basically need to find the lowest cost until the 2nd last step
+        int[] result = new int[cost.length];
+        result[0] = cost[0];
+        result[1] = cost[1];
+
+        for (int i = 2; i < cost.length; i++) {
+            int min = Math.min(cost[i] + result[i - 1], cost[i] + result[i - 2]);
+            result[i] = min;
+        }
+
+        return Math.min(result[cost.length - 2], result[cost.length - 1]);
     }
 }

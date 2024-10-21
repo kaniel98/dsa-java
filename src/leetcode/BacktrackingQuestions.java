@@ -338,4 +338,39 @@ public class BacktrackingQuestions {
             }
         }
     }
+
+    // * 1593. Split a String Into the Max Number of Unique Substrings
+    // * Time complexity: o(n * 2^n) - 2^n for the number of possible substrings and n for the substring
+    // * Space complexity: o(n) - The size of the formed strings + the recursion stack
+    int max = 0;
+
+    public int maxUniqueSplit(String s) {
+        // Execute recursion, keep a map to find the max at each length before returning it
+        maxUniqueSplitHelper(s, new HashSet<>(), 0);
+        return max;
+    }
+
+    public void maxUniqueSplitHelper(String s, Set<String> formedStrings, int currPoint) {
+        // Base case
+        if (currPoint >= s.length()) {
+            max = Math.max(max, formedStrings.size());
+        }
+
+        int max = 0;
+
+        // Execute from the current point
+        for (int i = currPoint + 1; i <= s.length(); i++) {
+            String currSubString = s.substring(currPoint, i);
+
+            // If a current substring is found, continue
+            if (formedStrings.contains(currSubString)) {
+                continue;
+            }
+
+            // Proceed to add the substring to hashset and continue the iteration
+            formedStrings.add(currSubString);
+            maxUniqueSplitHelper(s, formedStrings, i);
+            formedStrings.remove(currSubString);
+        }
+    }
 }

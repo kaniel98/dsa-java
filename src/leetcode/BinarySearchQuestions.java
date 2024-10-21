@@ -454,7 +454,7 @@ public class BinarySearchQuestions {
         return time <= hour;
     }
 
-    // * 658. K Closest Elements
+    // * 658. Find K Closest Elements
     // * Time complexity: o(log n)
     // * Space complexity: o(1)
     public List<Integer> findClosestElements(int[] arr, int k, int x) {

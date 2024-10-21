@@ -371,14 +371,12 @@ public class TreeQuestions {
     }
 
     // * 1367. Linked List in Binary Tree
-    // * Time complexity: o(n)
+    // * Time complexity: o(n * m) - n is the number of nodes in the linked list, m is the number of nodes in the binary tree
     // * Space complexity: o(n)
-    ListNode temp;
-    Boolean pathFound = false;
+    boolean pathFound = false;
 
     public boolean isSubPath(ListNode head, TreeNode root) {
-        temp = head;
-        ListNode dummy = temp;
+        ListNode dummy = head;
         isSubPathHelper(dummy, root);
         return pathFound;
     }
