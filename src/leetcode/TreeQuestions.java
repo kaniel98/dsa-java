@@ -3,10 +3,7 @@ package leetcode;
 import leetcode.sub.ListNode;
 import leetcode.sub.TreeNode;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class TreeQuestions {
     public static void main(String[] args) {
@@ -414,5 +411,49 @@ public class TreeQuestions {
         // Iterate down both paths
         checkPath(dummy, root.left);
         checkPath(dummy, root.right);
+    }
+
+    // * 2583. Kth Largest Sum in a Binary Tree
+    // * Time complexity: o(n log n);
+    // * Space complexity: o(n)
+    public long kthLargestLevelSum(TreeNode root, int k) {
+        // * BFS to get sum for each level
+        // * Heap to keep track of the kth largest sum
+        PriorityQueue<Long> pq = new PriorityQueue<>((a, b) -> {
+            return Long.compare(b, a);
+        });
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        long levelSum = 0;
+
+        while (!queue.isEmpty()) {
+            int numOfNodes = queue.size();
+            for (int i = 0; i < numOfNodes; i++) {
+                TreeNode node = queue.poll();
+                levelSum += (long) node.val;
+
+                // Add it back to the queue
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            // Put the sum into the pq and reset it
+            pq.offer(levelSum);
+            levelSum = 0;
+        }
+
+        if (pq.size() < k) {
+            return -1;
+        }
+
+        while (k - 1 > 0 && !pq.isEmpty()) {
+            pq.poll();
+            k--;
+        }
+        return pq.poll();
     }
 }
