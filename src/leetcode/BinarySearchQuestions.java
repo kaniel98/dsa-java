@@ -482,4 +482,49 @@ public class BinarySearchQuestions {
         }
         return result;
     }
+
+    // * 2563. Count the Number of Fair Pairs
+    // * Time complexity: o(n log n)
+    // * Space complexity: o(1)
+    public long countFairPairs(int[] nums, int lower, int upper) {
+        long count = 0;
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            int lowerTarget = lower - num; // lowest number to make sure target + num > lower
+            int upperTarget = upper - num; // upper number to make sure that target - num < upper
+
+            count += (upperBound(nums, upperTarget, i + 1, nums.length - 1) -
+                    lowerBound(nums, lowerTarget, i + 1, nums.length - 1)) + 1;
+        }
+        return count;
+    }
+
+    public long lowerBound(int[] arr, int target, int left, int right) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        // Finding the number closest to the lower bound - Left
+        return left;
+    }
+
+    public long upperBound(int[] arr, int target, int left, int right) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] <= target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        // Finding the number closest to the upper bound - Right
+        return right;
+    }
 }
