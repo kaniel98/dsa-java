@@ -456,4 +456,87 @@ public class TreeQuestions {
         }
         return pq.poll();
     }
+
+    // * 993. Cousins in Binary Tree
+    // * Time complexity: o(n)
+    // * Space complexity: o(n);
+    public boolean isCousins(TreeNode root, int x, int y) {
+        // 1. Keep track of parent
+        // 2. Make sure it is on the same level (bfs)
+        // 3. Else return false;
+        ArrayDeque<TreeNode[]> queue = new ArrayDeque();
+        queue.offer(new TreeNode[]{null, root});
+        HashSet<Integer> set = new HashSet<>(); // Keep track of the number of parents;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode[] val = queue.poll();
+                if (val[0] != null && (val[1].val == x || val[1].val == y)) {
+                    set.add(val[0].val);
+                }
+
+                if (val[1].left != null) queue.offer(new TreeNode[]{val[1], val[1].left});
+                if (val[1].right != null) queue.offer(new TreeNode[]{val[1], val[1].right});
+            }
+
+            if (set.size() == 2) {
+                return true;
+            }
+            set = new HashSet<>();
+        }
+
+        return false;
+    }
+
+    // * 2641. Cousins in Binary Tree II
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public TreeNode replaceValueInTree(TreeNode root) {
+        // 1. Get the sum for each branch (Left & Right Node) - This will be used to sum other values
+        // 2. For each level, keep track of the total value of the next level
+        // 3. When it comes to the next level, simply set the values to be "total" - current
+        // Repeat the process
+        int currValue = 0;
+        int nextValue = 0;
+        ArrayDeque<Node> queue = new ArrayDeque<>();
+        queue.offer(new Node(0, root));
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            currValue = nextValue;
+            nextValue = 0;
+
+            for (int i = 0; i < size; i++) {
+                Node node = queue.poll();
+
+                // Add the children value of the current branch into the next value
+                int branchValue = 0;
+                if (node.treeNode.left != null) branchValue += node.treeNode.left.val;
+                if (node.treeNode.right != null) branchValue += node.treeNode.right.val;
+                nextValue += branchValue;
+
+                if (node.treeNode.left != null) {
+                    queue.offer(new Node(branchValue, node.treeNode.left));
+                }
+                if (node.treeNode.right != null) {
+                    queue.offer(new Node(branchValue, node.treeNode.right));
+                }
+
+                // Now set the current node's value to be curr value - branch value;
+                node.treeNode.val = currValue - node.branchValue;
+            }
+        }
+        return root;
+    }
+
+    class Node {
+        int branchValue;
+        TreeNode treeNode;
+
+        public Node(int branchValue, TreeNode treeNode) {
+            this.branchValue = branchValue;
+            this.treeNode = treeNode;
+        }
+    }
 }
