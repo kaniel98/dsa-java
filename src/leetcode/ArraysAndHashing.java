@@ -590,4 +590,33 @@ public class ArraysAndHashing {
 
         return numOfArrays;
     }
+
+    // * 1233. Remove Sub-Folders from the Filesystem
+    // * Time complexity: o(n log n + (n * m)) where n is the number of folders and m is the length of the string
+    // * Space complexity: o(n)
+    public List<String> removeSubfolders(String[] folder) {
+        // 1. Sort the string
+        // 2. Do a form of DFS to remove the sub strings
+        List<String> result = new ArrayList<>();
+        Arrays.sort(folder); // n log n
+
+        // The first folder should always be unique
+        result.add(folder[0]);
+        String currFolder = folder[0] + "/";
+
+        for (int i = 1; i < folder.length; i++) {
+            // Compare the substring, it it matches the currFolder, remove it
+            // Else, add it to the result folder and set it to be the current folder
+            String nextString = folder[i];
+            if (nextString.length() >= currFolder.length() && nextString.startsWith(currFolder)) {
+                continue;
+            }
+
+            result.add(nextString);
+            currFolder = nextString + "/";
+        }
+
+
+        return result;
+    }
 }
