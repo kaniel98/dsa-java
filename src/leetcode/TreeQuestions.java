@@ -539,4 +539,26 @@ public class TreeQuestions {
             this.treeNode = treeNode;
         }
     }
+
+    // * 951. Flip Equivalent Binary Trees
+    // * Time complexity: o(n) - Every node is visited at most twice
+    // * Space complexity: o(n) - Longest path
+    public boolean flipEquivHelper(TreeNode root1, TreeNode root2) {
+        // If both are null, means its a match.
+        if (root1 == null && root2 == null) {
+            return true;
+        }
+
+        // If one is null and one isnt null, means false
+        if (root1 == null || root2 == null || root1.val != root2.val) {
+            return false;
+        }
+
+        // Compare both roots
+        boolean combinationOne = flipEquivHelper(root1.left, root2.left) && flipEquivHelper(root1.right, root2.right);
+        boolean combinationTwo = flipEquivHelper(root1.left, root2.right) && flipEquivHelper(root1.right, root2.left);
+
+        return combinationOne || combinationTwo;
+    }
+
 }
