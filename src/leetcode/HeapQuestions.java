@@ -1,5 +1,7 @@
 package leetcode;
 
+import leetcode.sub.ListNode;
+
 import java.util.*;
 
 public class HeapQuestions {
@@ -57,22 +59,6 @@ public class HeapQuestions {
         return result;
     }
 
-    public class ListNode {
-        Integer val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-    }
 
     // * 23. Merge k Sorted Lists
     // * Time complexity - o ( n log k) - Each insertion into the heap takes log k time, this process is
@@ -316,5 +302,64 @@ public class HeapQuestions {
         }
 
         return result;
+    }
+
+    // * 1405. Longest Happy String
+    // * Time complexity: o(n) - Total number of characters
+    // * Space complexity: o(1) - The heap is consistent size
+    public String longestDiverseString(int a, int b, int c) {
+        // 1. Question is asking for the longest string where the characters do not repeat itself
+        // 2. Start by adding the most common
+        // 3. Followed by adding the the most common
+
+        PriorityQueue<CharCount> pq = new PriorityQueue<>((x, y) -> y.count - x.count);
+        if (a > 0) {
+            pq.offer(new CharCount(a, 'a'));
+        }
+        if (b > 0) {
+            pq.offer(new CharCount(b, 'b'));
+        }
+        if (c > 0) {
+            pq.offer(new CharCount(c, 'c'));
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        while (!pq.isEmpty()) {
+            CharCount node = pq.poll();
+
+            // Check if the last two characters match the current count;
+            if (sb.length() >= 2 && sb.charAt(sb.length() - 1) == node.chr && sb.charAt(sb.length() - 2) == node.chr) {
+                if (pq.isEmpty()) {
+                    return sb.toString();
+                }
+                // Else add the next common one to the String builder and add it back
+                CharCount nodeTwo = pq.poll();
+                sb.append(nodeTwo.chr);
+                if (nodeTwo.count - 1 > 0) {
+                    nodeTwo.count -= 1;
+                    pq.offer(nodeTwo);
+                }
+            } else {
+                sb.append(node.chr);
+                node.count -= 1;
+            }
+
+            if (node.count > 0) {
+                pq.offer(node);
+            }
+        }
+
+        return sb.toString();
+    }
+
+    static class CharCount {
+        int count;
+        char chr;
+
+        public CharCount(int count, char chr) {
+            this.count = count;
+            this.chr = chr;
+        }
     }
 }
