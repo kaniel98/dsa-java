@@ -362,4 +362,32 @@ public class HeapQuestions {
             this.chr = chr;
         }
     }
+
+    // * 264. Ugly Number II
+    // * Time complexity: o(n log n) - Insertion is log n, repeated n times
+    // * Space complexity: o(n)
+    int[] primeNumbers = new int[]{2, 3, 5};
+
+    public int nthUglyNumber(int n) {
+
+        PriorityQueue<Long> pq = new PriorityQueue<>();
+        Set<Long> insertedNumbers = new HashSet<>();
+
+        pq.offer(1L);
+        insertedNumbers.add(1L);
+
+        for (int i = 0; i < n - 1; i++) {
+            long num = pq.poll();
+            System.out.println(num);
+            for (int prime : primeNumbers) {
+                if (!insertedNumbers.contains(num * prime)) {
+                    insertedNumbers.add(num * prime);
+                    pq.offer(num * prime);
+                }
+            }
+        }
+        System.out.println(pq);
+        long result = pq.poll();
+        return (int) result;
+    }
 }
