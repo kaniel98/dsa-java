@@ -651,4 +651,47 @@ public class ArraysAndHashing {
 
         return max;
     }
+
+    // * 2491. Divide Players Into Teams of Equal Skill
+    // * Time complexity: o(n)
+    // * Space complexity: o(1) - Constant extra space
+    public long dividePlayers(int[] skill) {
+        // [3,2,5,1,3,4]
+        // * It must be split into n / 2 groups
+        // * Each group must add up to - (Total sum / (n / 2) groups)
+        // * From there just take the number * num until mid point is reached and return it
+        // * No sorting required
+
+        int numOfGroups = skill.length / 2;
+        int[] numCount = new int[1001];
+        long sum = 0;
+        for (int s : skill) {
+            numCount[s]++;
+            sum += (long) s;
+        }
+
+        if (sum % numOfGroups != 0) {
+            return -1;
+        }
+
+        long targetSum = sum / numOfGroups;
+        long totalSum = 0;
+        int curr = 0;
+        for (int i = 0; i < skill.length; i++) {
+            curr = skill[i];
+            if (numCount[curr] == 0) {
+                continue;
+            }
+            int diff = (int) targetSum - curr;
+            if (numCount[diff] == 0) {
+                return -1;
+            }
+            numCount[curr]--;
+            numCount[diff]--;
+
+            totalSum += curr * diff;
+        }
+
+        return totalSum == 0 ? -1 : totalSum;
+    }
 }
