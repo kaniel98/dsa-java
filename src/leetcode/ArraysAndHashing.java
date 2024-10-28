@@ -619,4 +619,36 @@ public class ArraysAndHashing {
 
         return result;
     }
+
+    // * 2501. Longest Square Streak in an Array
+    // * Time complexity: o(n log n) - Sorting
+    // * Space complexity: o(n) - Storing the square root
+    public int longestSquareStreak(int[] nums) {
+        // 1. Sort the array
+        // 2. Idea is to count up
+        // 3. For each num, check if the sqrt of it is present in the map
+        // 4. If it is, increment the count and add it as the count for the num
+        // 5. Keep track of the max count
+        // 6. If it is not present, add it to the map
+        Arrays.sort(nums);
+
+        Map<Integer, Integer> squareMap = new HashMap<>();
+
+        // Keeps track of max
+        int max = -1;
+
+        for (int num : nums) {
+            int sqrt = (int) Math.sqrt(num);
+            if (sqrt * sqrt == num && squareMap.containsKey(sqrt)) {
+                // e.g., 2 exists in the map, add it to the count of 4.
+                squareMap.put(num, squareMap.get(sqrt) + 1);
+                max = Math.max(squareMap.get(num), max);
+            } else {
+                // Add number if it isnt in the map
+                squareMap.put(num, 1);
+            }
+        }
+
+        return max;
+    }
 }
