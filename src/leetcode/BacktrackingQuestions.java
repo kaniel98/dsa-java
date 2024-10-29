@@ -389,4 +389,33 @@ public class BacktrackingQuestions {
 
         return false;
     }
+
+    // * 300. Longest Increasing Subsequence - Possible to do with just DP to reduce memory
+    // * Time complexity: o(n^2) - For each element, we are iterating through the array
+    // * Space complexity: o(n) - The size of the cache
+    int maxLength = 0;
+
+    public int lengthOfLIS(int[] nums) {
+        lengthOfLISHelper(nums, 0, new HashMap<>());
+        return maxLength;
+    }
+
+    public int lengthOfLISHelper(int[] nums, int currPointer, Map<Integer, Integer> cache) {
+        // If a max subsequence is already found for the curr pointer, return it;
+        if (cache.containsKey(currPointer)) {
+            return cache.get(currPointer);
+        }
+        int currMax = 1;
+
+        for (int i = currPointer + 1; i < nums.length; i++) {
+            if (nums[currPointer] >= nums[i]) {
+                Math.max(currMax, lengthOfLISHelper(nums, i, cache));
+                continue; // If smaller or less, skip
+            }
+            currMax = Math.max(currMax, 1 + lengthOfLISHelper(nums, i, cache));
+        }
+        cache.put(currPointer, currMax);
+        maxLength = Math.max(maxLength, currMax);
+        return currMax;
+    }
 }
