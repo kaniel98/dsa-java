@@ -113,4 +113,54 @@ public class DPQuestions {
 
         return Math.min(result[cost.length - 2], result[cost.length - 1]);
     }
+
+    // * 198. House Robber
+    // * Time complexity: o(n)
+    // * Space complexity: o(n) - Can be reduced to o(1) by using 3 variables
+    public int rob(int[] nums) {
+        int[] result = new int[nums.length];
+
+        // Base case for the first 3 numbers
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        if (nums.length == 2) {
+            return Math.max(nums[0], nums[1]);
+        }
+
+        if (nums.length == 3) {
+            return Math.max(nums[1], nums[2] + nums[0]);
+        }
+
+        // Populate the first three values;
+        result[0] = nums[0];
+        result[1] = nums[1];
+        result[2] = nums[0] + nums[2];
+
+        for (int i = 3; i < nums.length; i++) {
+            // The max value for this would either be curr + n - 2 or n - 3;
+            result[i] = Math.max(nums[i] + result[i - 2], nums[i] + result[i - 3]);
+        }
+
+        // Towards the end the max would either be the last element or the 2nd last
+        // System.out.println(Arrays.toString(result));
+        return Math.max(result[result.length - 1], result[result.length - 2]);
+    }
+
+    // * 198 House Robber - Three variable approach
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int robDP2(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+
+        int dp0 = 0, dp1 = 0, curr;
+
+        for (int i = 0; i < nums.length; i++) {
+            curr = Math.max(dp0 + nums[i], dp1);
+            dp0 = dp1;
+            dp1 = curr;
+        }
+        return Math.max(dp0, dp1);
+    }
 }
