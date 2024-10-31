@@ -694,4 +694,25 @@ public class ArraysAndHashing {
 
         return totalSum == 0 ? -1 : totalSum;
     }
+
+    // * 2521. Distinct Prime Factors of Product of Array
+    // * Time complexity: o (n * sqrt(m))
+    // * Space complexity: o(n) - Storing the prime numbers
+    public int distinctPrimeFactors(int[] nums) {
+        Set<Integer> primeNumbers = new HashSet<>();
+        // 1. For each number, get the prime factors of it
+        for (int num : nums) {
+            // Get prime factor
+            for (int i = 2; i <= num; i++) {
+                if (num % i == 0) {
+                    primeNumbers.add(i);
+                    while (num % i == 0) {
+                        num /= i;
+                    }
+                }
+            }
+        }
+
+        return primeNumbers.size();
+    }
 }
