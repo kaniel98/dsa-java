@@ -103,4 +103,41 @@ public class GreedyQuestions {
         }
         return maxSum;
     }
+
+    // * 2541. Minimum Operations to Make Array Equal II
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public long minOperations(int[] nums1, int[] nums2, int k) {
+        // 1. Collate the difference as a separate array
+        int[] diff = new int[nums1.length];
+        for (int i = 0; i < nums1.length; i++) {
+            diff[i] = nums1[i] - nums2[i];
+        }
+
+        // Base case for if k == 0, there should be any difference
+        if (k == 0) {
+            for (int d : diff) {
+                if (d != 0) {
+                    return -1;
+                }
+            }
+            return 0;
+        }
+
+        long sum = 0;
+        long operations = 0;
+        // Goal here: Keep track of the sum (Either to add or decrease, if it is possible, the sum will remain 0)
+        // We will also keep track of operations to either increase or decrease the difference by k to 0;
+        for (long d : diff) {
+            sum += d;
+            if (d % k != 0) {
+                return -1;
+            }
+            // Add either the increment or decrement
+            operations += Math.abs(d / k);
+        }
+
+        // Towards the end, the operations will be reduced by half
+        return sum == 0 ? operations / 2 : -1;
+    }
 }
