@@ -390,4 +390,30 @@ public class HeapQuestions {
         long result = pq.poll();
         return (int) result;
     }
+
+    // * 1962. Remove Stones to Minimize the Total
+    // * Time complexity: o(n log n) - Insertion is log n, repeated n times
+    // * Space complexity: o(n)
+    public int minStoneSum(int[] piles, int k) {
+        // Max heap
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+        for (int pile : piles) {
+            pq.offer(pile);
+        }
+
+        for (int i = 0; i < k; i++) {
+            int pile = pq.poll();
+            pile -= (int) Math.floor(pile / 2);
+            if (pile == 0) {
+                continue;
+            }
+            pq.offer(pile);
+        }
+
+        int sum = 0;
+        while (!pq.isEmpty()) {
+            sum += pq.poll();
+        }
+        return sum;
+    }
 }
