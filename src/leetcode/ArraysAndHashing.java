@@ -715,4 +715,57 @@ public class ArraysAndHashing {
 
         return primeNumbers.size();
     }
+
+    // * 945. Minimum Increment to Make Array Unique
+    // * Time complexity: o(n)
+    // * Space complexity: o(n) - Not ideal
+    public int minIncrementForUnique(int[] nums) {
+        // 2. Iterate through, and check if it is duplicate
+        // 3. If it is a duplicate, get the highest number of increase that would allow it to be unique
+        int[] newNums = new int[1000000];
+        int increment = 0;
+
+        for (int num : nums) {
+            newNums[num] += 1;
+        }
+        int lastExecuted = -1;
+
+        for (int i = 0; i < 1000000; i++) {
+            // I is the unique number which we have to make 1
+            if (newNums[i] > 1) {
+                if (lastExecuted < i) {
+                    lastExecuted = i + 1;
+                }
+
+                while (newNums[i] > 1) {
+                    while (lastExecuted < 1000000 && newNums[lastExecuted] > 0) {
+                        lastExecuted++;
+                    }
+                    newNums[lastExecuted]++;
+                    newNums[i]--;
+                    increment += lastExecuted - i;
+                }
+            }
+        }
+        return increment;
+    }
+
+    // * 945. Minimum Increment to Make Array Unique - Sorting Approach
+    public int minIncrementForUniqueSortingApproach(int[] nums) {
+        // 1. Sort the nums
+        Arrays.sort(nums);
+        int increment = 0;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] <= nums[i - 1]) {
+                // At this point in time, the number previous to this would have already been increased to be more
+                // thn current number, so we will need to compensate it by adding the difference
+                increment += nums[i - 1] - nums[i] + 1;
+                nums[i] = nums[i - 1] + 1;
+            }
+        }
+
+        return increment;
+    }
+
 }
