@@ -561,4 +561,38 @@ public class TreeQuestions {
         return combinationOne || combinationTwo;
     }
 
+    // * Binary Tree Zig Zag Level Order Traversal
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+        boolean leftToRight = true;
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        List<List<Integer>> result = new ArrayList<>();
+
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            List<Integer> subResult = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                TreeNode node = queue.poll();
+                subResult.add(node.val);
+
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+            if (!leftToRight) {
+                result.add(subResult.reversed());
+            } else {
+                result.add(subResult);
+            }
+            leftToRight = !leftToRight;
+        }
+
+        return result;
+    }
+
 }

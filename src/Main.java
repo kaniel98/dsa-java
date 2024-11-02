@@ -1,7 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(Math.floor((double) 9 / 2));
+        List<Integer> result = new ArrayList<>();
+        result.reversed();
     }
 
 }
