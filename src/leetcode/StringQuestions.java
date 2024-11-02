@@ -23,4 +23,27 @@ public class StringQuestions {
 
         return sb.toString();
     }
+
+    // * 2490. Circular Sentence
+    // * Time complexity - o(n)
+    // * Space complexity - o(1)
+    public boolean isCircularSentence(String sentence) {
+        // Check the first character and last character first
+        if (sentence.charAt(0) != sentence.charAt(sentence.length() - 1)) {
+            return false; // Immediately know this isn't a circular sentence
+        }
+
+        // Assuming there will only be one space between each word, iterate through and check the char before and after a space
+        for (int i = 0; i < sentence.length(); i++) {
+            if (sentence.charAt(i) != ' ') {
+                continue;
+            }
+
+            if (sentence.charAt(i - 1) != sentence.charAt(i + 1)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
