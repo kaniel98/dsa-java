@@ -46,4 +46,18 @@ public class StringQuestions {
 
         return true;
     }
+
+    // * 796. Rotate String
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public boolean rotateString(String s, String goal) {
+        // 1. Every possible way of forming the goal would be combining s with itself e.g., abc -> abcabc
+        // 2. Next we would just check if goal is a substring within this goal
+        // 3. Return true or false accordingly
+        if (s.length() != goal.length()) {
+            return false;
+        }
+        String possibleCombinations = s + s;
+        return possibleCombinations.contains(goal);
+    }
 }
