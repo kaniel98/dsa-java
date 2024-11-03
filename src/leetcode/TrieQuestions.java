@@ -1,6 +1,7 @@
 package leetcode;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TrieQuestions {
@@ -9,6 +10,7 @@ public class TrieQuestions {
         // Assuming the implementation is only for the 26 small letters
         Map<Character, TrieNode> children = new HashMap<>();
         boolean isEnd = false;
+        boolean isWord = false;
     }
 
     // * 208. Implement Trie (Prefix Tree)
@@ -54,5 +56,55 @@ public class TrieQuestions {
         }
     }
 
+    // * 648. Replace Words
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public String replaceWords(List<String> dictionary, String sentence) {
+        ReplaceWordTrie dictTrie = new ReplaceWordTrie();
+        for (String str : dictionary) {
+            dictTrie.insert(str);
+        }
 
+        // Proceed to check for each string
+        String[] sentenceList = sentence.split(" ");
+        for (int i = 0; i < sentenceList.length; i++) {
+            sentenceList[i] = dictTrie.getReplacement(sentenceList[i]);
+        }
+
+        return String.join(" ", sentenceList);
+    }
+
+    static class ReplaceWordTrie { // Note the implementation of this trie includes the unique getReplacement method
+        TrieNode root;
+
+        public ReplaceWordTrie() {
+            root = new TrieNode();
+        }
+
+        public void insert(String word) {
+            TrieNode node = this.root;
+            for (char chr : word.toCharArray()) {
+                node.children.putIfAbsent(chr, new TrieNode());
+                node = node.children.get(chr);
+            }
+            node.isWord = true;
+        }
+
+        public String getReplacement(String word) {
+            TrieNode node = this.root;
+            for (int i = 0; i < word.length(); i++) {
+                char chr = word.charAt(i);
+                if (!node.children.containsKey(chr)) {
+                    return word; // No replacement will be made, immediately return the word
+                }
+                node = node.children.get(chr);
+
+                // But if word is the end, we will return it
+                if (node.isWord) {
+                    return word.substring(0, i + 1);
+                }
+            }
+            return word;
+        }
+    }
 }
