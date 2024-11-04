@@ -214,4 +214,38 @@ public class TwoPointers {
         // * The above solution works as a one pass because it only contains two partition. If it was multiple
         // numbers to be sorted, it can go up to o (n ** 2) / o (n log n) - Basically same as quick sort`
     }
+
+    // * 5. Longest Palindromic Substring
+    // * Time complexity - o(n ** 2)
+    // * Space complexity - o(1)
+    public String longestPalindrome(String s) {
+        String palindrome = "";
+
+        int left;
+        int right;
+        for (int i = 0; i < s.length(); i++) {
+            // Odd palindrome
+            left = i;
+            right = i;
+            while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                if (right - left + 1 > palindrome.length()) {
+                    palindrome = s.substring(left, right + 1);
+                }
+                left--;
+                right++;
+            }
+            // Even palindrome
+            left = i;
+            right = i + 1; // Handles for even
+            while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                if (right - left + 1 > palindrome.length()) {
+                    palindrome = s.substring(left, right + 1);
+                }
+                left--;
+                right++;
+            }
+        }
+
+        return palindrome;
+    }
 }
