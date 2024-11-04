@@ -163,4 +163,49 @@ public class DPQuestions {
         }
         return Math.max(dp0, dp1);
     }
+
+    // * 213. House Robber II
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public int robII(int[] nums) {
+        // Since index 0 and index (n -1) are adjacent to each other, means they cannot be robbed consecutively
+        // If we exclude either index 0 or index (n -1), it would be the same as house robber I
+        // Execute the helper method on both first and 2nd
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        return Math.max(robHelper(Arrays.copyOfRange(nums, 1, nums.length)), robHelper(Arrays.copyOfRange(nums, 0, nums.length - 1)));
+    }
+
+    public int robHelper(int[] nums) {
+        int[] result = new int[nums.length];
+        System.out.println(Arrays.toString(nums));
+
+        // Base case for first three numbers;
+        if (nums.length == 0) {
+            return 0;
+        }
+
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        if (nums.length == 2) {
+            return Math.max(nums[0], nums[1]);
+        }
+
+        if (nums.length == 3) {
+            return Math.max(nums[1], nums[2] + nums[0]);
+        }
+
+        // Iterate through the array
+        result[0] = nums[0];
+        result[1] = nums[1];
+        result[2] = nums[0] + nums[2];
+
+        for (int i = 3; i < nums.length; i++) {
+            result[i] = Math.max(nums[i] + result[i - 2], nums[i] + result[i - 3]);
+        }
+
+        return Math.max(result[result.length - 1], result[result.length - 2]);
+    }
 }
