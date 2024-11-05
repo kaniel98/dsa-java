@@ -248,4 +248,37 @@ public class TwoPointers {
 
         return palindrome;
     }
+
+    // * 647. Palindromic Substrings
+    // * Time complexity - o(n ** 2)
+    // * Space complexity - o(1)
+    public int countSubstrings(String s) {
+        // 1. Similar approach to finding longest palindromic string
+        // 2. Maintain two pointers at each and branch out to find the palindromes
+        int palindromes = 0;
+        int left;
+        int right;
+        for (int i = 0; i < s.length(); i++) {
+            palindromes++; // Handles the current char as a palindrome
+
+            // Handle odd number
+            left = i - 1;
+            right = i + 1;
+            while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+                palindromes++;
+            }
+
+            // Handle even number
+            left = i;
+            right = i + 1;
+            while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+                palindromes++;
+            }
+        }
+        return palindromes;
+    }
 }
