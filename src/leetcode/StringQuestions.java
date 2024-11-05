@@ -60,4 +60,28 @@ public class StringQuestions {
         String possibleCombinations = s + s;
         return possibleCombinations.contains(goal);
     }
+
+    // * 3019. Number of changing keys
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int countKeyChanges(String s) {
+        int keyChange = 0;
+        for (int i = 0; i < s.length() - 1; i++) {
+            // Compare the current one with the next char
+            char chr = s.charAt(i);
+            if (chr >= 97) { // Small letter
+                if (chr == s.charAt(i + 1) || chr - 32 == s.charAt(i + 1)) {
+                    continue;
+                }
+            }
+
+            if (chr < 97) {
+                if (chr == s.charAt(i + 1) || chr + 32 == s.charAt(i + 1)) {
+                    continue;
+                }
+            }
+            keyChange++;
+        }
+        return keyChange;
+    }
 }

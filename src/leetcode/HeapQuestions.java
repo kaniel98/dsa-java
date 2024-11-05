@@ -416,4 +416,31 @@ public class HeapQuestions {
         }
         return sum;
     }
+
+    // * 3075. Maximum happiness of selected children
+    // * Time complexity: o(n log n) - Insertion is log n, repeated n times
+    // * Space complexity: o(n) - Storing the values
+    // * Note that question can also be solved just by sorting the array
+    public long maximumHappinessSum(int[] happiness, int k) {
+        // 1. Put the happiness into priority queue
+        // 2. Have a variable to keep track of the number of turns
+        // 3. Everytime pop, just reduce it by the number of turns
+        // 4. Return the sum
+        int turnsTaken = 0;
+        long totalHappiness = 0;
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+        for (int h : happiness) {
+            pq.offer(h);
+        }
+
+        while (k > 0) {
+            long h = Math.max((long) pq.poll() - turnsTaken, 0);
+            totalHappiness += h;
+            k--;
+            turnsTaken++;
+        }
+
+        return totalHappiness;
+    }
 }
