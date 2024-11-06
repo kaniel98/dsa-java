@@ -207,7 +207,7 @@ public class StackQuestions {
         for (int pushedPointer = 0; pushedPointer < pushed.length; pushedPointer++) {
             // Case 1. Stack's last element matches popped
             // After adding the prev element, pop all elements that matches the sequence in popped
-            while (!stack.isEmpty() && stack.get(stack.size() - 1) == popped[poppedPointer]) {
+            while (!stack.isEmpty() && stack.getLast() == popped[poppedPointer]) {
                 stack.removeLast();
                 poppedPointer++;
             }
@@ -217,7 +217,7 @@ public class StackQuestions {
 
         // At the end, do another pop again
         if (poppedPointer != pushed.length) {
-            while (!stack.isEmpty() && stack.get(stack.size() - 1) == popped[poppedPointer]) {
+            while (!stack.isEmpty() && stack.getLast() == popped[poppedPointer]) {
                 stack.removeLast();
                 poppedPointer++;
             }
