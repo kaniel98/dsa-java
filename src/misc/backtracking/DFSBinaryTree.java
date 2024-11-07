@@ -1,4 +1,4 @@
-package AlgoMonsterCourse.backtracking;
+package misc.backtracking;
 
 public class DFSBinaryTree {
     public static void main(String[] args) {

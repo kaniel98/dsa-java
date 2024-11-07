@@ -1,4 +1,4 @@
-package AlgoMonsterCourse.backtracking;
+package misc.backtracking;
 
 import java.util.Arrays;
 import java.util.Iterator;

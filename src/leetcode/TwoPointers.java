@@ -281,4 +281,38 @@ public class TwoPointers {
         }
         return palindromes;
     }
+
+    // * 2161. Partition Array According to Given Pivot
+    // * Time complexity: o(3n)
+    // * Space complexity: o(n) -> Can be reduced to o(1) by using the same array and swapping
+    public int[] pivotArray(int[] nums, int pivot) {
+        int[] result = new int[nums.length];
+
+        // 3 Seperate loops
+        int less = 0;
+        for (int num : nums) {
+            if (num < pivot) {
+                result[less] = num;
+                less++;
+            }
+        }
+
+        int middle = less;
+        for (int num : nums) {
+            if (num == pivot) {
+                result[middle] = num;
+                middle++;
+            }
+        }
+
+        int more = middle;
+        for (int num : nums) {
+            if (num > pivot) {
+                result[more] = num;
+                more++;
+            }
+        }
+
+        return result;
+    }
 }

@@ -1,4 +1,4 @@
-package AlgoMonsterCourse.heap;
+package misc.heap;
 
 import java.util.*;
 
@@ -61,7 +61,7 @@ public class Heap {
         for (char c : tasks) {
             arr[c - 'A']++;
         }
-        
+
 
         // Put the count into the heap
         for (int num : arr) {

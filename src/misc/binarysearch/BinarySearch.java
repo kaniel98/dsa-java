@@ -1,4 +1,4 @@
-package AlgoMonsterCourse.binarysearch;
+package misc.binarysearch;
 
 import java.util.Collections;
 import java.util.List;

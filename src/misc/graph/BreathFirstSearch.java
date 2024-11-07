@@ -1,4 +1,4 @@
-package AlgoMonsterCourse.graph;
+package misc.graph;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package AlgoMonsterCourse.twopointer;
+package misc.twopointer;
 
 public class CycleFinding {
     public static void main(String[] args) {

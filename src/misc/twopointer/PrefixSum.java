@@ -1,4 +1,4 @@
-package AlgoMonsterCourse.twopointer;
+package misc.twopointer;
 
 import java.util.HashMap;
 import java.util.List;
