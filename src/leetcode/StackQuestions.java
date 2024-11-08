@@ -226,5 +226,50 @@ public class StackQuestions {
         // Need to make sure that all is popped
         return (stack.isEmpty() && poppedPointer == popped.length);
     }
+
+    // * 1190. Reverse Substrings Between Each Pair of Parentheses
+    // * Time Complexity: o(n)
+    // * Space Complexity: o(n)
+    public String reverseParentheses(String s) {
+        // 1. Keep track of each pair
+        // Builds on the concept of undirected graphs, maintaining a pointer to each other
+        Map<Integer, Integer> parenthesisMap = new HashMap<>();
+        ArrayList<Integer> stack = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                stack.add(i);
+            }
+            if (s.charAt(i) == ')') {
+                parenthesisMap.put(stack.getLast(), i);
+                parenthesisMap.put(i, stack.getLast());
+                stack.removeLast();
+            }
+        }
+
+        int count = 0;
+        boolean isRightDirection = true;
+        StringBuilder sb = new StringBuilder();
+        while (count < s.length()) {
+            if (s.charAt(count) == '(' || s.charAt(count) == ')') {
+                // Move it to the other end of the parenthesis
+                count = parenthesisMap.get(count);
+                // Reverse the direction that the pointer is moving in
+                isRightDirection = !isRightDirection;
+            } else {
+                // if it isnt, we will just append it to the list
+                sb.append(s.charAt(count));
+            }
+
+            // Proceed to either increase or decrease the pointer based on direction
+            // This works out because it will always increase until the last parenthesis
+            if (isRightDirection) {
+                count++;
+            } else {
+                count--;
+            }
+        }
+
+        return sb.toString();
+    }
 }
 
