@@ -208,4 +208,47 @@ public class DPQuestions {
 
         return Math.max(result[result.length - 1], result[result.length - 2]);
     }
+
+    // * 416. Partition Equal Subset Sum
+    // * Time complexity: o(n ** 2) - Due to the memoization, we are checking against all possible combinations
+    // * Space complexity: o(n ** 2) - Due to the memoization, we are storing all possible combinations
+    boolean canSplit = false;
+    Boolean[][] mem;
+
+    public boolean canPartition(int[] nums) {
+        // Target sum
+        Arrays.sort(nums);
+
+        int total = Arrays.stream(nums).sum();
+        if (total % 2 != 0) {
+            return false;
+        }
+
+        int target = total / 2;
+        mem = new Boolean[nums.length + 1][target + 1];
+
+
+        // Goal now is to find the ints that can meet that num
+        return canPartitionHelper(nums, 0, 0, target);
+    }
+
+    public boolean canPartitionHelper(int[] nums, int currPointer, int sum, int target) {
+        if (sum == target) {
+            return true;
+        }
+
+        if (sum > target || currPointer >= nums.length) {
+            return false;
+        }
+
+        // Check if this position and sum was found
+        if (mem[currPointer][sum] != null) {
+            return mem[currPointer][sum];
+        }
+
+        // Decision to either include or exclude the current pointer;
+        boolean possible = canPartitionHelper(nums, currPointer + 1, sum + nums[currPointer], target) || canPartitionHelper(nums, currPointer + 1, sum, target);
+        mem[currPointer][sum] = possible;
+        return possible;
+    }
 }
