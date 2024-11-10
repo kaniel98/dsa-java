@@ -1,5 +1,6 @@
 package leetcode;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -139,5 +140,40 @@ public class GreedyQuestions {
 
         // Towards the end, the operations will be reduced by half
         return sum == 0 ? operations / 2 : -1;
+    }
+
+    // * 1029. Two City Scheduling
+    // * Time complexity: o(n log n)
+    // * Space complexity: o(n)
+    public int twoCitySchedCost(int[][] costs) {
+        // 1. Get the difference between sending to A vs B
+        // 2. Based on this difference, we can identify whether it is cheaper or more expensive to send the client to A in this case
+        // 3. We will send those which are cheaper to B and the remaining to B
+        // 4. The logic applies vice versa if we find which is cheaper to send to A
+
+        int[][] difference = new int[costs.length][2];
+        for (int i = 0; i < costs.length; i++) {
+            int[] cost = costs[i];
+            difference[i] = new int[]{cost[0] - cost[1], i};
+        }
+
+        // Proceed to sort in ascending
+        Arrays.sort(difference, (a, b) -> a[0] - b[0]);
+
+        // In the first half, it would be cheaper to send these individuals to A
+        // In the second half, it would be cheaper to send these individuals to B
+        int count = costs.length / 2;
+        int totalCost = 0;
+        for (int i = 0; i < count; i++) {
+            int[] diff = difference[i];
+            totalCost += costs[diff[1]][0]; // Send to A for first half;
+        }
+
+        for (int i = count; i < costs.length; i++) {
+            int[] diff = difference[i];
+            totalCost += costs[diff[1]][1]; // Send to A for first half;
+        }
+
+        return totalCost;
     }
 }

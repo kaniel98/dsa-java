@@ -30,7 +30,7 @@ public class AtomicCounterExample {
 
         // Wait for both threads to finish
         try {
-            thread1.join();
+            thread1.join(); // Wait for thread1 to finish
             thread2.join();
         } catch (InterruptedException e) {
             e.printStackTrace();

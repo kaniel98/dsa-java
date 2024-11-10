@@ -768,4 +768,21 @@ public class ArraysAndHashing {
         return increment;
     }
 
+    // * 3146. Permutation Difference between two strings
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int findPermutationDifference(String s, String t) {
+        int[] strArray = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            strArray[s.charAt(i) - 'a'] = i;
+        }
+
+        int difference = 0;
+
+        for (int i = 0; i < t.length(); i++) {
+            difference += Math.abs(i - strArray[t.charAt(i) - 'a']);
+        }
+
+        return difference;
+    }
 }
