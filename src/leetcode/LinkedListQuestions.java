@@ -469,4 +469,47 @@ public class LinkedListQuestions {
         firstHalf.next = tempTwo.next;
         return tempOne.next;
     }
+
+    // 92. Reverse Linked List II
+    // Time complexity: o(n)
+    // Space complexity: o(1)
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode temp = new ListNode(0);
+        temp.next = head;
+
+        ListNode start = temp;
+        ListNode slow = temp;
+        ListNode fast = temp;
+
+        // Move fast ahead of slow by (right - left)
+        int diff = right - left;
+        while (diff > 0) {
+            fast = fast.next;
+            diff--;
+        }
+
+        // At this point in time, we will need to move slow and fast to the point where slow = left;
+        while (left > 0) {
+            if (left > 1) {
+                start = start.next;
+            }
+
+            slow = slow.next;
+            fast = fast.next;
+            left--;
+        }
+        // At this point in time, we will save the Right's next
+        ListNode remainder = fast.next;
+
+        start.next = null; // Break off the first half as well
+        fast.next = null; // Break it off
+
+        // Reverse the list
+        ListNode reversed = reverseList(slow);
+
+        start.next = reversed;
+        slow.next = remainder;
+        
+        return temp.next;
+    }
 }
