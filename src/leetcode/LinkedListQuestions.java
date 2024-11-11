@@ -443,4 +443,30 @@ public class LinkedListQuestions {
 
         return count;
     }
+
+    // * 86. Partition List
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public ListNode partition(ListNode head, int x) {
+        ListNode tempOne = new ListNode();
+        ListNode firstHalf = tempOne;
+
+        ListNode tempTwo = new ListNode();
+        ListNode secondHalf = tempTwo;
+
+        while (head != null) {
+            if (head.val < x) {
+                firstHalf.next = head;
+                firstHalf = firstHalf.next;
+            } else {
+                secondHalf.next = head;
+                secondHalf = secondHalf.next;
+            }
+            head = head.next;
+        }
+
+        secondHalf.next = null;
+        firstHalf.next = tempTwo.next;
+        return tempOne.next;
+    }
 }
