@@ -785,4 +785,29 @@ public class ArraysAndHashing {
 
         return difference;
     }
+
+    // * 189. Rotate Array
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public void rotate(int[] nums, int k) {
+        k %= nums.length; // This is the final number of times we need to rotate
+
+        // Reverse the array once
+        reverse(nums, 0, nums.length - 1);
+
+        // Now we will reverse the first k elements, and the remaining elements
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, nums.length - 1);
+
+    }
+
+    public void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            int temp = nums[end];
+            nums[end] = nums[start];
+            nums[start] = temp;
+            start++;
+            end--;
+        }
+    }
 }
