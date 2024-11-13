@@ -595,4 +595,44 @@ public class TreeQuestions {
         return result;
     }
 
+    // * 116. Populating Next Right Pointers in Each Node
+    // * Time complexity: o(n)
+    // * Space complexity: o(n) -> Queue
+    public NodeInstance connect(NodeInstance root) {
+        if (root == null) {
+            return root;
+        }
+
+        // BFS Approach
+        ArrayDeque<NodeInstance> queue = new ArrayDeque<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            for (int i = 0; i < n; i++) {
+                NodeInstance curr = queue.poll();
+                if (i == n - 1) {
+                    curr.next = null; // Last node of the level
+                } else {
+                    NodeInstance next = queue.peekFirst();
+                    curr.next = next; // Sets the current one to next
+                }
+
+                // Insert it back into the queue
+                if (curr.left != null) queue.offer(curr.left);
+                if (curr.right != null) queue.offer(curr.right);
+            }
+        }
+        return root;
+    }
+
+    static class NodeInstance {
+        int val;
+        NodeInstance left;
+        NodeInstance right;
+        NodeInstance next;
+
+        public NodeInstance(int val) {
+            this.val = val;
+        }
+    }
 }
