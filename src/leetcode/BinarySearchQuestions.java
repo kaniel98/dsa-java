@@ -560,4 +560,42 @@ public class BinarySearchQuestions {
 
         return nums[boundary];
     }
+
+    // * 2064. Minimized Maximum of Products Distributed to any store
+    // * Time complexity: o(n log n)
+    // * Space complexity: o(1)
+    public int minimizedMaximum(int n, int[] quantities) {
+        // Binary Search question
+        // 1. The max we will have in each store will always be the max quantity in quantities
+        // (Because stores will always be more than or equal to number of quantity)
+        // From there, it would just be a binary search algorithm to see how much each store can fit
+        int left = 0;
+        int right = -1;
+        for (int quantity : quantities) {
+            right = Math.max(quantity, right);
+        }
+        int max = 0;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            // If feasible, proceed to reduce the amount down
+            if (minimizedMaximumFeasible(n, mid, quantities)) {
+                max = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return max;
+    }
+
+    public boolean minimizedMaximumFeasible(int stores, int mid, int[] quantities) {
+        for (int quantity : quantities) {
+            stores -= Math.ceil((double) quantity / mid);
+            if (stores < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
