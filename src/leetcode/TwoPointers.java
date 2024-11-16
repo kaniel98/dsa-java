@@ -315,4 +315,49 @@ public class TwoPointers {
 
         return result;
     }
+
+    // * 3254. Find the Power of K-Size Subarrays I
+    // * Time complexity: o(n)
+    // * Space complexity: o(n);
+    public int[] resultsArray(int[] nums, int k) {
+        // 1. Create a result array - it will always be nums.length - k + 1
+        int[] result = new int[nums.length - k + 1];
+
+        // 2. Establish the first k elements as a window to find the consecutive numbers
+        int consecutive = 1;
+        for (int i = 0; i < k - 1; i++) {
+            if (nums[i] + 1 == nums[i + 1]) {
+                consecutive++;
+            }
+        }
+
+        // 3. Iterate through the rest of the array
+        int left = 0;
+        for (int right = k; right < nums.length; right++) {
+            // Check if the current window is consecutive
+            if (consecutive == k) {
+                result[left] = nums[right - 1];
+            } else {
+                result[left] = -1;
+            }
+
+            // Proceed to either increment or decrement consecutive count
+            if (nums[right] - 1 == nums[right - 1]) {
+                consecutive++;
+            }
+
+            if (nums[left] + 1 == nums[left + 1]) {
+                consecutive--;
+            }
+            left++;
+        }
+
+        if (consecutive == k) {
+            result[left] = nums[nums.length - 1];
+        } else {
+            result[left] = -1;
+        }
+        
+        return result;
+    }
 }

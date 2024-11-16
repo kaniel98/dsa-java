@@ -810,4 +810,38 @@ public class ArraysAndHashing {
             end--;
         }
     }
+
+    // * 2559. Count Vowel Strings in Ranges
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public int[] vowelStrings(String[] words, int[][] queries) {
+        // Prefix question, keep track of the number of words starting and ending vowels
+        // From there, we would just take the range accordingly
+        int[] result = new int[queries.length];
+        int[] prefix = new int[words.length];
+
+        Set<Character> vowels = new HashSet<>(List.of('a', 'e', 'i', 'o', 'u'));
+
+        for (int i = 0; i < words.length; i++) {
+            int currSum = 0;
+            if (i > 0) {
+                currSum += prefix[i - 1];
+            }
+            String curr = words[i];
+            if (vowels.contains(curr.charAt(0)) && vowels.contains(curr.charAt(curr.length() - 1))) {
+                currSum++;
+            }
+            prefix[i] = currSum;
+        }
+
+        for (int i = 0; i < queries.length; i++) {
+            int[] query = queries[i];
+            int start = query[0] == 0 ? 0 : prefix[query[0] - 1];
+            int end = prefix[query[1]];
+
+            result[i] = end - start;
+        }
+
+        return result;
+    }
 }
