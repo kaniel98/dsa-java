@@ -635,4 +635,35 @@ public class TreeQuestions {
             this.val = val;
         }
     }
+
+    // * 814. Binary Tree Pruning
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public TreeNode pruneTree(TreeNode root) {
+        pruneTreeHelper(root);
+        if (root.val == 0 && root.left == null && root.right == null) {
+            return null;
+        }
+        return root;
+    }
+
+    // If it contains 1, return false
+    // If it contains 0 only, return true
+    public boolean pruneTreeHelper(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        boolean left = pruneTreeHelper(root.left);
+        boolean right = pruneTreeHelper(root.right);
+
+        if (left) {
+            root.left = null;
+        }
+        if (right) {
+            root.right = null;
+        }
+
+        return root.val == 0 && left && right;
+    }
 }
