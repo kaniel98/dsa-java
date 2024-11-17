@@ -443,4 +443,76 @@ public class HeapQuestions {
 
         return totalHappiness;
     }
+
+    // * 862. Shortest Subarray with Sum at Least K - Heap
+    // * Time complexity: o(n log n) - Insertion is log n, repeated n times
+    // * Space complexity: o(n)
+    // * Better solution is to use a Monotonic Deque
+    public int shortestSubarray(int[] nums, int k) {
+        // Prefix & Heap Approach
+        // Main goal: Remove the minimum prefix that would result in the subarray = k && the prefix with the largest index
+        long currentSum = 0L;
+        int res = Integer.MAX_VALUE;
+        PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> {
+            // Sort by prefix first
+            if (a[0] == b[0]) {
+                return Long.compare(b[1], a[1]); // We want the largest index at the start;
+            }
+            return Long.compare(a[0], b[0]);
+        });
+
+        // Iterate through the array
+        for (int right = 0; right < nums.length; right++) {
+            currentSum += nums[right];
+
+            // Consider a situation where the sub array is more than or equals to k
+            if (currentSum >= k) {
+                res = Math.min(res, right + 1);
+            }
+
+            // Proceed to pop the heap while it can still result into a subarray with the target sum
+            while (!pq.isEmpty() && currentSum - pq.peek()[0] >= k) {
+                long[] prefix = pq.poll();
+                res = (int) Math.min(res, right - prefix[1]);
+            }
+
+            // Afterwards we will push the current sum back into heap
+            pq.offer(new long[]{currentSum, (long) right});
+        }
+
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+
+    // * 862. Shortest Subarray with Sum at Least K - Monotonic Deque
+    // * Time complexity: o(n) - We only iterate through the array once
+    // * Space complexity: o(n) - We only store the prefix
+    public int shortestSubarrayMonotonic(int[] nums, int k) {
+        ArrayDeque<long[]> deque = new ArrayDeque<>();
+        long currentSum = 0;
+        int res = Integer.MAX_VALUE;
+
+        for (int right = 0; right < nums.length; right++) {
+            currentSum += nums[right];
+            if (currentSum >= k) {
+                res = Math.min(res, right + 1);
+            }
+
+            // Proceed to check the queue from the start
+            // The ones which match the conditions will be popped (No point to reuse)
+            // Leave only the larger prefix which might meet the condition further down the line
+            while (!deque.isEmpty() && currentSum - deque.peek()[0] >= k) {
+                long[] prefix = deque.poll();
+                res = (int) Math.min(res, right - prefix[1]);
+            }
+
+            // Goal is to establish a monotonic INCREASING deque, we dont need decreasing, prefix, we only need increasing
+            // Prioritise a smaller prefix with larger index over a larger prefix with smaller idnex
+            while (!deque.isEmpty() && deque.peekLast()[0] >= currentSum) {
+                deque.removeLast();
+            }
+            deque.offer(new long[]{currentSum, right});
+        }
+
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
 }

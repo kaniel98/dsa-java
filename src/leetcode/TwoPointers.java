@@ -357,7 +357,28 @@ public class TwoPointers {
         } else {
             result[left] = -1;
         }
-        
+
         return result;
+    }
+
+    // * 209. Minimum Size Subarray Sum
+    // * Time complexity - o(n)
+    // * Space complexity - o(1)
+    public int minSubArrayLen(int target, int[] nums) {
+        int left = 0;
+        int sum = 0;
+        int minLength = Integer.MAX_VALUE;
+
+        for (int right = 0; right < nums.length; right++) {
+            sum += nums[right];
+
+            while (sum >= target) {
+                minLength = Math.min(minLength, right - left + 1);
+                sum -= nums[left];
+                left++;
+            }
+        }
+
+        return (left == 0 && sum < target) ? 0 : Math.min(minLength, nums.length - left + 1);
     }
 }

@@ -1,9 +1,9 @@
-import java.util.HashSet;
+import java.util.ArrayDeque;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(Math.ceil((double) 3 / 2));
-        HashSet<Integer> set = new HashSet<>();
-        set.contains()
+        ArrayDeque<Integer> stack = new ArrayDeque<>();
+        stack.poll();
+        stack.pop();
     }
 }
