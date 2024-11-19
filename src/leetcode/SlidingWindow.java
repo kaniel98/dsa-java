@@ -157,4 +157,45 @@ public class SlidingWindow {
         }
         return maxFruits;
     }
+
+    // * 2461. Maximum Sum of Distinct Subarrays With Length K
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public long maximumSubarraySum(int[] nums, int k) {
+        // 1. HashMap to keep track of characters and its index
+        // 2. Left and Right pointer to keep track of the characters that appear
+        // if a duplicate number is found, simply move left until right
+        Map<Integer, Integer> idxMap = new HashMap<>();
+        int left = 0;
+        long max = 0;
+        long curr = 0;
+
+        for (int right = 0; right < nums.length; right++) {
+            if (idxMap.containsKey(nums[right])) {
+                // Move left until it is the index of nums[right];
+                int target = idxMap.get(nums[right]);
+                while (left <= target) {
+                    curr -= nums[left];
+                    idxMap.remove(nums[left]);
+                    left++;
+                }
+            }
+
+            idxMap.put(nums[right], right);
+            curr += nums[right];
+
+            // Move left up
+            while (idxMap.size() > k) {
+                curr -= nums[left];
+                idxMap.remove(nums[left]);
+                left++;
+            }
+
+            if (idxMap.size() == k) {
+                max = Math.max(max, curr);
+            }
+        }
+
+        return max;
+    }
 }
