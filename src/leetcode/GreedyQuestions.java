@@ -2,6 +2,7 @@ package leetcode;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GreedyQuestions {
@@ -175,5 +176,29 @@ public class GreedyQuestions {
         }
 
         return totalCost;
+    }
+
+    // * 624. Maximum Distance in Arrays
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int maxDistance(List<List<Integer>> arrays) {
+        int currMin = arrays.get(0).get(0);
+        int currMax = arrays.get(0).get(arrays.get(0).size() - 1);
+        int maxDistance = 0;
+        for (int i = 1; i < arrays.size(); i++) {
+            List<Integer> curr = arrays.get(i);
+
+            // But at each evaluation, we will check if it is one or the other combination
+            // (In the event that min and max is both from prev array)
+            maxDistance = Math.max(maxDistance, Math.max(
+                    Math.abs(currMax - curr.get(0)), Math.abs(curr.get(curr.size() - 1) - currMin))
+            );
+
+            // These values are stand alone, used for calculation
+            currMin = Math.min(curr.get(0), currMin);
+            currMax = Math.max(currMax, curr.get(curr.size() - 1));
+        }
+
+        return maxDistance;
     }
 }
