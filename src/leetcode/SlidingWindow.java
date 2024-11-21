@@ -198,4 +198,53 @@ public class SlidingWindow {
 
         return max;
     }
+
+    // * 2516. Take K of Each Character From Left and Right
+    // * Time complexity - o(n)
+    // * Space complexity - o(1)
+    public int takeCharacters(String s, int k) {
+        // Instead focusing on finding the max window on both sides, it would be easier to find the maximum inner window
+        // This would take the example of finding the non overlapping areas of two circles
+        // It is easier to take circle 1 - circle 2
+
+        if (k == 0) {
+            return 0;
+        }
+
+        // 1. Get the total count of characters from A-B-C
+        int[] charCount = new int[3];
+        for (char chr : s.toCharArray()) {
+            charCount[chr - 'a']++;
+        }
+
+        int conditionMet = 0;
+        for (int count : charCount) {
+            if (count >= k) {
+                conditionMet++;
+            }
+        }
+
+        if (conditionMet < 3) {
+            return -1; // No Possible case
+        }
+
+        // 2. Use left and right pointers to check for windows which would invalidate the whole count
+        int left = 0;
+        int max = 0;
+        for (int right = 0; right < s.length(); right++) {
+            charCount[s.charAt(right) - 'a']--;
+
+            if (charCount[s.charAt(right) - 'a'] < k) { // Means a window is found
+                max = Math.max(right - left, max);
+
+                while (charCount[s.charAt(right) - 'a'] < k) {
+                    charCount[s.charAt(left) - 'a']++;
+                    left++;
+                }
+            }
+        }
+        max = Math.max(max, s.length() - left);
+
+        return max == 0 ? s.length() : s.length() - max;
+    }
 }
