@@ -247,4 +247,29 @@ public class SlidingWindow {
 
         return max == 0 ? s.length() : s.length() - max;
     }
+
+    // * 1423. Maximum Points You Can Obtain from Cards
+    // * Time complexity - o(n)
+    // * Space complexity - o(1)
+    public int maxScore(int[] cardPoints, int k) {
+        int totalScore = Arrays.stream(cardPoints).sum();
+
+        // Use a sliding window to find the minimum window size instead
+        int min = 0;
+        for (int i = 0; i < cardPoints.length - k; i++) {
+            min += cardPoints[i];
+        } // Starting window
+
+
+        int currWindow = min;
+        int left = 0;
+        for (int right = cardPoints.length - k; right < cardPoints.length; right++) {
+            currWindow += cardPoints[right];
+            currWindow -= cardPoints[left];
+            left++;
+            min = Math.min(currWindow, min);
+        }
+
+        return totalScore - min;
+    }
 }
