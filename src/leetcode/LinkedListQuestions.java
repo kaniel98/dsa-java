@@ -509,7 +509,32 @@ public class LinkedListQuestions {
 
         start.next = reversed;
         slow.next = remainder;
-        
+
+        return temp.next;
+    }
+
+    // * 2181. Merge Nodes in Between Zeros
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public ListNode mergeNodes(ListNode head) {
+        // Initialize a new head
+        ListNode temp = new ListNode(0);
+        ListNode dummy = temp;
+
+        // Use left and right pointers
+        ListNode fast = head.next;
+        int currSum = 0;
+
+        while (fast != null) {
+            currSum += fast.val;
+            if (fast.val == 0) {
+                dummy.next = new ListNode(currSum);
+                dummy = dummy.next;
+                currSum = 0;
+            }
+            fast = fast.next;
+        }
+
         return temp.next;
     }
 }
