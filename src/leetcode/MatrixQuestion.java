@@ -1,8 +1,6 @@
 package leetcode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MatrixQuestion {
     public static void main(String[] args) {
@@ -27,9 +25,9 @@ public class MatrixQuestion {
         return result;
     }
 
-    // 1072. Flip Columns For Maximum Number of Equal Rows
-    // Time complexity: o(n * m)
-    // Space complexity: o(n)
+    // * 1072. Flip Columns For Maximum Number of Equal Rows
+    // * Time complexity: o(n * m)
+    // * Space complexity: o(n)
     public int maxEqualRowsAfterFlips(int[][] matrix) {
         // Find the number of flips required to get the max number of rows with the same values
         // * It is too expensive to flip every column and check
@@ -61,5 +59,57 @@ public class MatrixQuestion {
             }
         }
         return Arrays.toString(row);
+    }
+
+    // * 1975. Maximum Matrix Sum
+    // * Time complexity: o(n * m)
+    // * Space complexity: o(n * m)
+    public long maxMatrixSum(int[][] matrix) {
+        /* You can flip any two adjacent cells two times as many times you like
+         * Goal is to get the maximum sum
+         * If we draw it out, we will realise that for even numbers of negatives, it can always be flipped to all be positive
+         * For odd numbers, only one will remain as unflipped / negative.
+         */
+        List<Integer> negativeNumbers = new ArrayList<>();
+        long sum = 0L;
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            int[] row = matrix[i];
+            for (int idx = 0; idx < matrix.length; idx++) {
+                int num = row[idx];
+                if (num < 0) {
+                    negativeNumbers.add(num);
+                } else {
+                    sum += num;
+                }
+                if (num >= 0) {
+                    min = Math.min(min, num);
+                }
+            }
+        }
+
+        // Proceed to handle the negative numbers
+        if (negativeNumbers.size() % 2 == 0) {
+            for (int num : negativeNumbers) {
+                sum += Math.abs(num);
+            }
+        } else {
+            // Sort and add all numbers except the largest one
+            Collections.sort(negativeNumbers);
+            for (int i = 0; i < negativeNumbers.size() - 1; i++) {
+                sum += Math.abs(negativeNumbers.get(i));
+            }
+
+            // Comparison for the smallest number and the minimum positive number
+            int largestNeg = negativeNumbers.get(negativeNumbers.size() - 1);
+            if (Math.abs(largestNeg) >= min) {
+                sum -= 2L * min;
+                sum += Math.abs(largestNeg);
+            } else {
+                sum += largestNeg;
+            }
+        }
+
+        return sum;
     }
 }
