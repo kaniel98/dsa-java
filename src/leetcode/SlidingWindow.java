@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class SlidingWindow {
     // * 3. Longest substring without repeating characters
@@ -271,5 +268,33 @@ public class SlidingWindow {
         }
 
         return totalScore - min;
+    }
+
+    // * 187. Repeated DNA Sequences
+    // * Time complexity - o(n)
+    // * Space complexity - o(n)
+    public List<String> findRepeatedDnaSequences(String s) {
+        Set<String> existingSequence = new HashSet<>();
+        Set<String> result = new HashSet<>();
+
+        // Base case;
+        if (s.length() < 10) {
+            return new ArrayList<>();
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            if (i + 10 > s.length()) {
+                continue;
+            }
+            String curr = s.substring(i, i + 10);
+
+            if (existingSequence.contains(curr)) {
+                result.add(curr);
+            } else {
+                existingSequence.add(curr);
+            }
+        }
+
+        return new ArrayList<>(result);
     }
 }
