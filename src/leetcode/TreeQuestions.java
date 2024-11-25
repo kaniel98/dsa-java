@@ -666,4 +666,33 @@ public class TreeQuestions {
 
         return root.val == 0 && left && right;
     }
+
+    // * 107. Binary Tree Level Order Traversal II
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        // BFS Approach with an ArrayDeque - Stack
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+        ArrayDeque<List<Integer>> res = new ArrayDeque<>();
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+
+
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            List<Integer> temp = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                TreeNode node = queue.poll();
+                temp.add(node.val);
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+            res.addFirst(temp);
+        }
+
+        return new ArrayList<>(res);
+    }
 }
