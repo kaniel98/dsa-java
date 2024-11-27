@@ -338,4 +338,56 @@ public class GraphQuestions {
     }
 
 
+    // * 3243. Shortest Distance After Road Addition Queries I
+    // * Time complexity - o(n * q) - n is the number of nodes, q is the number of queries
+    // * Space complexity - o(n)
+    public int[] shortestDistanceAfterQueries(int n, int[][] queries) {
+        // HashMap to keep track of the next node
+        // Overall time complexity would be n * q, because we need to repeat the bfs for at least the q number of times
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            if (i + 1 == n) {
+                map.put(i, new ArrayList<>());
+                continue;
+            }
+            map.put(i, new ArrayList<>(List.of(i + 1)));
+        }
+
+        int[] result = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            int[] query = queries[i];
+            // add current point to the hashmap
+            map.get(query[0]).add(query[1]);
+
+            // Proceed to do BFS to find the shortest path
+            result[i] = shortestDistanceAfterQueries(map, n - 1);
+        }
+        return result;
+    }
+
+    public int shortestDistanceAfterQueries(Map<Integer, List<Integer>> map, int target) {
+        Set<Integer> visited = new HashSet<>();
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+        queue.offer(0); // Starting point;
+        int distance = 0;
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            for (int i = 0; i < n; i++) {
+                Integer curr = queue.poll();
+                if (curr == target) {
+                    return distance;
+                }
+                for (int neighbour : map.get(curr)) {
+                    if (visited.contains(neighbour)) {
+                        continue;
+                    }
+                    queue.offer(neighbour);
+                }
+                visited.add(curr);
+            }
+            distance++;
+        }
+        return distance;
+    }
+
 }
