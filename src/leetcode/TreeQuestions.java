@@ -695,4 +695,48 @@ public class TreeQuestions {
 
         return new ArrayList<>(res);
     }
+
+    // * 2196. Create Binary Tree From Descriptions
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public TreeNode createBinaryTree(int[][] descriptions) {
+        // Hash Table to keep track of the nodes and if they have a parent
+        // Towards the end, return the node without the parent
+        Map<Integer, NodePair> nodeMap = new HashMap<>();
+
+        for (int[] desc : descriptions) {
+            NodePair tempParent = nodeMap.getOrDefault(desc[0], new NodePair(new TreeNode(desc[0])));
+            NodePair child = nodeMap.getOrDefault(desc[1], new NodePair(new TreeNode(desc[1])));
+
+            if (desc[2] == 1) {
+                tempParent.node.left = child.node;
+            } else {
+                tempParent.node.right = child.node;
+            }
+            child.hasParent = true;
+
+            // Put both back into the map
+            nodeMap.put(desc[0], tempParent);
+            nodeMap.put(desc[1], child);
+        }
+
+        // Go through the hashmap to find the node without parent
+        for (NodePair pair : nodeMap.values()) {
+            if (!pair.hasParent) {
+                return pair.node;
+            }
+        }
+
+        return null;
+    }
+
+    static class NodePair {
+        boolean hasParent;
+        TreeNode node;
+
+        public NodePair(TreeNode node) {
+            this.hasParent = false;
+            this.node = node;
+        }
+    }
 }
