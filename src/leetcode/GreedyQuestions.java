@@ -1,9 +1,7 @@
 package leetcode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GreedyQuestions {
     public static void main(String[] args) {
@@ -200,5 +198,60 @@ public class GreedyQuestions {
         }
 
         return maxDistance;
+    }
+
+    // * 1717. Maximum Score From Removing Substrings
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    // * Note this can be considered under Stack questions as well
+    String original;
+
+    public int maximumGain(String s, int x, int y) {
+        // ba - y
+        // ab - x
+
+        String larger = "";
+        String smaller = "";
+        if (x > y) {
+            larger = "ab";
+            smaller = "ba";
+        } else {
+            larger = "ba";
+            smaller = "ab";
+        }
+
+        this.original = s;
+        int largerCount = removePairs(larger);
+        int smallerCount = removePairs(smaller);
+
+        return x > y ? x * largerCount + y * smallerCount : y * largerCount + x * smallerCount;
+    }
+
+    public int removePairs(String target) {
+        List<Character> stack = new ArrayList<>();
+
+        if (this.original.isEmpty()) {
+            return 0;
+        }
+
+        char[] charArray = this.original.toCharArray();
+        stack.add(charArray[0]);
+        int targetCount = 0;
+
+
+        for (int i = 1; i < charArray.length; i++) {
+            stack.add(charArray[i]);
+            // Checking for the y count
+            while (stack.size() >= 2 && ("" + stack.get(stack.size() - 2) + stack.get(stack.size() - 1)).equals(target)) {
+                stack.removeLast();
+                stack.removeLast();
+                targetCount++;
+            }
+        }
+
+        this.original = stack.stream().map(Object::toString)
+                .collect(Collectors.joining(""));
+
+        return targetCount;
     }
 }
