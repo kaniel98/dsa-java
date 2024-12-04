@@ -739,4 +739,44 @@ public class TreeQuestions {
             this.node = node;
         }
     }
+
+    // * 108. Convert Sorted Array to Binary Search Tree
+    // * Time complexity: o(n)
+    // * Space complexity: o(n) - Will always be n / 2 call stack
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return sortedArrayToBSTHelper(0, nums.length - 1, nums);
+    }
+
+    public TreeNode sortedArrayToBSTHelper(int left, int right, int[] nums) {
+        if (left > right) {
+            // At this point in time, we will return because this array is empty
+            return null;
+        }
+
+        // Construct the middle node
+        int middle = (left + right) / 2;
+        TreeNode root = new TreeNode(nums[middle]);
+
+        // Go down left and right
+        root.left = sortedArrayToBSTHelper(left, middle - 1, nums);
+        root.right = sortedArrayToBSTHelper(middle + 1, right, nums);
+
+        return root;
+    }
+
+    // * 112. Path Sum
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
+        }
+
+        targetSum -= root.val;
+        if (targetSum == 0 && root.left == null && root.right == null) {
+            return true;
+        }
+
+        return hasPathSum(root.left, targetSum) || hasPathSum(root.right, targetSum);
+    }
 }

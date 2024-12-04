@@ -84,4 +84,29 @@ public class StringQuestions {
         }
         return keyChange;
     }
+
+    // * 2109. Adding Spaces to a String
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    // * Note: Question can also be solved just by initiating an array with the size of s + spaces.length and
+    // creating a string based off that array
+    public String addSpaces(String s, int[] spaces) {
+        // Maintain a string builder
+        // Maintain a pointer moving through S
+        // Everytime the pointer meets the same index as spaces, add space to sb
+        // Return sb towards the end.
+
+        StringBuilder sb = new StringBuilder();
+        int curr = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (curr < spaces.length && i == spaces[curr]) {
+                // Add space to the string builder
+                sb.append(" ");
+                curr++;
+            }
+            // continue by adding the char at i back to sb;
+            sb.append(s.charAt(i));
+        }
+        return sb.toString();
+    }
 }
