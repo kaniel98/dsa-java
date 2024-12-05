@@ -381,4 +381,46 @@ public class TwoPointers {
 
         return (left == 0 && sum < target) ? 0 : Math.min(minLength, nums.length - left + 1);
     }
+
+    // * 2337. Move Pieces to Obtain a String
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public boolean canChange(String start, String target) {
+        // Key point - Left can only move left and right can only move right
+        // Based on that when we do the two pointer approach (One on start, One on right)
+
+        int startP = 0;
+        int targetP = 0;
+
+        while (startP < start.length() || targetP < start.length()) {
+            // Move both startP and targetP to the first char
+            while (startP < start.length() && start.charAt(startP) == '_') {
+                startP++;
+            }
+            while (targetP < target.length() && target.charAt(targetP) == '_') {
+                targetP++;
+            }
+
+            // If either reaches the end, we will break it and check
+            if (startP == start.length() || targetP == start.length()) {
+                break;
+            }
+
+            // 1. Check if char is same
+            if (start.charAt(startP) != target.charAt(targetP)) {
+                return false;
+            }
+            // If it is left, target should always be >= start
+            if (start.charAt(startP) == 'L' && startP < targetP) {
+                return false;
+            }
+            // If it is right, target should always be >= start
+            if (start.charAt(startP) == 'R' && startP > targetP) {
+                return false;
+            }
+            startP++;
+            targetP++;
+        }
+        return startP == start.length() && targetP == start.length();
+    }
 }
