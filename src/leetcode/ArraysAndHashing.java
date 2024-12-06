@@ -844,4 +844,29 @@ public class ArraysAndHashing {
 
         return result;
     }
+
+    // * 2554. Maximum Number of Integers to Choose From a Range I
+    // * Time complexity: o(n);
+    // * Space complexity: o(n)
+    public int maxCount(int[] banned, int n, int maxSum) {
+        HashSet<Integer> bannedNumbers = new HashSet<>();
+        for (int ban : banned) {
+            bannedNumbers.add(ban);
+        }
+        int count = 0;
+        int currSum = 0;
+
+        for (int i = 1; i <= n; i++) {
+            if (bannedNumbers.contains(i)) {
+                continue;
+            }
+            currSum += i;
+            if (currSum > maxSum) {
+                return count;
+            }
+            count++;
+        }
+        return count;
+    }
 }
+
