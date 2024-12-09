@@ -652,4 +652,42 @@ public class BinarySearchQuestions {
         }
         return true;
     }
+
+    // * 1760. Minimum Limit of Balls in a Bag
+    // * Time complexity: o(n log n)
+    // * Space complexity: o(1)
+    public int minimumSize(int[] nums, int maxOperations) {
+        // Similar to binary search question - Target is how many operations can we divide to be within the number of operations
+        // For a given "threshhold", how much does each number need to reach it
+        // Is the total threshhold within max operations, if yes return true
+        int right = nums[0];
+        for (int num : nums) {
+            right = Math.max(right, num);
+        }
+
+        int left = 1;
+        int res = right;
+        while (left < right) {
+
+            int mid = left + (right - left) / 2;
+            if (minimumSizeFeasible(nums, mid, maxOperations)) {
+                res = mid;
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+
+        }
+
+        return res;
+    }
+
+    public boolean minimumSizeFeasible(int[] nums, int threshold, int maxOperations) {
+        int ops = 0;
+        for (int n : nums) {
+            ops += (n + threshold - 1) / threshold - 1;
+            if (ops > maxOperations) return false;
+        }
+        return true;
+    }
 }
