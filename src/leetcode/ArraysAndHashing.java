@@ -868,5 +868,60 @@ public class ArraysAndHashing {
         }
         return count;
     }
+
+    // * 3151. Special Array I
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public boolean isArraySpecial(int[] nums) {
+        if (nums.length <= 1) {
+            return true;
+        }
+
+        // Main point is to check if the current number and th next number is of the same Parity"
+        for (int i = 0; i < nums.length - 1; i++) {
+            boolean curr = nums[i] % 2 == 0;
+            boolean next = nums[i + 1] % 2 == 0;
+
+            // If both are the same, it means they are of the same parity, return false;
+            if (curr == next) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //  *  3152. Special Array II
+    //  * Time complexity: o(n + m) where n is the length of the array and m is the number of queries
+    // * Space complexity: o(n) - Storing the prefix sum
+    public boolean[] isArraySpecial(int[] nums, int[][] queries) {
+        int[] prefix = new int[nums.length]; // Keep track of the length of each "Special array" at the current point
+        boolean[] result = new boolean[queries.length];
+
+        // Iterate through nums to keep
+        int length = 1;
+        prefix[0] = length;
+
+        for (int i = 1; i < nums.length; i++) {
+            boolean curr = nums[i] % 2 == 0;
+            boolean prev = nums[i - 1] % 2 == 0;
+
+            // It must not match for it to be considered as "Special"
+            if (curr == prev) {
+                length = 1;
+            } else {
+                length++;
+            }
+            prefix[i] = length;
+        }
+
+        // For each query, we will only need to check at the end, does the length matches the current length of the
+        //  query
+        for (int i = 0; i < queries.length; i++) {
+            int[] query = queries[i];
+            int len = query[1] - query[0] + 1;
+            result[i] = prefix[query[1]] >= len;
+        }
+        return result;
+    }
 }
 
