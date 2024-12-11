@@ -297,4 +297,40 @@ public class SlidingWindow {
 
         return new ArrayList<>(result);
     }
+
+    //  * 2779. Maximum Beauty of an Array After Applying Operations
+    // * Time complexity - o(n log n)
+    // * Space complexity - o(1)
+    public int maximumBeauty(int[] nums, int k) {
+        // 1. Sort the array - n log n
+        Arrays.sort(nums);
+
+        // Maintain pointer and curr number of elements within the range
+        int left = 0;
+        int curr = 0;
+        int max = 0;
+        for (int right = 0; right < nums.length; right++) {
+            if (right == 0) {
+                curr++;
+                continue;
+            }
+
+            // Check if the current number is within k range, if yes, we would just increase the curr window count
+            int rightNum = nums[right];
+            if (nums[left] + 2 * k >= rightNum) {
+                curr++;
+                continue;
+            }
+
+            // If it isnt within k range, we would decrease it based on the last number
+            max = Math.max(max, curr);
+            // Proceed to decrease
+            while (left < right && nums[left] + 2 * k < rightNum) {
+                left++;
+                curr--;
+            }
+            curr++;
+        }
+        return Math.max(max, curr);
+    }
 }

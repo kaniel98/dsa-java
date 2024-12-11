@@ -35,7 +35,7 @@ public class IntervalQuestions {
         return result.toArray(new int[result.size()][]);
     }
 
-    public int[][] mergev2(int[][] intervals) {
+    public int[][] mergeV2(int[][] intervals) {
         ArrayList<int[]> result = new ArrayList<>();
 
         // Sort the intervals based on the first digit
@@ -169,11 +169,9 @@ public class IntervalQuestions {
         int count = 0;
         int max = count;
 
-
         // e.g.,
         // [0, 0, 10, 10, 20, 20, 30, 30, 40, 40, 50, 60, 70, 80, 90]
         // [10, 20, 30, 40, 50, 60, 60, 70, 70, 80, 80, 90, 90, 100, 100]
-
         int endPointer = 0;
         int startPointer = 0;
         while (startPointer < startTimes.size()) {
