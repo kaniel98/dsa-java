@@ -515,4 +515,61 @@ public class HeapQuestions {
 
         return res == Integer.MAX_VALUE ? -1 : res;
     }
+
+    // * 2558. Take Gifts From the Richest Pile
+    // * Time complexity: o(n log n) - Insertion is log n, repeated n times
+    // * Space complexity: o(n)
+    public long pickGifts(int[] gifts, int k) {
+        // Max heap
+        PriorityQueue<Long> pq = new PriorityQueue<>((a, b) -> Long.compare(b, a));
+        for (long gift : gifts) {
+            pq.offer(gift);
+        }
+
+        while (k > 0) {
+            long gift = pq.poll();
+            pq.offer((long) Math.sqrt(gift));
+            k--;
+        }
+
+        long result = 0;
+        while (!pq.isEmpty()) {
+            result += pq.poll();
+        }
+
+        return result;
+    }
+
+    // * 2593. Find Score of an Array After Marking All Elements
+    // * Time complexity: o(n log n) - Insertion is log n, repeated n times
+    // * Space complexity: o(n)
+    public long findScore(int[] nums) {
+        long result = 0;
+        // 1st is the value, 2nd is the index
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
+            if (a[0] == b[0]) {
+                return a[1] - b[1];
+            }
+            return a[0] - b[0];
+        });
+
+        for (int i = 0; i < nums.length; i++) {
+            pq.offer(new int[]{nums[i], i});
+        }
+
+        while (!pq.isEmpty()) {
+            int[] smallest = pq.poll();
+            int idx = smallest[1];
+            if (nums[idx] == -1) {
+                continue; // Means this was already marked, continue
+            }
+
+            result += Long.valueOf(smallest[0]);
+            nums[idx] = -1;
+            if (idx > 0) nums[idx - 1] = -1;
+            if (idx < nums.length - 1) nums[idx + 1] = -1;
+        }
+
+        return result;
+    }
 }
