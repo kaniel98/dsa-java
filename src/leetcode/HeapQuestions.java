@@ -378,7 +378,6 @@ public class HeapQuestions {
 
         for (int i = 0; i < n - 1; i++) {
             long num = pq.poll();
-            System.out.println(num);
             for (int prime : primeNumbers) {
                 if (!insertedNumbers.contains(num * prime)) {
                     insertedNumbers.add(num * prime);
@@ -386,7 +385,6 @@ public class HeapQuestions {
                 }
             }
         }
-        System.out.println(pq);
         long result = pq.poll();
         return (int) result;
     }
@@ -571,5 +569,52 @@ public class HeapQuestions {
         }
 
         return result;
+    }
+
+    // * 2762. Continuous Subarrays
+    // * Time complexity: o(n log n) - Insertion is log n, repeated n times
+    // * Space complexity: o(n)
+    public long continuousSubarrays(int[] nums) {
+        // 1. Priority Queue to keep track of the largest number
+        // 2. For a given window, keep track of the larges and smallest
+        PriorityQueue<int[]> largest = new PriorityQueue<>((a, b) -> {
+            if (b[0] == a[0]) {
+                return a[1] - b[1];
+            }
+            return b[0] - a[0];
+        });
+        PriorityQueue<int[]> smallest = new PriorityQueue<>((a, b) -> {
+            if (b[0] == a[0]) {
+                return a[1] - b[1];
+            }
+            return a[0] - b[0];
+        });
+
+        int left = 0;
+        long count = 0;
+
+        for (int right = 0; right < nums.length; right++) {
+            int curr = nums[right];
+            int[] currArray = new int[]{curr, right};
+
+            largest.offer(currArray);
+            smallest.offer(currArray);
+
+            while ((largest.peek()[0] - smallest.peek()[0]) > 2) {
+                left++;
+
+                while (!largest.isEmpty() && largest.peek()[1] < left) {
+                    largest.poll();
+                }
+
+                while (!smallest.isEmpty() && smallest.peek()[1] < left) {
+                    smallest.poll();
+                }
+            }
+
+            count += (right - left + 1);
+        }
+
+        return count;
     }
 }
