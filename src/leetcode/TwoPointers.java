@@ -423,4 +423,40 @@ public class TwoPointers {
         }
         return startP == start.length() && targetP == start.length();
     }
+
+    // * 1023. Camelcase Matching
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public List<Boolean> camelMatch(String[] queries, String pattern) {
+        List<Boolean> result = new ArrayList<>();
+        for (int i = 0; i < queries.length; i++) {
+            result.add(camelMatchHelper(queries[i], pattern));
+        }
+        return result;
+    }
+
+    public boolean camelMatchHelper(String query, String pattern) {
+        int pointer = 0;
+        for (char chr : query.toCharArray()) {
+            // Capital letters must match
+            if (chr >= 65 && chr <= 90) {
+                if (pointer >= pattern.length()) {
+                    return false;
+                }
+
+                if (chr != pattern.charAt(pointer)) {
+                    return false;
+                }
+                pointer++;
+                continue;
+            }
+            // Small letters only
+            if (pointer < pattern.length() && chr == pattern.charAt(pointer)) {
+                pointer++;
+            }
+        }
+
+        return pointer == pattern.length();
+
+    }
 }
