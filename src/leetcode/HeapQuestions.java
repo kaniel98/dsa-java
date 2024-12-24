@@ -643,4 +643,60 @@ public class HeapQuestions {
 
         return nums;
     }
+
+    // * 2182. Construct String With Repeat Limit
+    // * Time complexity: o(n log n) - Insertion is log n, repeated n times
+    // * Space complexity: o(n)
+    public String repeatLimitedString(String s, int repeatLimit) {
+        // 1. Keep track of the count of each character
+        // 2. Put each count into heap
+        // 3. Pop the character based on lexicography
+        // 4. Append the repeat limit to s and put the remainder back into the heap
+        // 5. if the popped character is the same as the last char, return the string directly
+        Map<Character, Integer> map = new HashMap<>();
+        for (char chr : s.toCharArray()) {
+            map.put(chr, map.getOrDefault(chr, 0) + 1);
+        }
+
+        PriorityQueue<CharNode> pq = new PriorityQueue<>((a, b) -> {
+            return b.chr - a.chr;
+        });
+        for (Character chr : map.keySet()) {
+            pq.offer(new CharNode(map.get(chr), chr));
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while (!pq.isEmpty()) {
+            CharNode node = pq.poll();
+            int used = Math.min(node.count, repeatLimit); // Keeps track of how much of the char can be added
+            for (int i = 0; i < used; i++) {
+                sb.append(node.chr);
+            }
+
+            node.count -= used;
+            if (node.count > 0) { // This means that we can continue adding but we need to add one smaller character first
+                if (pq.isEmpty()) {
+                    return sb.toString();
+                }
+                CharNode next = pq.poll();
+                sb.append(next.chr);
+                next.count--;
+                if (next.count > 0) {
+                    pq.offer(next);
+                }
+                pq.offer(node);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static class CharNode {
+        int count;
+        char chr;
+
+        public CharNode(int count, char chr) {
+            this.count = count;
+            this.chr = chr;
+        }
+    }
 }
