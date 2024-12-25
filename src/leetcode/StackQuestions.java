@@ -271,5 +271,37 @@ public class StackQuestions {
 
         return sb.toString();
     }
+
+    //  * 1475. Final Prices With a Special Discount in a Shop
+    // *  Time complexity: o(n)
+    // *  Space complexity: o(n)
+    public int[] finalPrices(int[] prices) {
+        List<int[]> stack = new ArrayList<>();
+
+        for (int i = 0; i < prices.length; i++) {
+            int currPrice = prices[i];
+            if (stack.isEmpty()) {
+                // [price, index]
+                stack.add(new int[]{prices[i], i});
+                continue;
+            }
+
+            // Else check if the current price is smaller than the previous price;
+            int[] prev = stack.getLast();
+            while (prev[0] >= currPrice) {
+                // While the previous price is bigger or equal to the curr price
+                // We will keep popping from the stack and modifying it in the prices
+                prices[prev[1]] = prev[0] - currPrice;
+                stack.removeLast();
+                if (stack.isEmpty()) {
+                    break;
+                }
+                prev = stack.getLast();
+            }
+            stack.add(new int[]{currPrice, i});
+        }
+
+        return prices; // Modifications are done in place
+    }
 }
 
