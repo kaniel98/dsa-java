@@ -779,4 +779,48 @@ public class TreeQuestions {
 
         return hasPathSum(root.left, targetSum) || hasPathSum(root.right, targetSum);
     }
+
+    // * 2415. Reverse Odd Levels of Binary Tree
+    // * Time complexity: o(2 * n)
+    // * Space complexity: o(n)
+    // * Note: Question can also be solved using DFS approach
+    public TreeNode reverseOddLevels(TreeNode root) {
+        if (root == null) {
+            return root;
+        }
+        // Binary tree != Binary Search Tree
+        // We can do a BFS Approach to get the values of that level and swap it accordingly
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        int level = 0;
+        List<TreeNode> nodeList = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            for (int i = 0; i < n; i++) {
+                TreeNode node = queue.poll();
+                nodeList.add(node);
+                // If the level isnt an odd level, skip the step and proceed to add it into the queue
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+
+            // If it is an odd level, proceed to reverse the value using two pointer approach
+            if (level % 2 == 1) {
+                int left = 0;
+                int right = n - 1;
+                while (left < right) {
+                    int temp = nodeList.get(left).val;
+                    nodeList.get(left).val = nodeList.get(right).val;
+                    nodeList.get(right).val = temp;
+                    left++;
+                    right--;
+                }
+            }
+
+            nodeList = new ArrayList<>();
+            level++;
+        }
+
+        return root;
+    }
 }

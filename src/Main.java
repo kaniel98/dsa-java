@@ -1,9 +1,8 @@
-import java.util.ArrayList;
+import java.util.ArrayDeque;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<int[]> result = new ArrayList<>();
+        ArrayDeque<Integer> stack = new ArrayDeque<>();
 
-        result.removeLast()
     }
 }
