@@ -823,4 +823,34 @@ public class TreeQuestions {
 
         return root;
     }
+
+    // * 515. Find Largest Value in Each Tree Row
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public List<Integer> largestValues(TreeNode root) {
+        // BFS to go through each node on a level and add it to a result
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        int currMax = Integer.MIN_VALUE;
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            for (int i = 0; i < n; i++) {
+                TreeNode node = queue.poll();
+                currMax = Math.max(currMax, node.val);
+
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+
+            result.add(currMax);
+            currMax = Integer.MIN_VALUE;
+        }
+
+        return result;
+    }
 }
