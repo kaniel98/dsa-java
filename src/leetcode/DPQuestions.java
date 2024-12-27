@@ -251,4 +251,30 @@ public class DPQuestions {
         mem[currPointer][sum] = possible;
         return possible;
     }
+
+    // * 1014. Best Sightseeing Pair
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int maxScoreSightseeingPair(int[] values) {
+        /**
+         * The goal is to find the maximum value of A[i] + A[j] + i - j
+         *  - Minimize the distance between i and j
+         *  - Maximize the value of A[i] + A[j]
+         *  - Maintain a pointer of the current max value which is what is the max value - distance from the current point
+         *  - Compare the current max value  + the current value - 1 with the max value
+         */
+
+        int currMax = values[0];
+        int max = Integer.MIN_VALUE;
+
+        for (int i = 1; i < values.length; i++) {
+            int currValue = values[i];
+
+            // Compare the current combination with the max
+            max = Math.max(max, currMax + currValue - 1);
+            currMax = Math.max(currValue, currMax - 1);
+        }
+
+        return max;
+    }
 }
