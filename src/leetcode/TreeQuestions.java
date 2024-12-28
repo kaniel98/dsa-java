@@ -853,4 +853,59 @@ public class TreeQuestions {
 
         return result;
     }
+
+    // * 2471. Minimum Number of Operations to Sort a Binary Tree by Level
+    // * Time complexity: o(n log n) - Sorting of each level
+    // * Space complexity: o(n)
+    public int minimumOperations(TreeNode root) {
+        // BFS to go through each level instead
+        // Since each number needs to be unique,
+        int swaps = 0;
+        if (root == null) {
+            return swaps;
+        }
+
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        HashMap<Integer, Integer> map = new HashMap<>();
+        ArrayList<Integer> values = new ArrayList<>();
+
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            for (int i = 0; i < n; i++) {
+                TreeNode node = queue.poll();
+                values.add(node.val);
+
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+
+            // Populate the hashmap first
+            for (int i = 0; i < values.size(); i++) {
+                map.put(values.get(i), i);
+            }
+            ArrayList<Integer> copy = new ArrayList<>(values);
+            Collections.sort(copy);
+
+            // Proceed to execute the checks by looping through the sorted copy
+            for (int idx = 0; idx < copy.size(); idx++) {
+                int target = copy.get(idx);
+                if (target != values.get(idx)) {
+                    swaps++;
+                    // Update the hashmap
+                    int swappedIdx = map.get(target);
+                    map.put(target, idx);
+                    map.put(values.get(idx), swappedIdx);
+                    // Update the values
+                    int temp = values.get(idx);
+                    values.set(idx, target);
+                    values.set(swappedIdx, temp);
+                }
+            }
+            values = new ArrayList<>();
+            map = new HashMap<>();
+        }
+
+        return swaps;
+    }
 }

@@ -256,7 +256,7 @@ public class DPQuestions {
     // * Time complexity: o(n)
     // * Space complexity: o(1)
     public int maxScoreSightseeingPair(int[] values) {
-        /**
+        /*
          * The goal is to find the maximum value of A[i] + A[j] + i - j
          *  - Minimize the distance between i and j
          *  - Maximize the value of A[i] + A[j]
