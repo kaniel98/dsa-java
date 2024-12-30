@@ -418,4 +418,37 @@ public class BacktrackingQuestions {
         maxLength = Math.max(maxLength, currMax);
         return currMax;
     }
+
+    // * 2466. Count Ways To Build Good Strings
+    // * Time complexity: o(n) - The number of possible strings
+    // * Space complexity: o(n) - The size of the cache
+    HashMap<Integer, Long> countMap;
+    int mod = 1_000_000_007;
+
+    public int countGoodStrings(int low, int high, int zero, int one) {
+        // DFS Question with Memoisation (Top down approach in DP)
+        countMap = new HashMap<>();
+        return (int) countGoodStringsDfs(low, high, zero, one, 0);
+    }
+
+    public long countGoodStringsDfs(int low, int high, int zero, int one, int length) {
+        // If the count exceeds more than high, it is no longer valid
+        if (length > high) {
+            return 0;
+        }
+        if (countMap.containsKey(length)) {
+            return countMap.get(length); // Memoisation (For this current length, has the work been done?)
+        }
+
+        long res = 0;
+        // Check if the current string is valid
+        if (length >= low) {
+            res++;
+        }
+        // Proceed to include results from permutations further down the tree
+        res += countGoodStringsDfs(low, high, zero, one, length + zero) + countGoodStringsDfs(low, high, zero, one, length + one);
+        // Store the current result in the map (It doesnt exist if it gets to here)
+        countMap.put(length, res);
+        return res % mod;
+    }
 }
