@@ -923,5 +923,39 @@ public class ArraysAndHashing {
         }
         return result;
     }
+
+    // * 1422. Maximum Score After Splitting a String
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public int maxScore(String s) {
+        // Maximize left 0's and Maximize right 0's
+        int[] zeroCount = new int[s.length()];
+        int[] oneCount = new int[s.length()];
+
+        // Populate the zero count
+        int count = 0;
+        for (int idx = 0; idx < s.length(); idx++) {
+            if (s.charAt(idx) == '0') {
+                count++;
+            }
+            zeroCount[idx] = count;
+        }
+        // Populate the one count;
+        count = 0;
+        for (int idx = s.length() - 1; idx >= 0; idx--) {
+            if (s.charAt(idx) == '1') {
+                count++;
+            }
+            oneCount[idx] = count;
+        }
+
+        // Focused on finding the two side by side that has the largest output
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < s.length() - 1; i++) {
+            max = Math.max(max, zeroCount[i] + oneCount[i + 1]);
+        }
+
+        return max;
+    }
 }
 
