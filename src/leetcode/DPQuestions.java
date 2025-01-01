@@ -277,4 +277,44 @@ public class DPQuestions {
 
         return max;
     }
+
+    // * 983. Minimum Cost For Tickets
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    HashMap<Integer, Integer> map = new HashMap<>(); // Memoisation
+    HashMap<Integer, Integer> daysMap = new HashMap<>();
+
+    public int mincostTickets(int[] days, int[] costs) {
+        // DP Top down approach
+        daysMap.put(0, 1);
+        daysMap.put(1, 7);
+        daysMap.put(2, 30);
+
+        return minCostDfs(days, costs, 0);
+    }
+
+    public int minCostDfs(int[] days, int[] costs, int pointer) {
+        if (pointer == days.length) {
+            return 0; // No extra cost since we are at the end;
+        }
+
+        if (map.containsKey(pointer)) {
+            return map.get(pointer); // Avoids repeating paths
+        }
+
+        // Iterate through costs
+        int nextPoint = pointer;
+        int currMin = Integer.MAX_VALUE;
+        for (int idx = 0; idx < costs.length; idx++) {
+            // Move point to the next pointer
+            while (nextPoint < days.length && days[nextPoint] < days[pointer] + daysMap.get(idx)) {
+                nextPoint++;
+            }
+            // Execute the DFS
+            currMin = Math.min(currMin, costs[idx] + minCostDfs(days, costs, nextPoint));
+        }
+        // Put into the map
+        map.put(pointer, currMin);
+        return currMin;
+    }
 }
