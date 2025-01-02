@@ -817,29 +817,27 @@ public class ArraysAndHashing {
     public int[] vowelStrings(String[] words, int[][] queries) {
         // Prefix question, keep track of the number of words starting and ending vowels
         // From there, we would just take the range accordingly
-        int[] result = new int[queries.length];
+        Set<Character> vowel = new HashSet<>(List.of('a', 'e', 'i', 'o', 'u'));
         int[] prefix = new int[words.length];
+        int[] result = new int[queries.length];
 
-        Set<Character> vowels = new HashSet<>(List.of('a', 'e', 'i', 'o', 'u'));
-
-        for (int i = 0; i < words.length; i++) {
-            int currSum = 0;
-            if (i > 0) {
-                currSum += prefix[i - 1];
-            }
-            String curr = words[i];
-            if (vowels.contains(curr.charAt(0)) && vowels.contains(curr.charAt(curr.length() - 1))) {
+        // Populate prefix array
+        int currSum = 0;
+        for (int idx = 0; idx < words.length; idx++) {
+            String curr = words[idx];
+            if (vowel.contains(curr.charAt(0)) && vowel.contains(curr.charAt(curr.length() - 1))) {
                 currSum++;
             }
-            prefix[i] = currSum;
+            prefix[idx] = currSum;
         }
 
-        for (int i = 0; i < queries.length; i++) {
-            int[] query = queries[i];
+        // Execute the check for queries
+        for (int idx = 0; idx < queries.length; idx++) {
+            int[] query = queries[idx];
+            // Keep track of the start and end
             int start = query[0] == 0 ? 0 : prefix[query[0] - 1];
             int end = prefix[query[1]];
-
-            result[i] = end - start;
+            result[idx] = end - start;
         }
 
         return result;
