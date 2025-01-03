@@ -1,9 +1,8 @@
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        Set<Character> vowels = new HashSet<>(List.of('a', 'e', 'i', 'o', 'u'));
+        int[] nums = {1, 2, 3, 4, 5};
+        Arrays.stream(nums).sum();
     }
 }

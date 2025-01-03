@@ -955,5 +955,33 @@ public class ArraysAndHashing {
 
         return max;
     }
+
+    // * 2270. Number of Ways to Split Array
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int waysToSplitArray(int[] nums) {
+        // Get sum of the array
+        long sum = 0;
+        for (int num : nums) { // Note we can't use stream here because it will be using a int value under the hood
+            sum += num;
+        }
+
+        long leftPartition = nums[0];
+        long rightPartition = sum - leftPartition;
+        int validPartition = 0;
+
+        // Loop starting from the 1st index to the 2nd last index of the array
+        for (int i = 1; i < nums.length; i++) {
+
+            if (leftPartition >= rightPartition) {
+                validPartition++;
+            }
+
+            // Move the left pointer
+            leftPartition += nums[i];
+            rightPartition -= nums[i];
+        }
+        return validPartition;
+    }
 }
 
