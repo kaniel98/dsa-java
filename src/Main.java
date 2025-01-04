@@ -1,8 +1,9 @@
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Main {
     public static void main(String[] args) {
-        int[] nums = {1, 2, 3, 4, 5};
-        Arrays.stream(nums).sum();
+        HashSet<String> set = new HashSet<>();
+        set.add()
     }
 }

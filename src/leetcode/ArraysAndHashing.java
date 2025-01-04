@@ -983,5 +983,49 @@ public class ArraysAndHashing {
         }
         return validPartition;
     }
+
+    // * 1930. Unique Length-3 Palindromic Subsequences
+    // * Time complexity: o(26 * n) - 26 is the number of characters in the alphabet (Max will be 26 unique char on
+    // left side)
+    // * Space complexity: o(n) - Storing the left side and right side
+    public int countPalindromicSubsequence(String s) {
+        // Benefit is that since this is only length of 3, we will only need to check if 1st char matches the 3rd char
+        // 1. Use a "middle" pointer, based on that, we will check on the left side, how many of the same characters is repeated on the right side
+        // 2. Maintain a result pointer to keep track of it
+        // 3. To reduce duplicated work, when the middle pointer moves to the right, it will move to the left side,
+        // We will just need to check if this char is exist in left already or if it needs to be added
+
+        Set<Character> leftSide = new HashSet<>(); // Only set is needed since we wont remove from left side
+        HashMap<Character, Integer> rightSide = new HashMap<>(); // Need to maintain count also because there can be duplicated characters
+        Set<String> result = new HashSet<>();
+
+        // Proceed to put all the char in hashmap first
+        for (char chr : s.toCharArray()) {
+            rightSide.put(chr, rightSide.getOrDefault(chr, 0) + 1);
+        }
+
+        // Proceed to execute the logic
+        for (char chr : s.toCharArray()) {
+            // Remove the chr from the right side
+            int count = rightSide.get(chr);
+            if (count - 1 == 0) {
+                rightSide.remove(chr);
+            } else {
+                rightSide.put(chr, count - 1);
+            }
+
+            // Check for the left - right side
+            for (char left : leftSide) {
+                if (rightSide.containsKey(left)) {
+                    // Add to the result
+                    result.add("" + left + chr); // Add the current pair
+                }
+            }
+
+            // Add the chr to the left side
+            leftSide.add(chr);
+        }
+        return result.size();
+    }
 }
 
