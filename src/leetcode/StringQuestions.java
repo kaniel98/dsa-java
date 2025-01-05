@@ -109,4 +109,30 @@ public class StringQuestions {
         }
         return sb.toString();
     }
+
+    // * 848. Shifting Letters
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public String shiftingLetters(String s, int[] shifts) {
+        // 1. Get the sum of all shifts
+        // 2. Apply the sum from back to the start to the end, removing shift each time
+        int totalShifts = 0;
+        StringBuilder sb = new StringBuilder();
+        // We will need to remove the number of times it goes beyond 26 - number of char
+        for (int shift : shifts) {
+            totalShifts = (totalShifts + shift) % 26; // This is to prevent overflow
+        }
+
+        for (int idx = 0; idx < s.length(); idx++) {
+            sb.append(getShiftedLetter(s.charAt(idx), totalShifts));
+            totalShifts = Math.floorMod(totalShifts - shifts[idx], 26);
+        }
+
+        return sb.toString();
+    }
+
+    public char getShiftedLetter(char chr, int shift) {
+        chr -= 'a';
+        return (char) ((chr + shift) % 26 + 97);
+    }
 }
