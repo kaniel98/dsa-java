@@ -1027,5 +1027,37 @@ public class ArraysAndHashing {
         }
         return result.size();
     }
+
+    // * 1769. Minimum Number of Operations to Move All Balls to Each Box
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public int[] minOperations(String boxes) {
+        // Prefix question
+        int[] prefix = new int[boxes.length()];
+        int[] suffix = new int[boxes.length()];
+        int count = 0;
+        int ballCount = 0;
+        for (int i = 0; i < boxes.length(); i++) {
+            prefix[i] = count;
+
+            ballCount += boxes.charAt(i) == '1' ? 1 : 0;
+            count += ballCount;
+        }
+
+        count = 0;
+        ballCount = 0;
+        for (int i = boxes.length() - 1; i >= 0; i--) {
+            suffix[i] = count;
+
+            ballCount += boxes.charAt(i) == '1' ? 1 : 0;
+            count += ballCount;
+        }
+
+        for (int i = 0; i < prefix.length; i++) {
+            prefix[i] = prefix[i] + suffix[i];
+        }
+
+        return prefix;
+    }
 }
 
