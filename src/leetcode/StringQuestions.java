@@ -135,4 +135,41 @@ public class StringQuestions {
         chr -= 'a';
         return (char) ((chr + shift) % 26 + 97);
     }
+
+    // * 2381. Shifting Letters II - Note this can also be a prefix question
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public String shiftingLetters(String s, int[][] shifts) {
+        // Prefix question
+        // It is easier to handle the string once it is converted into an array instead
+        // 1. Maintain a prefix array that is + 1 of the String s
+        // 2. Keep track from the start to end, is it plus 1 or minus 1
+        char[] charArray = s.toCharArray();
+        int[] prefix = new int[charArray.length + 1];
+
+        // Populate the prefix with the shifts first
+        for (int[] shift : shifts) {
+            int start = shift[2] == 1 ? 1 : -1; // If shift[2] is 1, we will shift the letters by + 1 else - 1
+            int end = shift[2] == 1 ? -1 : 1; // This would be to reset the array
+
+            // Mark the start and end of the affected section in the prefix section
+            prefix[shift[1] + 1] += start;
+            prefix[shift[0]] += end;
+        }
+
+        // Proceed to make the increment/decrement
+        // Value + 25, Followed by moding it by 26 to ensure it is always within the range of 0 - 25
+        int val = prefix[prefix.length - 1];
+        for (int idx = charArray.length - 1; idx >= 0; idx--) {
+            // Apply the operations to the char array;
+            val = (val % 26 + 26) % 26; // Prevents overflow
+            char temp = (char) (((charArray[idx] - 'a' + val) % 26) + 'a');
+
+            // Include the increment and decrement marked at the current idx
+            val += prefix[idx];
+            charArray[idx] = temp;
+        }
+
+        return String.valueOf(charArray);
+    }
 }
