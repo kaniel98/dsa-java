@@ -1059,5 +1059,54 @@ public class ArraysAndHashing {
 
         return prefix;
     }
+
+    // * 916. Word Subsets
+    // * Time complexity: o(n * m) where n is the number of words in words1 and m is the number of words in words2
+    // * Space complexity: o(n) - Storing the character count
+    public List<String> wordSubsets(String[] words1, String[] words2) {
+        // Construct a hashmap of characters in words2;
+        // For every word in words1, check if it has the min characters in the hashmap
+        // If yes, add it to the List, else skip
+        // Reset the hashmap every time
+        Map<Character, Integer> charMap = new HashMap<>();
+        for (String word : words2) {
+            // Add to charMap
+            Map<Character, Integer> temp = getCharCount(word);
+
+            for (Character chr : temp.keySet()) {
+                charMap.put(chr, Math.max(charMap.getOrDefault(chr, 0), temp.get(chr)));
+            }
+        }
+
+        List<String> result = new ArrayList<>();
+        for (String word : words1) {
+            // Execute the check
+            if (compareWord(word, charMap)) {
+                result.add(word);
+            }
+        }
+
+        return result;
+    }
+
+    public Map<Character, Integer> getCharCount(String str) {
+        Map<Character, Integer> charMap = new HashMap<>();
+        // Add to charMap
+        for (char chr : str.toCharArray()) {
+            charMap.put(chr, charMap.getOrDefault(chr, 0) + 1);
+        }
+
+        return charMap;
+    }
+
+    public boolean compareWord(String str, Map<Character, Integer> charMap) {
+        Map<Character, Integer> temp = getCharCount(str);
+        for (char chr : charMap.keySet()) {
+            if (temp.getOrDefault(chr, 0) < charMap.get(chr)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
