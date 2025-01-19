@@ -317,4 +317,32 @@ public class DPQuestions {
         map.put(pointer, currMin);
         return currMin;
     }
+
+    // * 1143. Longest Common Subsequence
+    // * Time complexity: o(n * m);
+    // * Space complexity: o(n * m);
+    public int longestCommonSubsequence(String text1, String text2) {
+        // 2D DP Problem working with a bottom up approach
+        // Constructing the 2D array
+        int[][] dp = new int[text1.length() + 1][text2.length() + 1];
+
+        // Proceed to start from the bottom
+        for (int row = text1.length() - 1; row >= 0; row--) {
+            for (int col = text2.length() - 1; col >= 0; col--) {
+                // Check if row and col matches
+                char charOne = text1.charAt(row);
+                char charTwo = text2.charAt(col);
+
+                // If the two characters matches, we will take the diagonal of the current row, col
+                if (charOne == charTwo) {
+                    dp[row][col] = 1 + dp[row + 1][col + 1];
+                } else {
+                    // The choice to either move text1 by one char or text2 by one char
+                    dp[row][col] = Math.max(dp[row + 1][col], dp[row][col + 1]);
+                }
+            }
+        }
+
+        return dp[0][0];
+    }
 }
