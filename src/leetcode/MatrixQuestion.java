@@ -112,4 +112,47 @@ public class MatrixQuestion {
 
         return sum;
     }
+
+    // * 2661. First Completely Painted Row or Column
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public int firstCompleteIndex(int[] arr, int[][] mat) {
+        // Basically need to keep track if which row / column will be filled up first
+        int targetRowCount = mat.length;
+        int targetColCount = mat[0].length;
+
+        // Create a mapping of each point instead, so that we know what row/col to mark
+        Map<Integer, Point> pointMap = new HashMap<>();
+        for (int row = 0; row < mat.length; row++) {
+            for (int col = 0; col < mat[row].length; col++) {
+                pointMap.put(mat[row][col], new Point(row, col));
+            }
+        }
+        Map<String, Integer> countMap = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            Point point = pointMap.get(arr[i]);
+
+            // Add the point to row and col
+            String rowKey = "row" + point.row;
+            String colKey = "col" + point.col;
+            countMap.put(rowKey, countMap.getOrDefault(rowKey, 0) + 1);
+            countMap.put(colKey, countMap.getOrDefault(colKey, 0) + 1);
+
+            if (countMap.get(rowKey) == targetColCount || countMap.get(colKey) == targetRowCount) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    class Point {
+        int row;
+        int col;
+
+        public Point(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
+    }
 }
