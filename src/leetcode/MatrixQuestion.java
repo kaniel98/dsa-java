@@ -155,4 +155,35 @@ public class MatrixQuestion {
             this.col = col;
         }
     }
+
+    // * 1267. Count Servers that Communicate
+    // * Time complexity: o(n * m)
+    // * Space complexity: o(n + m)
+    public int countServers(int[][] grid) {
+        // Only need to keep track of if there are 2 or more servers in the same row
+        int[] rowCount = new int[grid.length];
+        int[] colCount = new int[grid[0].length];
+
+        // Preprocessing to get the count of computers in each row / column
+        for (int row = 0; row < grid.length; row++) {
+            for (int col = 0; col < grid[0].length; col++) {
+                if (grid[row][col] == 1) {
+                    rowCount[row] = rowCount[row] + 1;
+                    colCount[col] = colCount[col] + 1;
+                }
+            }
+        }
+
+        // We will only add the computer to the count provided that it is either not the only computer in the row / col
+        int count = 0;
+        for (int row = 0; row < grid.length; row++) {
+            for (int col = 0; col < grid[0].length; col++) {
+                if (grid[row][col] == 1 && Math.max(rowCount[row], colCount[col]) > 1) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
 }
