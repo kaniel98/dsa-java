@@ -1108,5 +1108,80 @@ public class ArraysAndHashing {
         }
         return true;
     }
+
+    // *  1752. Check if Array Is Sorted and Rotated
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public boolean check(int[] nums) {
+        int check = 0;
+        for (int right = 0; right < nums.length; right++) {
+            if (nums[right] > nums[(right + 1) % nums.length]) {
+                check++;
+                if (check > 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // * 3105. Longest Strictly Increasing or Strictly Decreasing Subarray
+    // * Time complexity: o(n)
+    // * Space complexity: o(1)
+    public int longestMonotonicSubarray(int[] nums) {
+        boolean isIncreasing = true; // Start with increasing
+        int left = 0;
+        int max = 0;
+
+        for (int right = 0; right < nums.length; right++) {
+            if (right == 0) {
+                continue; // Skip this one
+            }
+
+            int curr = nums[right];
+            if (curr > nums[right - 1] && isIncreasing) {
+                continue; // Means correct path
+            }
+
+            if (curr < nums[right - 1] && !isIncreasing) {
+                continue; // Means correct path
+            }
+
+            if (curr == nums[right - 1]) {
+                max = Math.max(right - left, max);
+                left = right;
+                continue;
+            }
+
+            // Else it means we need to reset
+            isIncreasing = !isIncreasing;
+            max = Math.max(right - left, max);
+            left = right - 1;
+        }
+
+        max = Math.max(nums.length - left, max);
+        return max;
+    }
+
+    // * 2364. Count Number of Bad Pairs
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public long countBadPairs(int[] nums) {
+        HashMap<Long, Long> expectedGoodPairs = new HashMap<>();
+        long count = 0;
+
+        // Populate the good pairs;
+        for (int i = 0; i < nums.length; i++) {
+            long curr = nums[i];
+            long diff = i - curr;
+
+            count += expectedGoodPairs.getOrDefault(diff, 0L);
+            expectedGoodPairs.put(diff, expectedGoodPairs.getOrDefault(diff, 0L) + 1L);
+        }
+
+        long totalPairs = (nums.length * (nums.length - 1L)) / 2L;
+
+        return totalPairs - count;
+    }
 }
 
