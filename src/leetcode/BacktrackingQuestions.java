@@ -451,4 +451,59 @@ public class BacktrackingQuestions {
         countMap.put(length, res);
         return res % mod;
     }
+
+    // * 1718. Construct the Lexicographically Largest Valid Sequence
+    // * Time complexity: o(n)
+    // * Space complexity: o(n)
+    public int[] largest;
+
+    public int[] constructDistancedSequence(int n) {
+        // Array of n size to keep track of the number of n used
+        largest = new int[n * 2 - 1];
+        // Go through each of the possible routes
+
+        constructDistancedSequenceDfs(n + 1, new HashSet<>(), new int[n * 2 - 1], 0);
+        return largest;
+    }
+
+    public boolean constructDistancedSequenceDfs(int n, Set<Integer> visited, int[] currentList, int currIdx) {
+        if (currIdx >= currentList.length) {
+            // Some comparison logic
+            largest = currentList.clone();
+            return true;
+        }
+
+        if (currentList[currIdx] != 0) {
+            return constructDistancedSequenceDfs(n, visited, currentList, currIdx + 1);
+        }
+
+        for (int i = n - 1; i > 0; i--) {
+            if (visited.contains(i)) {
+                continue;
+            }
+
+            visited.add(i);
+            currentList[currIdx] = i;
+
+            if (i == 1) {
+                if (constructDistancedSequenceDfs(n, visited, currentList, currIdx + 1)) {
+                    return true;
+                }
+            }
+
+            // Check if can put at the current idx & not filled
+            if (currIdx + i < currentList.length && currentList[currIdx + i] == 0) {
+                currentList[currIdx + i] = i;
+                if (constructDistancedSequenceDfs(n, visited, currentList, currIdx + 1)) {
+                    return true;
+                }
+                currentList[currIdx + i] = 0;
+            }
+
+            visited.remove(i);
+            currentList[currIdx] = 0;
+        }
+
+        return false;
+    }
 }

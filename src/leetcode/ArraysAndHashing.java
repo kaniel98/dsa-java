@@ -1183,5 +1183,50 @@ public class ArraysAndHashing {
 
         return totalPairs - count;
     }
+
+    // * 2342. Max Sum of a Pair With Equal Sum of Digits
+    // * Time Complexity: o(n)
+    // * Space complexity: o(n)
+    public int maximumSum(int[] nums) {
+        // Put all into a hash map - sum of digits : indices
+        // Go through the keys
+        Map<Integer, List<Integer>> store = createStore(nums);
+        Integer maxValue = Integer.MIN_VALUE;
+
+        for (int key : store.keySet()) {
+            List<Integer> sumList = store.get(key);
+            if (sumList.size() <= 1) {
+                continue; // Skip those without 2 of the same sum
+            }
+
+            Collections.sort(sumList, (a, b) -> b - a);
+            // Else take the last two numbers
+            int curr = sumList.get(0) + sumList.get(1);
+            maxValue = Math.max(curr, maxValue);
+        }
+
+        return maxValue == Integer.MIN_VALUE ? -1 : maxValue;
+    }
+
+    public Map<Integer, List<Integer>> createStore(int[] nums) {
+
+        HashMap<Integer, List<Integer>> store = new HashMap<>();
+
+        for (int num : nums) {
+            int temp = num;
+            // Parse it to be an integer
+            int sum = 0;
+            while (num > 0) {
+                sum += (num % 10);
+                num /= 10;
+            }
+
+            // Put into list
+            store.put(sum, store.getOrDefault(sum, new ArrayList<>()));
+            store.get(sum).add(temp);
+        }
+
+        return store;
+    }
 }
 
